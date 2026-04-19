@@ -1,0 +1,12 @@
+export { default as Navbar } from './Navbar';
+export { default as Hero } from './Hero';
+export { default as Mission } from './Mission';
+export { default as FounderTerminal } from './FounderTerminal';
+export { default as LLMSection } from './LLMSection';
+export { default as Sagittarix } from './Sagittarix';
+export { default as Products } from './Products';
+export { default as TechStack } from './TechStack';
+export { default as Roadmap } from './Roadmap';
+export { default as GithubStats } from './GithubStats';
+export { default as Contact } from './Contact';
+export { default as Footer } from './Footer';

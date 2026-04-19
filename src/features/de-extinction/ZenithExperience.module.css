@@ -1,0 +1,329 @@
+:global(body).leviathan-body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow-y: auto;
+  overscroll-behavior: none;
+  font-family: var(--font-body, 'Rajdhani', sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.root {
+  position: relative;
+  min-height: 600vh;
+  width: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.root :global(*),
+.root :global(*::before),
+.root :global(*::after) {
+  box-sizing: border-box;
+  cursor: none !important;
+  user-select: none;
+}
+
+.webgl {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, transparent 10%, rgba(0, 0, 0, 0.95) 100%);
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 1);
+}
+
+.scanline {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 229, 255, 0.02) 50%,
+    rgba(0, 229, 255, 0.02)
+  );
+  background-size: 100% 4px;
+  opacity: 0.9;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.cursorCore {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px #fff;
+}
+
+.cursorPerimeter {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, border-color 0.2s;
+}
+
+.uiLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--hud-padding, 3vw);
+  opacity: 0;
+  transition: opacity 2.5s cubic-bezier(0.19, 1, 0.22, 1) 0.5s;
+}
+
+.uiVisible {
+  opacity: 1;
+}
+
+.hudTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: var(--font-tech, 'Space Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.hudLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hudTitle {
+  font-family: var(--font-display, 'Cinzel', serif);
+  font-size: 24px;
+  letter-spacing: 0.4em;
+  font-weight: 700;
+  color: var(--color-text);
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+}
+
+.hudSubtitle {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.hudRight {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hudDataRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--color-accent);
+  animation: heartbeat 1.5s infinite;
+}
+
+.hudBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: var(--font-tech, 'Space Mono', monospace);
+  font-size: 10px;
+}
+
+.diagBox {
+  border-left: 1px solid rgba(0, 229, 255, 0.3);
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.diagValue {
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.diagLabel {
+  color: var(--color-text-dim);
+}
+
+.scrollDirector {
+  position: absolute;
+  left: 50%;
+  bottom: var(--hud-padding, 3vw);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.scrollText {
+  font-family: var(--font-display, 'Cinzel', serif);
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  animation: float 3s ease-in-out infinite;
+}
+
+.scrollTrack {
+  width: 1px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.scrollProgress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary), var(--color-accent));
+  transform-origin: top;
+  transform: scaleY(0);
+  box-shadow: 0 0 15px var(--color-primary);
+}
+
+.engineStats {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statLine {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  color: var(--color-text-dim);
+}
+
+.statHighlight {
+  color: var(--color-primary);
+  font-weight: 700;
+  min-width: 60px;
+  display: inline-block;
+}
+
+.bootSequence {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-tech, 'Space Mono', monospace);
+  color: var(--color-primary);
+  transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.bootHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bootTitle {
+  font-family: var(--font-display, 'Cinzel', serif);
+  font-size: 20px;
+  letter-spacing: 0.8em;
+  margin-bottom: 40px;
+  color: #fff;
+}
+
+.bootBar {
+  width: 300px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.bootFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--color-primary);
+  box-shadow: 0 0 20px var(--color-primary);
+  transition: width 0.1s linear;
+}
+
+.bootLog {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  width: 300px;
+  text-align: left;
+}
+
+.scrollProxy {
+  position: relative;
+  height: 600vh;
+  width: 100%;
+  z-index: 10;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; box-shadow: 0 0 20px var(--color-accent); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
