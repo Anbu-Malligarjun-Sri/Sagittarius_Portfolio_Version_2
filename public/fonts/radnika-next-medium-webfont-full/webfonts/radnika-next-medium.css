@@ -1,0 +1,27 @@
+/*
+Font: 		Radnika Next
+Style: 		Medium
+URL: 		https://www.youworkforthem.com/font/T10896/radnika-next
+Foundry: 	Hanken Design Co.
+Foundry: 	https://www.youworkforthem.com/designer/809/hanken-design-co
+Copyright:	Copyright (c)2019, Radnika Next designed and developed by Alfredo Marco Pradil (ammpradil@gmail.com).
+Version: 	17
+Created:	June 05, 2019
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+	font-family: 'RadnikaNext-Medium';
+	src: url('radnika-next-medium.eot');
+	src: url('radnika-next-medium.eot?#iefix') format('embedded-opentype'),
+             url('radnika-next-medium.woff2') format('woff2'),
+	     url('radnika-next-medium.woff') format('woff'),
+	     url('radnika-next-medium.ttf') format('truetype'),
+	     url('radnika-next-medium.svg#youworkforthem') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}

@@ -1,0 +1,27 @@
+/*
+Font: 		TERQUINY Demo
+Style: 		Regular
+URL: 		https://youworkforthem.com/font/T29049/terquiny-font
+Foundry: 	Shapespired Design
+Foundry: 	https://youworkforthem.com/designer/2137/shapespired-design
+Copyright:	
+Version: 	17
+Created:	May 27, 2025
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+	font-family: 'TERQUINYDemo-Regular';
+	src: url('terquiny-demo.eot');
+	src: url('terquiny-demo.eot?#iefix') format('embedded-opentype'),
+             url('terquiny-demo.woff2') format('woff2'),
+	     url('terquiny-demo.woff') format('woff'),
+	     url('terquiny-demo.ttf') format('truetype'),
+	     url('terquiny-demo.svg#youworkforthem') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}

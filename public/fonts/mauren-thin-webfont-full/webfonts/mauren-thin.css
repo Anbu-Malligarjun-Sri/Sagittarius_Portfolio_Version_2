@@ -1,0 +1,27 @@
+/*
+Font: 		Mauren Thin
+Style: 		Regular
+URL: 		https://www.youworkforthem.com/font/T14792/mauren
+Foundry: 	Nasir Udin
+Foundry: 	https://www.youworkforthem.com/designer/931/nasir-udin
+Copyright:	Copyright (c) 2021 by Nasir Udin Studio. All rights reserved.
+Version: 	17
+Created:	September 23, 2021
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+	font-family: 'Mauren-Thin';
+	src: url('mauren-thin.eot');
+	src: url('mauren-thin.eot?#iefix') format('embedded-opentype'),
+             url('mauren-thin.woff2') format('woff2'),
+	     url('mauren-thin.woff') format('woff'),
+	     url('mauren-thin.ttf') format('truetype'),
+	     url('mauren-thin.svg#youworkforthem') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}

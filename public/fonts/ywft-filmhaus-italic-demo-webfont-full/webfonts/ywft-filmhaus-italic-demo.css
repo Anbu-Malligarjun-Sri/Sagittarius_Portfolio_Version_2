@@ -1,0 +1,27 @@
+/*
+Font: 		YWFT Filmhaus Ita
+Style: 		Italic Demo
+URL: 		https://youworkforthem.com/font/T31353/ywft-filmhaus
+Foundry: 	YouWorkForThem
+Foundry: 	https://youworkforthem.com/designer/1/youworkforthem
+Copyright:	
+Version: 	17
+Created:	December 03, 2025
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+	font-family: 'YWFTFilmhausIta-ItalicDemo';
+	src: url('ywft-filmhaus-italic-demo.eot');
+	src: url('ywft-filmhaus-italic-demo.eot?#iefix') format('embedded-opentype'),
+             url('ywft-filmhaus-italic-demo.woff2') format('woff2'),
+	     url('ywft-filmhaus-italic-demo.woff') format('woff'),
+	     url('ywft-filmhaus-italic-demo.ttf') format('truetype'),
+	     url('ywft-filmhaus-italic-demo.svg#youworkforthem') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}

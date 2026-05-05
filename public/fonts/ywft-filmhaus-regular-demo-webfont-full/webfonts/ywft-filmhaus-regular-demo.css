@@ -1,0 +1,27 @@
+/*
+Font: 		YWFT Filmhaus
+Style: 		Regular Demo
+URL: 		https://youworkforthem.com/font/T31353/ywft-filmhaus
+Foundry: 	YouWorkForThem
+Foundry: 	https://youworkforthem.com/designer/1/youworkforthem
+Copyright:	
+Version: 	17
+Created:	December 03, 2025
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+	font-family: 'YWFTFilmhaus-RegularDemo';
+	src: url('ywft-filmhaus-regular-demo.eot');
+	src: url('ywft-filmhaus-regular-demo.eot?#iefix') format('embedded-opentype'),
+             url('ywft-filmhaus-regular-demo.woff2') format('woff2'),
+	     url('ywft-filmhaus-regular-demo.woff') format('woff'),
+	     url('ywft-filmhaus-regular-demo.ttf') format('truetype'),
+	     url('ywft-filmhaus-regular-demo.svg#youworkforthem') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}

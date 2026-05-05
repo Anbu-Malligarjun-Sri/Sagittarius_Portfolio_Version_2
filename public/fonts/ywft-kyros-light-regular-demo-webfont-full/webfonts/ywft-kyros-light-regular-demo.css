@@ -1,0 +1,27 @@
+/*
+Font: 		YWFT Kyros Light
+Style: 		Regular Demo
+URL: 		https://youworkforthem.com/font/T30401/ywft-kyros
+Foundry: 	YouWorkForThem
+Foundry: 	https://youworkforthem.com/designer/1/youworkforthem
+Copyright:	
+Version: 	17
+Created:	September 02, 2025
+License: 	https://www.youworkforthem.com/font-license 
+License: 	The WebFont(s) listed in this document must follow the YouWorkForThem
+			WebFont license rules. All other parties are strictly restricted 
+			from using the WebFonts(s) listed without a purchased license. 
+			All details above must always remain unaltered and visible in your CSS.
+*/
+
+@font-face {
+	font-family: 'YWFTKyrosLight-RegularDemo';
+	src: url('ywft-kyros-light-regular-demo.eot');
+	src: url('ywft-kyros-light-regular-demo.eot?#iefix') format('embedded-opentype'),
+             url('ywft-kyros-light-regular-demo.woff2') format('woff2'),
+	     url('ywft-kyros-light-regular-demo.woff') format('woff'),
+	     url('ywft-kyros-light-regular-demo.ttf') format('truetype'),
+	     url('ywft-kyros-light-regular-demo.svg#youworkforthem') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
