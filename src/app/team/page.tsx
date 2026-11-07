@@ -5,6 +5,7 @@ import { FOUNDERS } from '@/features/team/founders';
 import { teamFontVariables } from '@/features/team/fonts';
 import Exhibit from '@/features/team/Exhibit';
 import HeroPortrait from '@/features/team/HeroPortrait';
+import AssemblyChoreography from '@/features/team/AssemblyChoreography';
 import styles from '@/features/team/team.module.css';
 
 export const metadata: Metadata = {
@@ -21,32 +22,21 @@ const STATS = [
   { value: '01', label: 'Shared standard' },
 ];
 
-// Decorative multiplayer-style pointers, one per founder, drifting around the hero.
-const POINTERS = [
-  { id: 'anbu', drift: styles.driftA, pos: 'left-[4%] top-[34%]' },
-  { id: 'brajin', drift: styles.driftB, pos: 'right-[6%] top-[28%]' },
-  { id: 'arun', drift: styles.driftC, pos: 'left-[46%] top-[62%]' },
-] as const;
-
-function Pointer({ color, label }: { color: string; label: string }) {
-  return (
-    <div className="flex items-start">
-      <svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true">
-        <path d="M2 2 L2 18 L6.5 13.5 L10 21 L13 19.6 L9.6 12.4 L16 12.4 Z" fill={color} stroke="#060608" strokeWidth="1.2" strokeLinejoin="round" />
-      </svg>
-      <span className="-ml-0.5 mt-4 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-[#060608]" style={{ backgroundColor: color }}>
-        {label}
-      </span>
-    </div>
-  );
-}
-
+// Elements marked `data-assemble` are hidden at first and pulled into place by AssemblyChoreography.
+// `data-from` is the side they arrive from; without it the side is chosen from the element's position.
 export default function TeamPage() {
   const sited = FOUNDERS.filter((founder) => founder.link);
 
   return (
-    <div className={`${teamFontVariables} ${styles.page} relative min-h-screen overflow-x-clip text-[#f5f0e8]`}>
+    <div
+      data-team-root=""
+      className={`${teamFontVariables} ${styles.page} ${styles.pending} relative min-h-screen overflow-x-clip text-[#f5f0e8]`}
+    >
+      <noscript>
+        <style>{'[data-assemble]{opacity:1!important}'}</style>
+      </noscript>
       <div className="pointer-events-none fixed left-3 top-0 z-30 hidden h-full w-px bg-[#ff3b3b]/50 sm:block" />
+      <AssemblyChoreography />
 
       <header className="fixed inset-x-0 top-4 z-40 flex justify-center px-3">
         <div className="flex h-12 w-full max-w-3xl items-center justify-between rounded-full border border-white/10 bg-[rgba(10,10,12,0.8)] px-4 backdrop-blur-2xl">
@@ -61,44 +51,37 @@ export default function TeamPage() {
         </div>
       </header>
 
-      <main id="main-content">
+      <main id="main-content" className="relative z-10">
         {/* ── Hero ── */}
         <section className="relative mx-auto max-w-7xl px-6 pb-16 pt-28 lg:pt-32">
-          <h1 className={`${styles.outline} ${styles.rise} select-none text-[clamp(3.5rem,19.5vw,17rem)]`} aria-label="The team">
+          <h1 data-assemble="" data-from="top" className={`${styles.outline} w-fit select-none text-[clamp(3.5rem,19.5vw,17rem)]`} aria-label="The team">
             THE TEAM
           </h1>
 
-          {POINTERS.map(({ id, drift, pos }) => {
-            const founder = FOUNDERS.find((f) => f.id === id)!;
-            return (
-              <div key={id} className={`${styles.cursor} ${drift} ${pos} z-20 hidden md:block`}>
-                <Pointer color={founder.field} label={founder.name.split(' ')[0]} />
-              </div>
-            );
-          })}
-
           <div className="mt-8 grid items-center gap-14 lg:grid-cols-[1fr_0.85fr]">
             <div>
-              <p className={`${styles.rise} -rotate-3 text-[2.2rem] leading-none text-white`} style={{ fontFamily: 'var(--font-handwriting)', animationDelay: '0.15s' }}>
-                Hello, we&apos;re
+              <p data-assemble="" data-from="left" className="w-fit text-[2.2rem] leading-none text-white" style={{ fontFamily: 'var(--font-handwriting)' }}>
+                <span className="inline-block -rotate-3">Hello, we&apos;re</span>
               </p>
               <p
-                className={`${styles.rise} mt-2 inline-block bg-[#ff3b3b] px-4 py-1 text-[clamp(2.2rem,5.4vw,3.8rem)] font-extrabold leading-tight tracking-[-0.03em] text-white`}
-                style={{ fontFamily: 'var(--font-display)', animationDelay: '0.25s' }}
+                data-assemble=""
+                data-from="left"
+                className="mt-2 block w-fit bg-[#ff3b3b] px-4 py-1 text-[clamp(2.2rem,5.4vw,3.8rem)] font-extrabold leading-tight tracking-[-0.03em] text-white"
+                style={{ fontFamily: 'var(--font-display)' }}
               >
                 SAGITTARIUS.
               </p>
 
-              <p className={`${styles.rise} mt-6 inline-flex items-center gap-2 border border-white/15 bg-white/[0.03] px-3 py-2 font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-white/80`} style={{ animationDelay: '0.35s' }}>
+              <p data-assemble="" data-from="left" className="mt-6 flex w-fit items-center gap-2 border border-white/15 bg-white/[0.03] px-3 py-2 font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-white/80">
                 <span className={`${styles.liveDot} h-1.5 w-1.5 rounded-full bg-[#ff3b3b]`} />
                 Founding team · 03 operators
               </p>
 
-              <p className={`${styles.rise} mt-6 max-w-[48ch] text-[1.05rem] leading-8 text-white/72`} style={{ animationDelay: '0.45s' }}>
+              <p data-assemble="" data-from="left" className="mt-6 max-w-[48ch] text-[1.05rem] leading-8 text-white/72">
                 Three founders, three very different ways of seeing, and one shared standard for the work we put our name on. Sagittarius is the archer: aim first, then release.
               </p>
 
-              <div className={`${styles.rise} mt-8 flex flex-wrap gap-3 font-mono text-[11px] font-bold uppercase tracking-[0.2em]`} style={{ animationDelay: '0.55s' }}>
+              <div data-assemble="" data-from="bottom" className="mt-8 flex w-fit flex-wrap gap-3 font-mono text-[11px] font-bold uppercase tracking-[0.2em]">
                 <a href="#index" className="inline-flex items-center gap-2 bg-[#ff3b3b] px-5 py-3 text-white transition-transform hover:-translate-y-0.5">
                   Meet the founders <ArrowRight className="h-3.5 w-3.5" />
                 </a>
@@ -107,7 +90,7 @@ export default function TeamPage() {
                 </Link>
               </div>
 
-              <dl className={`${styles.rise} mt-12 flex flex-wrap gap-x-10 gap-y-4`} style={{ animationDelay: '0.65s' }}>
+              <dl data-assemble="" data-from="bottom" className="mt-12 flex w-fit flex-wrap gap-x-10 gap-y-4">
                 {STATS.map((stat) => (
                   <div key={stat.label}>
                     <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">{stat.label}</dt>
@@ -124,18 +107,22 @@ export default function TeamPage() {
         </section>
 
         {/* ── Index ── */}
-        <section id="index" className={`${styles.reveal} mx-auto max-w-6xl scroll-mt-24 px-6 pb-8 pt-16`}>
-          <p className="font-mono text-[11px] tracking-[0.12em] text-white/55">{'//01.00 SEC_FOUNDERS INDEX [01/03]'}</p>
-          <p className="mt-8 font-mono text-[11px] font-bold uppercase tracking-[0.35em] text-[#ff3b3b]">The founding team</p>
-          <h2 className="mt-3 text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1] tracking-[-0.04em]" style={{ fontFamily: 'var(--font-display)' }}>
-            Three founders. Three disciplines.
-          </h2>
+        <section id="index" className="mx-auto max-w-6xl scroll-mt-24 px-6 pb-8 pt-16">
+          <p data-assemble="" data-from="left" className="w-fit font-mono text-[11px] tracking-[0.12em] text-white/55">{'//01.00 SEC_FOUNDERS INDEX [01/03]'}</p>
+          <div data-assemble="" data-from="left" className="mt-8 w-fit">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.35em] text-[#ff3b3b]">The founding team</p>
+            <h2 className="mt-3 text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1] tracking-[-0.04em]" style={{ fontFamily: 'var(--font-display)' }}>
+              Three founders. Three disciplines.
+            </h2>
+          </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {FOUNDERS.map((founder, i) => (
               <a
                 key={founder.id}
                 href={`#${founder.id}`}
+                data-assemble=""
+                data-from="bottom"
                 className={`${styles.card} block border p-6 ${i === 0 ? 'border-[#ff3b3b]' : 'border-white/15'}`}
               >
                 <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em]">
@@ -164,15 +151,17 @@ export default function TeamPage() {
         ))}
 
         {/* ── Direct connect ── */}
-        <section className={`${styles.reveal} mx-auto max-w-3xl px-6 pb-28 pt-16 text-center`}>
-          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.35em] text-[#ff3b3b]">Direct connect</p>
-          <h2 className="mt-4 text-[clamp(2rem,5vw,3.4rem)] font-extrabold leading-[1.05] tracking-[-0.04em]" style={{ fontFamily: 'var(--font-display)' }}>
-            Let&apos;s aim at something extraordinary.
-          </h2>
-          <p className="mx-auto mt-5 max-w-[46ch] text-[1rem] leading-8 text-white/65">
-            Tell us what you are building. One of the three of us will answer.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <section className="mx-auto max-w-3xl px-6 pb-28 pt-16 text-center">
+          <div data-assemble="" data-from="bottom">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.35em] text-[#ff3b3b]">Direct connect</p>
+            <h2 className="mt-4 text-[clamp(2rem,5vw,3.4rem)] font-extrabold leading-[1.05] tracking-[-0.04em]" style={{ fontFamily: 'var(--font-display)' }}>
+              Let&apos;s aim at something extraordinary.
+            </h2>
+            <p className="mx-auto mt-5 max-w-[46ch] text-[1rem] leading-8 text-white/65">
+              Tell us what you are building. One of the three of us will answer.
+            </p>
+          </div>
+          <div data-assemble="" data-from="bottom" className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link href="/#contact" className="inline-flex items-center gap-2 bg-[#ff3b3b] px-6 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-transform hover:-translate-y-0.5">
               Start a project <ArrowRight className="h-3.5 w-3.5" />
             </Link>

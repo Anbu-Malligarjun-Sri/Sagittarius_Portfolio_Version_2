@@ -1,9 +1,4 @@
-/* /team page: dark editorial, red-on-black. Motion is CSS-only and respects reduced motion. */
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(32px); }
-  to { opacity: 1; transform: none; }
-}
+/* /team page: dark editorial, red-on-black. Entrances are driven by AssemblyChoreography (GSAP). */
 
 @keyframes strokePulse {
   0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 59, 59, 0)); }
@@ -15,40 +10,15 @@
   50% { opacity: 0.25; }
 }
 
-@keyframes driftA {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(46px, -26px); }
-  66% { transform: translate(-22px, 30px); }
-}
-
-@keyframes driftB {
-  0%, 100% { transform: translate(0, 0); }
-  40% { transform: translate(-54px, 24px); }
-  75% { transform: translate(28px, -36px); }
-}
-
-@keyframes driftC {
-  0%, 100% { transform: translate(0, 0); }
-  30% { transform: translate(34px, 40px); }
-  70% { transform: translate(-40px, -18px); }
-}
-
-.rise {
-  animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@supports (animation-timeline: view()) {
-  .reveal {
-    animation: rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 50%;
-  }
-}
-
 .page {
   background:
     radial-gradient(ellipse 60% 40% at 50% 38%, rgba(140, 50, 20, 0.16), transparent 70%),
     #060608;
+}
+
+/* Hides assembled elements from the very first paint; the choreography takes over once it has measured the layout. */
+.pending [data-assemble] {
+  opacity: 0;
 }
 
 /* Giant outlined headline */
@@ -75,16 +45,6 @@
   transition: opacity 0.7s ease;
 }
 
-/* Floating multiplayer-style pointers */
-.cursor {
-  position: absolute;
-  pointer-events: none;
-}
-
-.driftA { animation: driftA 11s ease-in-out infinite; }
-.driftB { animation: driftB 13s ease-in-out infinite; }
-.driftC { animation: driftC 15s ease-in-out infinite; }
-
 .card {
   transition: border-color 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
 }
@@ -97,13 +57,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise,
-  .reveal,
   .outline,
-  .liveDot,
-  .driftA,
-  .driftB,
-  .driftC {
+  .liveDot {
     animation: none !important;
   }
 

@@ -22,6 +22,8 @@ export default function HeroPortrait() {
 
   return (
     <div
+      data-assemble=""
+      data-from="right"
       className="relative mx-auto w-full max-w-[420px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
