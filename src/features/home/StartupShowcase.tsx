@@ -28,6 +28,7 @@ import FooterSection from './sections/active/FooterSection';
 
 // Import data
 import { NAV_ITEMS } from './sections/active/data';
+import { FOUNDERS } from '@/features/team/founders';
 import type { SectionId } from './sections/active/types';
 
 export default function StartupShowcase() {
@@ -156,10 +157,10 @@ export default function StartupShowcase() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
-        setTeamIndex((value) => (value - 1 + 6) % 6);
+        setTeamIndex((value) => (value - 1 + FOUNDERS.length) % FOUNDERS.length);
       }
       if (event.key === 'ArrowRight') {
-        setTeamIndex((value) => (value + 1) % 6);
+        setTeamIndex((value) => (value + 1) % FOUNDERS.length);
       }
     };
 

@@ -16,13 +16,6 @@ export type ProjectCard = {
   tags: string[];
 };
 
-export type TeamMember = {
-  name: string;
-  title: string;
-  department: string;
-  color: string;
-};
-
 export type Testimonial = {
   quote: string;
   name: string;

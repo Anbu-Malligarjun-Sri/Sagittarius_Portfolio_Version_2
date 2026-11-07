@@ -1,4 +1,4 @@
-import { ServiceRow, ProjectCard, TeamMember, Testimonial, FaqItem } from './types';
+import { ServiceRow, ProjectCard, Testimonial, FaqItem } from './types';
 
 export const NAV_ITEMS = [
   { id: 'about' as const, label: 'About Us' },
@@ -15,15 +15,6 @@ export const SERVICES: ServiceRow[] = [
   { name: 'Brand Identity', category: 'Design', timeline: '2-3 wks', status: 'LIMITED', description: 'Naming, visual identity, and launch-ready art direction for new products.' },
   { name: 'AI Integration', category: 'Engineering', timeline: '4-6 wks', status: 'BOOKING', description: 'Workflow automation, assistant surfaces, and practical model integration.' },
   { name: 'Consulting', category: 'Strategy', timeline: '1 wk', status: 'AVAILABLE', description: 'Decision support for founders, product leads, and early engineering teams.' },
-];
-
-export const TEAM: TeamMember[] = [
-  { name: 'Mina Sol', title: 'Founding designer', department: 'Design', color: '#4a90d9' },
-  { name: 'Rowan Vale', title: 'Engineering lead', department: 'Engineering', color: '#e8c547' },
-  { name: 'Tamsin Roe', title: 'Product strategist', department: 'Marketing', color: '#e85d24' },
-  { name: 'Ivo Mercer', title: 'Operations', department: 'Leadership', color: '#2ecc71' },
-  { name: 'Ari Nox', title: 'Motion systems', department: 'Engineering', color: '#4a90d9' },
-  { name: 'Elio Finch', title: 'Research', department: 'Design', color: '#e8c547' },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
@@ -153,21 +144,3 @@ export const PROJECTS: ProjectCard[] = [
     image: makePoster('X', '#e8c547', '#f5f0e8', '#17120a'),
   },
 ];
-
-export function makeAvatar(seed: string, accent: string, label: string) {
-  return `data:image/svg+xml;utf8,${encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-      <defs>
-        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="#111111" />
-          <stop offset="100%" stop-color="${accent}" />
-        </linearGradient>
-      </defs>
-      <rect width="256" height="256" rx="24" fill="url(#g)"/>
-      <circle cx="128" cy="96" r="42" fill="#f5f0e8" opacity="0.92"/>
-      <path d="M66 208c12-30 34-48 62-48s50 18 62 48" fill="#f5f0e8" opacity="0.92"/>
-      <text x="24" y="232" fill="#f5f0e8" font-family="Arial, sans-serif" font-size="24" font-weight="700">${label}</text>
-      <text x="24" y="30" fill="#f5f0e8" font-family="Arial, sans-serif" font-size="12" opacity="0.7">${seed}</text>
-    </svg>
-  `)}`;
-}
