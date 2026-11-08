@@ -3,15 +3,21 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
-import type { ProjectCard, ProjectTheme } from './types';
+import type { ProjectCard } from '@/features/home/sections/active/types';
+import { ACCENT } from './themes';
 import styles from './projects.module.css';
 
-const ACCENT: Record<ProjectTheme, string> = { ocean: '#2dd4bf', terminal: '#f59e0b', default: '#e8c547' };
 
 // Fixed positions, so server and client render identically: [left %, size px, duration s, delay s]
 const BUBBLES: [number, number, number, number][] = [
   [6, 6, 9, 0], [14, 10, 12, 2], [22, 5, 8, 4], [31, 8, 11, 1], [40, 12, 14, 3], [49, 5, 9, 6], [57, 9, 12, 0.5],
   [65, 6, 10, 2.5], [73, 11, 13, 5], [81, 5, 8, 1.5], [88, 8, 11, 3.5], [94, 6, 9, 7], [36, 4, 7, 5.5], [70, 4, 8, 8],
+];
+
+// Code symbols that drift up through the event world: [glyph, left %, size px, duration s, delay s]
+const GLYPHS: [string, number, number, number, number][] = [
+  ['</>', 8, 16, 11, 0], ['{ }', 22, 14, 13, 3], ['01', 36, 13, 10, 5.5], ['AI', 50, 15, 12, 1.5],
+  ['C++', 63, 13, 14, 4], ['PHP', 76, 12, 11, 7], ['JS', 88, 14, 12, 2.5], ['</>', 44, 12, 15, 8.5],
 ];
 
 // The Personality Matrix shown in the TARS interface itself.
@@ -63,7 +69,9 @@ export default function ProjectFile({ project, index, total, flip }: { project: 
     stageRef.current?.style.removeProperty('--ry');
   };
 
-  const chromeLabel = theme === 'terminal' ? '>_ TARS interface v2.0' : theme === 'ocean' ? 'species-id / dna barcoding' : project.title;
+  const chromeLabel =
+    theme === 'terminal' ? '>_ TARS interface v2.0' : theme === 'ocean' ? 'species-id / dna barcoding' : theme === 'event' ? 'symposium2026 / home' : project.title;
+  const primary = project.links?.[0];
   const num = String(index + 1).padStart(2, '0');
 
   return (
@@ -71,7 +79,7 @@ export default function ProjectFile({ project, index, total, flip }: { project: 
       ref={rootRef}
       id={`project-${project.id}`}
       aria-labelledby={`project-${project.id}-title`}
-      className={`${styles.file} grid scroll-mt-28 items-center gap-8 lg:grid-cols-[1.4fr_0.6fr] lg:gap-14`}
+      className={`${styles.file} grid scroll-mt-28 items-center gap-8 lg:gap-14 ${flip ? 'lg:grid-cols-[0.8fr_1.2fr]' : 'lg:grid-cols-[1.2fr_0.8fr]'}`}
       style={css({ '--accent': accent })}
     >
       {/* ── Stage ── */}
@@ -99,6 +107,18 @@ export default function ProjectFile({ project, index, total, flip }: { project: 
           </>
         ) : null}
 
+        {theme === 'event' ? (
+          <>
+            <div className={styles.sonar} style={{ borderColor: 'rgba(251,146,60,0.5)' }} aria-hidden="true" />
+            <div className={styles.sonar} style={{ borderColor: 'rgba(251,146,60,0.5)', animationDelay: '3s' }} aria-hidden="true" />
+            {GLYPHS.map(([glyph, left, size, duration, delay]) => (
+              <span key={`${glyph}-${left}`} className={styles.glyph} style={{ left: `${left}%`, fontSize: size, animationDuration: `${duration}s`, animationDelay: `${delay}s` }} aria-hidden="true">
+                {glyph}
+              </span>
+            ))}
+          </>
+        ) : null}
+
         <div className={`${styles.device} ${theme === 'terminal' ? styles.crt : ''}`} style={{ transformStyle: 'preserve-3d' }}>
           <div className={styles.shot}>
             <div className={styles.chrome}>
@@ -108,6 +128,15 @@ export default function ProjectFile({ project, index, total, flip }: { project: 
               <span className="ml-2 truncate">{chromeLabel}</span>
             </div>
             <div className="relative">
+              {primary ? (
+                <a
+                  href={primary.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${project.title} (${primary.label}, opens in a new tab)`}
+                  className="absolute inset-0 z-10"
+                />
+              ) : null}
               <Image
                 src={project.image.src}
                 alt={project.image.alt}
@@ -129,6 +158,15 @@ export default function ProjectFile({ project, index, total, flip }: { project: 
             <>
               <span className={`${styles.chip} -right-2 top-14 hidden sm:block`} aria-hidden="true">DNA barcode → species</span>
               <span className={`${styles.chip} -left-3 bottom-10 hidden sm:block`} style={{ animationDelay: '1.6s' }} aria-hidden="true">Confidence score</span>
+            </>
+          ) : null}
+
+          {theme === 'event' ? (
+            <>
+              <span className={`${styles.chip} -right-2 top-14 hidden items-center gap-2 sm:flex`} aria-hidden="true">
+                <span className={styles.liveDot} /> Registration open
+              </span>
+              <span className={`${styles.chip} -left-3 bottom-10 hidden sm:block`} style={{ animationDelay: '1.6s' }} aria-hidden="true">500+ participants</span>
             </>
           ) : null}
 
@@ -164,10 +202,16 @@ export default function ProjectFile({ project, index, total, flip }: { project: 
         </p>
         <h3
           id={`project-${project.id}-title`}
-          className={`${styles.reveal} mt-4 font-display text-[clamp(2.4rem,5vw,4rem)] font-extrabold leading-[0.95] tracking-[-0.04em] text-[#f5f0e8]`}
+          className={`${styles.reveal} mt-4 font-display text-[clamp(2.3rem,3.5vw,3.2rem)] font-extrabold leading-[0.98] tracking-[-0.04em] text-[#f5f0e8]`}
           style={css({ '--i': 1 })}
         >
-          {project.title}
+          {primary ? (
+            <a href={primary.href} target="_blank" rel="noopener noreferrer" className="transition-colors duration-200 hover:text-[var(--accent)]">
+              {project.title}
+            </a>
+          ) : (
+            project.title
+          )}
         </h3>
         <p className={`${styles.reveal} mt-2 font-mono text-[12px] uppercase tracking-[0.16em]`} style={css({ '--i': 2, color: accent })}>
           {project.subtitle}

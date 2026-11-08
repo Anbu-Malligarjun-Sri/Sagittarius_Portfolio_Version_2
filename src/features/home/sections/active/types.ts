@@ -8,7 +8,7 @@ export type ServiceRow = {
   description: string;
 };
 
-export type ProjectTheme = 'ocean' | 'terminal' | 'default';
+export type ProjectTheme = 'ocean' | 'terminal' | 'event' | 'default';
 
 export type ProjectCard = {
   id: string;
@@ -16,6 +16,8 @@ export type ProjectCard = {
   subtitle: string;
   category: string;
   summary: string;
+  /** A short line shown as the pull quote in the newspaper layout (use words from the project itself). */
+  pullQuote: string;
   tags: string[];
   /** Short "mission readout" rows shown beside the image: [label, value]. */
   readout: [string, string][];

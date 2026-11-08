@@ -35,7 +35,7 @@
 
 @keyframes type {
   from { width: 0; }
-  to { width: 43ch; }
+  to { width: 50ch; }
 }
 
 @keyframes caret {
@@ -45,6 +45,11 @@
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+@keyframes livePulse {
+  0% { box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.7); }
+  100% { box-shadow: 0 0 0 0.5rem rgba(251, 146, 60, 0); }
 }
 
 @keyframes dots {
@@ -193,14 +198,14 @@ a.tab:focus-visible {
   position: absolute;
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
-  border: 1px solid rgba(45, 212, 191, 0.5);
-  background: rgba(3, 20, 28, 0.82);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  background: rgba(3, 12, 18, 0.85);
   backdrop-filter: blur(8px);
   font-family: var(--font-mono), monospace;
   font-size: 0.6rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #a7f3e8;
+  color: color-mix(in srgb, var(--accent) 60%, white);
   animation: drift 5s ease-in-out infinite;
   transform: translateZ(40px);
 }
@@ -237,7 +242,7 @@ a.tab:focus-visible {
 
 .matrix {
   position: absolute;
-  left: 1rem;
+  right: 1rem;
   bottom: 1rem;
   width: min(15rem, 60%);
   padding: 0.8rem 0.9rem;
@@ -269,11 +274,38 @@ a.tab:focus-visible {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  width: 43ch;
+  width: 50ch;
   max-width: 100%;
   vertical-align: bottom;
   border-right: 2px solid #f59e0b;
   animation: caret 1s step-end infinite;
+}
+
+/* Event world (Techazura) */
+.event {
+  background:
+    radial-gradient(ellipse 55% 45% at 85% 8%, rgba(251, 146, 60, 0.2), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 10% 95%, rgba(20, 184, 166, 0.12), transparent 70%),
+    linear-gradient(165deg, #050b24 0%, #091a52 100%);
+}
+
+.glyph {
+  position: absolute;
+  bottom: -6%;
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+  color: rgba(251, 146, 60, 0.5);
+  animation: bubbleRise linear infinite;
+  pointer-events: none;
+}
+
+.liveDot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #fb923c;
+  box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.7);
+  animation: livePulse 1.8s ease-out infinite;
 }
 
 /* Default world */
@@ -308,7 +340,7 @@ a.tab:focus-visible {
 }
 
 .file.armed.in .typed {
-  animation: type 2.4s steps(43) 0.8s forwards, caret 1s step-end infinite;
+  animation: type 2.4s steps(50) 0.8s forwards, caret 1s step-end infinite;
 }
 
 /* ── Incoming slots ── */
@@ -336,6 +368,8 @@ a.tab:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .bubble,
+  .glyph,
+  .liveDot,
   .sonar,
   .chip,
   .scanBeam,
@@ -348,7 +382,7 @@ a.tab:focus-visible {
 
   .typed {
     animation: none !important;
-    width: 43ch !important;
+    width: 50ch !important;
     border-right-color: transparent;
   }
 

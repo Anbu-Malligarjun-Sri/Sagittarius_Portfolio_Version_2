@@ -91,6 +91,7 @@ export const GAUGES = [
 export const MAX_PROJECT_SLOTS = 5;
 
 // To add a project: append an entry here. It takes the next free slot automatically.
+// Image folder note: the folder is really named "Project_images" (capital P). Linux hosting is case-sensitive.
 export const PROJECTS: ProjectCard[] = [
   {
     id: 'edna',
@@ -98,6 +99,7 @@ export const PROJECTS: ProjectCard[] = [
     subtitle: 'eDNA biodiversity pipeline',
     category: 'AI × Marine science',
     summary: 'An AI-driven pipeline for identifying deep-sea biodiversity from eDNA sequencing data.',
+    pullQuote: 'Identifying species through DNA barcodes.',
     tags: ['eDNA sequencing', 'Deep-sea biodiversity', 'AI pipeline', 'DNA barcoding'],
     readout: [
       ['Input', 'eDNA sequencing data'],
@@ -105,12 +107,13 @@ export const PROJECTS: ProjectCard[] = [
       ['Output', 'Deep-sea species identification'],
     ],
     image: {
-      src: encodeURI('/project_images/Ai pipeline eDNA..png'),
+      src: encodeURI('/Project_images/Ai pipeline eDNA..png'),
       width: 1898,
       height: 872,
       alt: 'The eDNA platform: identifying species through DNA barcodes, with a DNA prediction panel.',
     },
     theme: 'ocean',
+    links: [{ label: 'Visit the live site', href: 'https://oceanography-nine.vercel.app/' }],
   },
   {
     id: 'tars',
@@ -119,6 +122,7 @@ export const PROJECTS: ProjectCard[] = [
     category: 'Local AI × Orchestration',
     summary:
       'A fine-tuned orchestration layer. Connect a local LLM to it and the model takes on the voice of TARS from Interstellar, the robot famous for its sarcastic way of speaking.',
+    pullQuote: 'Connection established. All systems nominal.',
     tags: ['Local LLM', 'Retrieval (RAG)', 'Orchestration', 'Persona tuning'],
     readout: [
       ['Core', 'Fine-tuned orchestration'],
@@ -126,11 +130,41 @@ export const PROJECTS: ProjectCard[] = [
       ['Voice', 'TARS, sarcasm included'],
     ],
     image: {
-      src: encodeURI('/project_images/The TARS profile.png'),
+      src: encodeURI('/Project_images/The TARS profile.png'),
       width: 1469,
       height: 880,
       alt: 'The TARS interface: a personality matrix with humor, honesty and discretion controls, and a command line.',
     },
     theme: 'terminal',
+    links: [
+      {
+        label: 'View on GitHub',
+        href: 'https://github.com/Anbu-Malligarjun-Sri/TARS-Local-LLM-Augementation-Retrieval-System.git',
+      },
+    ],
+  },
+  {
+    id: 'techazura',
+    title: 'Techazura Symposium',
+    subtitle: 'CSE Symposium 2026',
+    category: 'Web × Events',
+    summary:
+      'The website for Techazura 2026, a flagship CSE symposium hosted by Hindusthan College of Engineering and Technology: workshops, competitions, talks and community, with online registration and a live countdown.',
+    pullQuote: 'A flagship CSE symposium: workshops, competitions, talks and community.',
+    tags: ['Event website', 'Online registration', 'Live countdown', 'CSE symposium'],
+    readout: [
+      ['Event', 'Techazura 2026, CSE symposium'],
+      ['Host', 'Hindusthan College of Engineering and Technology'],
+      ['Date', '27 February 2026'],
+    ],
+    image: {
+      // A cropped copy of the screenshot: only the website, without browser tabs or the taskbar.
+      src: '/Project_images/techazura-site.webp',
+      width: 1886,
+      height: 908,
+      alt: 'The Techazura 2026 website: a CSE symposium with online registration, event details and a countdown to the day.',
+    },
+    theme: 'event',
+    links: [{ label: 'Visit the live site', href: 'https://symposium2026.vercel.app/' }],
   },
 ];

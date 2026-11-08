@@ -17,6 +17,7 @@ const COMMANDS: Command[] = [
   { id: 'work', group: 'Go to', label: 'Work', hint: 'Home', kind: 'section', target: 'projects', keywords: 'projects portfolio case studies' },
   { id: 'pricing', group: 'Go to', label: 'Pricing', hint: 'Home', kind: 'section', target: 'pricing', keywords: 'plans cost' },
   { id: 'contact', group: 'Go to', label: 'Contact', hint: 'Home', kind: 'section', target: 'contact', keywords: 'hire message email start a project typewriter' },
+  { id: 'projects', group: 'Pages', label: 'All projects', hint: 'Case files', kind: 'page', target: '/projects', keywords: 'work portfolio edna tars techazura oceanography symposium' },
   { id: 'team', group: 'Pages', label: 'The team', kind: 'page', target: '/team', keywords: 'founders anbu brajin arun about people' },
   { id: 'lab', group: 'Pages', label: 'The lab', hint: 'Zenith', kind: 'page', target: '/species-de-extinction', keywords: 'zenith de-extinction webgl experiment' },
   ...SOCIALS.map(
