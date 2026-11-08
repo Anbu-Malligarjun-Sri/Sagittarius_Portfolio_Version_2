@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { PROJECTS } from './data';
 import type { ProjectCard } from './types';
 
@@ -32,7 +32,15 @@ export default function ProjectsSection({ activeSection }: ProjectsSectionProps)
         <div className="border-b border-[#b8b0a0] pb-4">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <div className="font-serif text-[clamp(2rem,4vw,3.25rem)] font-bold tracking-[-0.04em]">The Portfolio Times</div>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+                <div className="font-serif text-[clamp(2rem,4vw,3.25rem)] font-bold tracking-[-0.04em]">The Portfolio Times</div>
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#1a1208] px-5 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-[#f8f4ec] transition-transform duration-200 hover:scale-[1.04]"
+                >
+                  Open the live newspaper <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
               <div className="mt-1 font-body text-[13px] italic text-[#1a1208]/60">All the work that&apos;s fit to ship, from research systems to launch pages.</div>
             </div>
             <div className="font-mono text-[11px] uppercase tracking-[0.35em]">Vol. 01 · Edition 2026</div>

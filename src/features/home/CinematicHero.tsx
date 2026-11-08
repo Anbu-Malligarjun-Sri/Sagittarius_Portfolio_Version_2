@@ -232,10 +232,10 @@ export default function CinematicHero() {
               </a>
 
               <Link
-                href="/about"
+                href="/team"
                 className="hero-button inline-flex items-center justify-center gap-2 rounded-full border border-white/12 bg-white/4 px-6 py-2.75 text-sm font-semibold tracking-[0.02em] text-[#f7f0e4] backdrop-blur-md"
               >
-                Meet the company
+                Meet our team
               </Link>
             </div>
           </div>

@@ -1,0 +1,390 @@
+/* ───────── the stamp itself ───────── */
+.stamp {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  filter: drop-shadow(0 8px 9px rgba(0, 0, 0, 0.55));
+  transform: translateY(var(--lift, 0px)) rotate(var(--rest, 0deg)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.32s;
+  will-change: transform;
+}
+
+.sheet {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* a band of light that sweeps across the printed paper as the mouse moves */
+.band {
+  opacity: 0;
+  mix-blend-mode: soft-light;
+  transform: translateX(calc(var(--sx, 0) * 1px)) skewX(-16deg);
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.twinkle {
+  animation: twinkle 3.4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+/* The postmark: ink thumped onto the stamp. */
+.postmark {
+  position: absolute;
+  width: 58%;
+  right: -17%;
+  top: 3%;
+  color: #0b0b0b;
+  opacity: 0.84;
+  pointer-events: none;
+  filter: drop-shadow(0 0 1.2px rgba(246, 236, 211, 0.9));
+  transform: rotate(-14deg);
+  transform-origin: 32% 50%;
+  animation: thud 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+}
+
+@keyframes thud {
+  0% { opacity: 0; transform: rotate(-14deg) scale(2.4); }
+  55% { opacity: 0.95; transform: rotate(-14deg) scale(0.94); }
+  100% { opacity: 0.84; transform: rotate(-14deg) scale(1); }
+}
+
+/* ───────── the album ───────── */
+.album {
+  position: relative;
+  max-width: 80rem;
+  margin: 3rem auto 0;
+  padding: clamp(1rem, 3vw, 2.25rem);
+  border-radius: 6px;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #1f1810 0%, #130f0a 65%),
+    #130f0a;
+  border: 1px solid rgba(232, 197, 71, 0.22);
+  box-shadow:
+    inset 0 0 0 7px #0e0b07,
+    inset 0 0 0 8px rgba(232, 197, 71, 0.3),
+    inset 0 2px 30px rgba(0, 0, 0, 0.8),
+    0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.albumHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding: 0.5rem 0.75rem 1.5rem;
+}
+
+.albumTitle {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(232, 197, 71, 0.85);
+}
+
+.albumNote {
+  margin-top: 0.55rem;
+  max-width: 34rem;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(245, 240, 232, 0.62);
+}
+
+.count {
+  text-align: right;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.7);
+}
+
+.pips {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: 0.6rem;
+}
+
+.pip {
+  width: 16px;
+  height: 20px;
+  border: 1px dashed rgba(232, 197, 71, 0.4);
+  border-radius: 1px;
+  transition: background 0.4s, border-color 0.4s, transform 0.4s;
+}
+
+.pip[data-on='true'] {
+  border-style: solid;
+  border-color: #e8c547;
+  background: #e8c547;
+  transform: rotate(-4deg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 400px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* the recessed album mount each stamp sits in */
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  padding: clamp(0.9rem, 2vw, 1.5rem) clamp(0.7rem, 2vw, 1.5rem) 1rem;
+  border: 1px dashed rgba(232, 197, 71, 0.2);
+  border-radius: 3px;
+  background:
+    radial-gradient(85% 65% at 50% 38%, color-mix(in srgb, var(--glow, #e8c547) 17%, transparent), transparent 75%),
+    rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 3px 14px rgba(0, 0, 0, 0.65);
+}
+
+.drop {
+  width: min(100%, 230px);
+  perspective: 700px;
+}
+
+.stampBtn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: inherit;
+}
+
+.stampBtn:hover .stamp,
+.stampBtn:focus-visible .stamp {
+  --lift: -8px;
+  filter: drop-shadow(0 16px 14px rgba(0, 0, 0, 0.6));
+}
+
+.stampBtn:hover .band,
+.stampBtn:focus-visible .band {
+  opacity: 0.9;
+}
+
+.stampBtn:focus-visible {
+  outline: 2px solid #e8c547;
+  outline-offset: 8px;
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  text-align: center;
+}
+
+.captionName {
+  font-family: var(--font-handwriting), cursive;
+  font-size: 1.45rem;
+  line-height: 1.1;
+  color: #f5f0e8;
+}
+
+.captionMeta {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(232, 197, 71, 0.7);
+}
+
+.captionMeta[data-on='true'] {
+  color: #e8c547;
+}
+
+/* stamps fly in and land one after another */
+.album[data-armed='true']:not([data-in='true']) .drop {
+  opacity: 0;
+}
+
+.album[data-in='true'] .drop {
+  animation: land 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 130ms);
+}
+
+@keyframes land {
+  0% { opacity: 0; transform: translateY(-90px) rotate(-14deg) scale(1.35); }
+  62% { opacity: 1; transform: translateY(5px) rotate(0.5deg) scale(0.98); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* ───────── the card ───────── */
+.dialogBody {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0c0b0a;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7);
+  animation: cardIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (min-width: 768px) {
+  .dialogBody {
+    grid-template-columns: 0.82fr 1.18fr;
+  }
+}
+
+@keyframes cardIn {
+  0% { opacity: 0; transform: translateY(24px) scale(0.96); }
+  100% { opacity: 1; transform: none; }
+}
+
+.mount {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem 4.4rem;
+  background:
+    radial-gradient(90% 60% at 50% 42%, color-mix(in srgb, var(--glow, #e8c547) 22%, transparent), transparent 80%),
+    radial-gradient(110% 80% at 50% 0%, #241b11 0%, #140f0a 70%);
+  box-shadow: inset 0 0 0 7px #0e0b07, inset 0 0 0 8px rgba(232, 197, 71, 0.28);
+}
+
+.bigStamp {
+  width: min(100%, 290px);
+  animation: lift 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes lift {
+  0% { opacity: 0; transform: translateY(26px) rotate(-8deg) scale(0.9); }
+  100% { opacity: 1; transform: none; }
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: start;
+  gap: 0.25rem 2rem;
+}
+
+.facts dt {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.42);
+}
+
+.facts dd {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  color: #f5f0e8;
+}
+
+.reserve {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink-bright, #e8c547);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: #e8c547;
+  color: #0a0a0a;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.reserve:hover {
+  transform: translateY(-2px);
+}
+
+.reserve[data-on='true'] {
+  background: transparent;
+  color: #e8c547;
+}
+
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 0.4rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.62);
+  transition: color 0.2s;
+}
+
+.ghost:hover {
+  color: #f5f0e8;
+}
+
+.nav {
+  position: absolute;
+  bottom: 0.9rem;
+  left: 50%;
+  display: flex;
+  gap: 0.5rem;
+  transform: translateX(-50%);
+}
+
+.navBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #f5f0e8;
+  background: rgba(0, 0, 0, 0.4);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.navBtn:hover {
+  background: #e8c547;
+  border-color: #e8c547;
+  color: #0a0a0a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    transform: rotate(var(--rest, 0deg));
+    transition: none;
+  }
+  .album[data-in='true'] .drop,
+  .postmark,
+  .dialogBody,
+  .bigStamp {
+    animation: none;
+  }
+  .album[data-armed='true']:not([data-in='true']) .drop {
+    opacity: 1;
+  }
+}

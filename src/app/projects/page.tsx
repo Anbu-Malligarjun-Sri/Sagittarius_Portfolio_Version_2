@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import CaseFiles from '@/features/projects/CaseFiles';
+import ProjectsView from '@/features/projects/ProjectsView';
 
 export const metadata: Metadata = {
   title: 'Projects',
-  description: 'Case files from the Sagittarius lab: Oceanography AI, TARS and the Techazura Symposium website.',
+  description: 'The projects of the Sagittarius lab, told as a living newspaper: Oceanography AI, TARS and the Techazura Symposium website.',
   alternates: { canonical: '/projects' },
 };
 
@@ -21,7 +21,7 @@ export default function ProjectsPage() {
       </Link>
 
       <main id="main-content">
-        <CaseFiles />
+        <ProjectsView />
       </main>
     </div>
   );
