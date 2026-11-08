@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { FOUNDERS } from './founders';
-import CursorSwarm from './CursorSwarm';
 import styles from './team.module.css';
 
 /**
@@ -16,17 +15,30 @@ import styles from './team.module.css';
  *
  * Targets are measured from live bounding boxes (never hardcoded coordinates) and the arrows
  * re-read those boxes on every tick, so the effect stays attached to the element through scrolling.
- * Once the first scene is assembled, a few ambient arrows drift quietly behind the content.
+ * Arrows exist only while they have a job: they are created for a component and removed once it is placed.
  */
 
 type Side = 'left' | 'right' | 'top' | 'bottom';
-type Item = { el: HTMLElement; from: Side; ox: number; oy: number };
+type Item = {
+  el: HTMLElement;
+  from: Side;
+  ox: number;
+  oy: number;
+  kind: 'block' | 'card'; // cards are dealt: pinched by two arrows, carried face-down and flipped as they land
+  tilt: number; // a card's starting rotation, in degrees
+  accent?: string;
+  label?: string;
+};
 type Point = { x: number; y: number };
 type Crew = { wrap: HTMLElement; rot: HTMLElement; f: number };
 
 const ARROW_PATH = 'M2 2 L2 18 L6.5 13.5 L10 21 L13 19.6 L9.6 12.4 L16 12.4 Z';
 const TIP_ROTATION = 121.1; // turns the arrow so its tip points along +x at rotation 0
 const INK = '#060608';
+
+// Overall pace of the choreography: 1 = original, higher = faster. Every duration and delay goes through t().
+const SPEED = 1.6;
+const t = (seconds: number) => seconds / SPEED;
 const SELECT = '#4a90d9';
 
 // Element enters from `from`; arrows hook the opposite (leading) edge and point into the element.
@@ -50,6 +62,21 @@ function edgePoint(r: DOMRect, side: Side, f: number): Point {
   if (side === 'left') return { x: r.left, y: r.top + f * r.height };
   if (side === 'bottom') return { x: r.left + f * r.width, y: r.bottom };
   return { x: r.left + f * r.width, y: r.top };
+}
+
+/** A top corner (0 = left, 1 = right) of a card that may be rotated and mid-flip, from its live transform. */
+function cardCorner(el: HTMLElement, side: 0 | 1): Point {
+  const r = el.getBoundingClientRect();
+  const w = el.offsetWidth;
+  const h = el.offsetHeight;
+  const rot = ((Number(gsap.getProperty(el, 'rotation')) || 0) * Math.PI) / 180;
+  const flip = ((Number(gsap.getProperty(el, 'rotationY')) || 0) * Math.PI) / 180;
+  const lx = (side === 0 ? -1 : 1) * (w / 2) * Math.abs(Math.cos(flip));
+  const ly = -h / 2;
+  return {
+    x: r.left + r.width / 2 + lx * Math.cos(rot) - ly * Math.sin(rot),
+    y: r.top + r.height / 2 + lx * Math.sin(rot) + ly * Math.cos(rot),
+  };
 }
 
 function offscreenPoint(side: Side, vw: number, vh: number): Point {
@@ -126,74 +153,96 @@ function buildItem(item: Item, index: number, layer: HTMLElement): gsap.core.Tim
   const tl = gsap.timeline();
   const vw = window.innerWidth;
   const vh = window.innerHeight;
+  const isCard = item.kind === 'card';
   const lead = LEAD_EDGE[item.from];
   const pullHeading = PULL_HEADING[item.from];
   const size = item.el.getBoundingClientRect();
   const area = size.width * size.height;
-  const fractions = area > 140000 ? [0.14, 0.5, 0.86] : area > 30000 ? [0.28, 0.72] : [0.5]; // spaced apart: no pile-ups
+  // Cards are held by their two top corners; everything else by points spaced along its leading edge (no pile-ups).
+  const fractions = isCard ? [0, 1] : area > 140000 ? [0.14, 0.5, 0.86] : area > 30000 ? [0.28, 0.72] : [0.5];
 
   const crew: Crew[] = fractions.map((f, k) => {
     const founder = FOUNDERS[(index + k) % FOUNDERS.length];
-    const arrow = createArrow(layer, founder.field, k === 0 ? founder.name.split(' ')[0] : undefined);
+    const color = isCard ? (item.accent ?? founder.field) : founder.field;
+    const label = k === 0 ? (isCard ? item.label : founder.name.split(' ')[0]) : undefined;
+    const arrow = createArrow(layer, color, label);
     arrow.f = f;
     return arrow;
   });
-  const box = createBox(layer);
-  const attach = (a: Crew) => edgePoint(item.el.getBoundingClientRect(), lead, a.f);
+  const box = isCard ? null : createBox(layer); // cards rotate and flip, so no flat selection box
+  const pointFor = (a: Crew) =>
+    isCard ? cardCorner(item.el, a.f > 0.5 ? 1 : 0) : edgePoint(item.el.getBoundingClientRect(), lead, a.f);
+  const headingFor = (a: Crew) =>
+    isCard ? (a.f > 0.5 ? 135 : 45) + (Number(gsap.getProperty(item.el, 'rotation')) || 0) : pullHeading;
 
-  // 1. Arrows emerge from different edges and curve in to the element's leading edge.
+  // 1. Arrows emerge from different edges and curve in to their hold points.
   const sides: Side[] = ['left', 'right', 'top', 'bottom'];
   let flightEnd = 0;
   crew.forEach((a, k) => {
-    const side = k === 0 ? lead : sides[Math.floor(Math.random() * sides.length)];
+    const side = k === 0 ? (isCard ? item.from : lead) : sides[Math.floor(Math.random() * sides.length)];
     const start = offscreenPoint(side, vw, vh);
-    const at = k * 0.1;
-    const duration = rand(0.85, 1.2) + k * 0.1;
+    const at = t(k * 0.1);
+    const duration = t(rand(0.85, 1.2) + k * 0.1);
+    const finalHeading = isCard ? (a.f > 0.5 ? 135 : 45) + item.tilt : pullHeading;
     gsap.set(a.wrap, { x: start.x, y: start.y });
     tl.set(a.wrap, { autoAlpha: 1 }, at);
-    tl.add(fly(a, start, () => attach(a), { duration, ease: 'power2.inOut', headEnd: pullHeading }), at);
+    tl.add(fly(a, start, () => pointFor(a), { duration, ease: 'power2.inOut', headEnd: finalHeading }), at);
     flightEnd = Math.max(flightEnd, at + duration);
   });
 
-  // 2. Hook on: the element appears at its displaced position under the arrows, with a selection box.
+  // 2. Hook on: the element appears at its displaced position under the arrows (a card shows its back).
   const grab = flightEnd;
   const track = () => {
-    const r = item.el.getBoundingClientRect();
     crew.forEach((a) => {
-      const p = edgePoint(r, lead, a.f);
+      const p = pointFor(a);
       gsap.set(a.wrap, { x: p.x, y: p.y });
-      gsap.set(a.rot, { rotation: pullHeading });
+      gsap.set(a.rot, { rotation: headingFor(a) });
     });
-    gsap.set(box, { x: r.left - 6, y: r.top - 6, width: r.width + 12, height: r.height + 12 });
+    if (box) {
+      const r = item.el.getBoundingClientRect();
+      gsap.set(box, { x: r.left - 6, y: r.top - 6, width: r.width + 12, height: r.height + 12 });
+    }
   };
-  tl.call(track, [], grab - 0.05);
-  tl.to(item.el, { opacity: 1, duration: 0.2, ease: 'none' }, grab - 0.04);
-  tl.set(box, { autoAlpha: 1 }, grab - 0.04);
-  crew.forEach((a) => tl.fromTo(a.rot, { scale: 1 }, { scale: 0.78, duration: 0.09, yoyo: true, repeat: 1 }, grab));
+  tl.call(track, [], grab - t(0.05));
+  tl.to(item.el, { opacity: 1, duration: t(0.2), ease: 'none' }, grab - t(0.04));
+  if (box) tl.set(box, { autoAlpha: 1 }, grab - t(0.04));
+  crew.forEach((a) => tl.fromTo(a.rot, { scale: 1 }, { scale: 0.78, duration: t(0.09), yoyo: true, repeat: 1 }, grab));
 
   // 3. Pull: element and arrows travel together into the real layout position.
   const dist = Math.hypot(item.ox, item.oy);
-  const pullDuration = 0.85 + Math.min(dist, 420) / 900;
-  const pullAt = grab + 0.12;
-  tl.to(item.el, { x: 0, y: 0, duration: pullDuration, ease: 'power3.inOut', onUpdate: track }, pullAt);
+  const pullDuration = t(isCard ? 1.15 + Math.min(dist, 420) / 900 : 0.85 + Math.min(dist, 420) / 900);
+  const pullAt = grab + t(0.12);
+  if (isCard) {
+    // Dealt: it straightens, lifts, and flips face-up while the two arrows carry it by the corners.
+    tl.to(item.el, { x: 0, y: 0, rotation: 0, duration: pullDuration, ease: 'power3.inOut', onUpdate: track }, pullAt);
+    tl.to(item.el, { rotationY: 0, duration: pullDuration * 0.7, ease: 'power2.inOut' }, pullAt + pullDuration * 0.15);
+    tl.to(item.el, { scale: 1.1, duration: pullDuration * 0.5, ease: 'sine.inOut', yoyo: true, repeat: 1 }, pullAt);
+  } else {
+    tl.to(item.el, { x: 0, y: 0, duration: pullDuration, ease: 'power3.inOut', onUpdate: track }, pullAt);
+  }
 
-  // 4. Lock: the box fades and the element settles with a small snap.
+  // 4. Lock: the box fades and the element settles with a small snap (a card gets a firmer slap).
   const settle = pullAt + pullDuration;
-  tl.to(box, { autoAlpha: 0, duration: 0.35 }, settle + 0.1);
-  tl.fromTo(item.el, { scale: 1.014 }, { scale: 1, duration: 0.45, ease: 'back.out(3)', immediateRender: false }, settle);
+  if (box) tl.to(box, { autoAlpha: 0, duration: t(0.35) }, settle + t(0.1));
+  tl.fromTo(
+    item.el,
+    { scale: isCard ? 1.06 : 1.014 },
+    { scale: 1, duration: t(isCard ? 0.4 : 0.45), ease: 'back.out(3)', immediateRender: false },
+    settle,
+  );
 
   // 5. The crew leaves for the edge of the screen and disappears.
-  let end = settle + 0.5;
+  let end = settle + t(0.5);
   crew.forEach((a, k) => {
-    const at = settle + 0.3 + k * 0.08;
-    const duration = rand(0.8, 1.1);
+    const at = settle + t(0.3 + k * 0.08);
+    const duration = t(rand(0.8, 1.1));
     const exitSide = sides[Math.floor(Math.random() * sides.length)];
     const exit = offscreenPoint(exitSide, vw, vh);
     tl.add(() => {
       const from = { x: Number(gsap.getProperty(a.wrap, 'x')), y: Number(gsap.getProperty(a.wrap, 'y')) };
-      fly(a, from, () => exit, { duration, ease: 'power2.in', headStart: pullHeading });
+      fly(a, from, () => exit, { duration, ease: 'power2.in', headStart: headingFor(a) });
     }, at);
-    tl.to(a.wrap, { autoAlpha: 0, duration: 0.2 }, at + duration - 0.2);
+    tl.to(a.wrap, { autoAlpha: 0, duration: t(0.2) }, at + duration - t(0.2));
     end = Math.max(end, at + duration);
   });
 
@@ -201,17 +250,15 @@ function buildItem(item: Item, index: number, layer: HTMLElement): gsap.core.Tim
     () => {
       gsap.set(item.el, { clearProps: 'transform,opacity' }); // hand control back to the stylesheet (hover states etc.)
       crew.forEach((a) => a.wrap.remove());
-      box.remove();
+      box?.remove();
     },
     [],
-    end + 0.05,
+    end + t(0.05),
   );
   return tl;
 }
 
 export default function AssemblyChoreography() {
-  const [ambient, setAmbient] = useState(false);
-
   useEffect(() => {
     const root = document.querySelector<HTMLElement>('[data-team-root]');
     if (!root) return;
@@ -219,9 +266,8 @@ export default function AssemblyChoreography() {
     const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 
     if (reduceMotion) {
-      root.classList.remove(styles.pending);
-      const show = window.setTimeout(() => setAmbient(true), 0);
-      return () => window.clearTimeout(show);
+      root.classList.remove(styles.pending); // reduced motion: show everything in place, no arrows
+      return;
     }
 
     let cancelled = false;
@@ -229,8 +275,6 @@ export default function AssemblyChoreography() {
     let ticking = false;
     const masters: gsap.core.Timeline[] = [];
     const pending = new Set<Item>();
-    let firstScene = true;
-    let fallback = 0;
 
     const check = () => {
       ticking = false;
@@ -250,11 +294,7 @@ export default function AssemblyChoreography() {
       ready.sort((a, b) => a.top - b.top || a.left - b.left);
 
       const master = gsap.timeline();
-      ready.forEach(({ item }, i) => master.add(buildItem(item, i, layer!), Math.min(i * 0.2, 2)));
-      if (firstScene) {
-        firstScene = false;
-        master.eventCallback('onComplete', () => setAmbient(true));
-      }
+      ready.forEach(({ item }, i) => master.add(buildItem(item, i, layer!), Math.min(i * t(0.2), t(2))));
       masters.push(master);
     };
 
@@ -285,10 +325,12 @@ export default function AssemblyChoreography() {
         const dy = clamp(vh * 0.22, 100, 240);
         const ox = from === 'left' ? -dx : from === 'right' ? dx : rand(-20, 20);
         const oy = from === 'top' ? -dy : from === 'bottom' ? dy : rand(-18, 18);
-        return { el, from, ox, oy };
+        const kind = el.dataset.assembleKind === 'card' ? 'card' : 'block';
+        return { el, from, ox, oy, kind, tilt: Number(el.dataset.tilt) || 0, accent: el.dataset.accent, label: el.dataset.label };
       });
       items.forEach((it) => {
-        gsap.set(it.el, { opacity: 0, x: it.ox, y: it.oy });
+        // A card starts tilted and face-down (turned 180 degrees, so its back shows).
+        gsap.set(it.el, { opacity: 0, x: it.ox, y: it.oy, ...(it.kind === 'card' ? { rotation: it.tilt, rotationY: 180, transformPerspective: 900 } : {}) });
         pending.add(it);
       });
       root.classList.remove(styles.pending); // inline opacity:0 now holds the hidden state
@@ -297,14 +339,12 @@ export default function AssemblyChoreography() {
       window.addEventListener('scroll', onScroll, { passive: true, capture: true });
       window.addEventListener('resize', onScroll);
       check();
-      fallback = window.setTimeout(() => setAmbient(true), 9000);
     };
 
     start();
 
     return () => {
       cancelled = true;
-      window.clearTimeout(fallback);
       window.removeEventListener('scroll', onScroll, { capture: true });
       window.removeEventListener('resize', onScroll);
       masters.forEach((m) => m.kill());
@@ -315,5 +355,5 @@ export default function AssemblyChoreography() {
     };
   }, []);
 
-  return ambient ? <CursorSwarm followers={7} /> : null;
+  return null;
 }

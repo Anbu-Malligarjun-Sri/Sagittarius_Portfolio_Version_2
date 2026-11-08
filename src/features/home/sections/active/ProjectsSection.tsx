@@ -1,67 +1,99 @@
 'use client';
 
-import { PROJECTS } from './data';
+import { MAX_PROJECT_SLOTS, PROJECTS } from './data';
+import ProjectFile from './ProjectFile';
+import styles from './projects.module.css';
 
 interface ProjectsSectionProps {
   activeSection: string;
 }
 
+const NUMBER_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five'];
+const css = (vars: Record<string, string | number>) => vars as React.CSSProperties;
+
 export default function ProjectsSection({ activeSection }: ProjectsSectionProps) {
+  const slotCount = Math.max(MAX_PROJECT_SLOTS, PROJECTS.length);
+  const slots = Array.from({ length: slotCount }, (_, i) => PROJECTS[i] ?? null);
+  const incoming = slots.length - PROJECTS.length;
+  const logged = NUMBER_WORDS[PROJECTS.length] ?? String(PROJECTS.length);
+
   return (
-    <section id="projects" className="section-block newspaper-section scroll-mt-28 bg-[#f8f4ec] px-4 py-24 text-[#1a1208] sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="border-b border-[#b8b0a0] pb-4">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <div className="font-serif text-[clamp(2rem,4vw,3.25rem)] font-bold tracking-[-0.04em]">The Portfolio Times</div>
-              <div className="mt-1 font-body text-[13px] italic text-[#1a1208]/60">All the work that&apos;s fit to ship, from research systems to launch pages.</div>
+    <section id="projects" className={`${styles.section} section-block relative scroll-mt-28 overflow-hidden px-4 py-24 sm:px-6 lg:px-8`}>
+      <div className={`${styles.grid} pointer-events-none absolute inset-0`} aria-hidden="true" />
+
+      <div className="relative mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="section-header-container px-0 sm:px-6 lg:px-8">
+          <div className="max-w-4xl">
+            <div className="overflow-hidden">
+              <p className="header-anim-item font-mono text-[11px] uppercase tracking-[0.45em] text-[#e8c547]">WORK</p>
             </div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.35em]">Tuesday, January 2025</div>
+            <div className="overflow-hidden">
+              <h2 className="header-anim-item mt-4 font-display text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold leading-[0.96] tracking-[-0.04em] text-[#f5f0e8]">
+                Case files from the lab.
+              </h2>
+            </div>
+            <div className="overflow-hidden">
+              <p className="header-anim-item mt-4 max-w-2xl text-[1.05rem] leading-8 text-[#f5f0e8]/72">
+                {logged} {PROJECTS.length === 1 ? 'project' : 'projects'} logged so far, each with its own interface and its own world.
+                {incoming > 0 ? ` ${incoming} more ${incoming === 1 ? 'file is' : 'files are'} on the way.` : ''}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[2fr_1px_1fr]">
-          <article className="space-y-5">
-            <div className="overflow-hidden border border-[#b8b0a0] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-              <img src={PROJECTS[0].image} alt={PROJECTS[0].title} className="w-full object-cover grayscale-[20%] contrast-[1.05]" loading="lazy" decoding="async" />
-            </div>
-            <div className="font-mono text-[11px] italic text-[#1a1208]/55">Fig. 1 — The Sagittarius homepage, 2025.</div>
-            <span className="inline-flex border border-[#1a1208] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.28em]">{PROJECTS[0].category}</span>
-            <h3 className="font-display text-[clamp(1.4rem,2.5vw,2rem)] font-extrabold leading-tight tracking-[-0.04em]">{PROJECTS[0].title}</h3>
-            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#1a1208]/50">By Sagittarius · Design & engineering</div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <p className="text-[13px] leading-8 text-[#1a1208]">New York, January 2025 — the site was rebuilt as a proof object for the studio&apos;s motion, structure, and editorial systems rather than another generic agency landing page.</p>
-              <blockquote className="border-l-4 border-[#1a1208] pl-4 font-display text-[16px] font-bold italic leading-7">A product page should feel like a position, not a template.</blockquote>
-            </div>
-            <div className="columns-2 gap-4 border-t border-[#c8c0b0] pt-4 text-[13px] leading-7 text-[#1a1208]">
-              <p>{PROJECTS[0].body}</p>
-              <p>The rest of the edition shows the lab, the assistant stack, the AR prototype, and the education work behind the portfolio.</p>
-            </div>
-          </article>
+        {/* File index: one tab per slot */}
+        <nav aria-label="Project files" className="mt-12 px-0 sm:px-6 lg:px-8">
+          <ol className="grid gap-2 sm:gap-3" style={{ gridTemplateColumns: `repeat(${slots.length}, minmax(0, 1fr))` }}>
+            {slots.map((project, i) => {
+              const num = String(i + 1).padStart(2, '0');
+              return (
+                <li key={project?.id ?? `slot-${i}`}>
+                  {project ? (
+                    <a
+                      href={`#project-${project.id}`}
+                      className={`${styles.tab} block rounded-xl border border-white/15 bg-white/[0.02] px-2.5 py-3 sm:px-4`}
+                      style={css({ '--accent': project.theme === 'ocean' ? '#2dd4bf' : project.theme === 'terminal' ? '#f59e0b' : '#e8c547' })}
+                    >
+                      <span className="block font-mono text-[9px] uppercase tracking-[0.25em] text-white/40 sm:text-[10px]">File {num}</span>
+                      <span className="mt-1 block truncate text-[12px] font-semibold text-[#f5f0e8] sm:text-[14px]">{project.title}</span>
+                    </a>
+                  ) : (
+                    <div className="rounded-xl border border-dashed border-white/15 px-2.5 py-3 sm:px-4" aria-label={`File ${num}, reserved`}>
+                      <span className="block font-mono text-[9px] uppercase tracking-[0.25em] text-white/25 sm:text-[10px]">File {num}</span>
+                      <span className="mt-1 block truncate font-mono text-[10px] uppercase tracking-[0.2em] text-white/25 sm:text-[11px]">Reserved</span>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
 
-          <div className="hidden bg-[#b8b0a0] lg:block" />
-
-          <aside className="space-y-6 lg:sticky lg:top-24 lg:max-h-[78vh] lg:overflow-y-auto lg:pr-2">
-            {PROJECTS.slice(1).map((project) => (
-              <article key={project.title} className="story-card border border-[#b8b0a0] bg-[#fbf8f0] p-4 shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-transform duration-300 hover:-translate-y-1">
-                <img src={project.image} alt={project.title} className="aspect-[4/3] w-full object-cover grayscale-[20%] contrast-[1.02]" loading="lazy" decoding="async" />
-                <span className="mt-4 inline-flex border border-[#1a1208] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.28em]">{project.category}</span>
-                <h4 className="mt-3 font-display text-[1.2rem] font-bold tracking-[-0.03em]">{project.title}</h4>
-                <p className="mt-2 text-[13px] leading-7">{project.body}</p>
-                <div className="mt-3 border-t border-dashed border-[#1a1208]/30 pt-3 font-mono text-[10px] italic text-[#1a1208]/60">Continued on page 2 →</div>
-              </article>
-            ))}
-            <div className="border border-[#b8b0a0] bg-[#fbf8f0] p-4 font-mono text-[12px] leading-7 text-[#1a1208]">
-              <div className="text-[11px] uppercase tracking-[0.35em]">Inside this edition</div>
-              <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
-                <span>Sagittarius homepage</span><span>2</span>
-                <span>Zenith engine</span><span>4</span>
-                <span>Sagittarius LLM</span><span>6</span>
-                <span>EDITH and Sagittarix</span><span>8</span>
-              </div>
-            </div>
-          </aside>
+        {/* The files */}
+        <div className="mt-20 space-y-28 px-0 sm:px-6 lg:px-8">
+          {PROJECTS.map((project, i) => (
+            <ProjectFile key={project.id} project={project} index={i} total={slotCount} flip={i % 2 === 1} />
+          ))}
         </div>
+
+        {/* Slots still waiting for a project */}
+        {incoming > 0 ? (
+          <div className="mt-28 px-0 sm:px-6 lg:px-8">
+            <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-white/40">Incoming</p>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {slots.map((project, i) =>
+                project ? null : (
+                  <div key={`incoming-${i}`} className={`${styles.incoming} px-5 py-6`}>
+                    <p className="relative font-mono text-[10px] uppercase tracking-[0.3em] text-[#e8c547]/80">File {String(i + 1).padStart(2, '0')}</p>
+                    <p className="relative mt-3 font-display text-[1.3rem] font-bold tracking-[-0.02em] text-[#f5f0e8]/80">Next experiment</p>
+                    <p className={`${styles.waiting} relative mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-white/35`}>Awaiting transmission</p>
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );

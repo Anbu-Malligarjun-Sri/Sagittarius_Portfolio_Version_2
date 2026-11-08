@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Epilogue, Manrope, Fira_Code, Caveat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/features/home/CustomCursor";
+import CommandPalette from "@/features/command/CommandPalette";
 
 const epilogue = Epilogue({
   variable: "--font-display",
@@ -90,6 +91,7 @@ export default function RootLayout({
       <body className="h-full bg-[#0a0a0a] text-[#f5f0e8]">
         <div className="noise-overlay" />
         <CustomCursor />
+        <CommandPalette />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-500 focus:bg-[#f5f0e8] focus:text-[#0a0a0a] focus:px-3 focus:py-2 focus:rounded"

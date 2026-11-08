@@ -87,60 +87,50 @@ export const GAUGES = [
   { label: 'Countries served', value: 40, display: '40+' },
 ];
 
-function makePoster(seed: string, accent: string, foreground: string, background: string) {
-  return `data:image/svg+xml;utf8,${encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540">
-      <defs>
-        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="${background}" />
-          <stop offset="100%" stop-color="#111111" />
-        </linearGradient>
-      </defs>
-      <rect width="720" height="540" fill="url(#g)"/>
-      <rect x="24" y="24" width="672" height="492" rx="24" fill="none" stroke="${accent}" stroke-width="2" opacity="0.8"/>
-      <circle cx="120" cy="118" r="52" fill="${accent}" opacity="0.9"/>
-      <path d="M122 246 L602 132" stroke="${accent}" stroke-width="8" stroke-linecap="round"/>
-      <path d="M78 420 C180 360, 274 448, 372 386 S604 330, 648 420" fill="none" stroke="${foreground}" stroke-width="2" opacity="0.8"/>
-      <text x="48" y="470" fill="${foreground}" font-family="Arial, sans-serif" font-size="54" font-weight="700">${seed}</text>
-      <text x="48" y="512" fill="${foreground}" font-family="Arial, sans-serif" font-size="16" opacity="0.7">Premium startup systems</text>
-    </svg>
-  `)}`;
-}
+/** How many file slots the Work section shows. Slots without a project render as "incoming" until one is added. */
+export const MAX_PROJECT_SLOTS = 5;
 
+// To add a project: append an entry here. It takes the next free slot automatically.
 export const PROJECTS: ProjectCard[] = [
   {
-    title: 'Sagittarius portfolio site',
-    category: 'Frontend',
-    body: "The homepage you are reading now. Built as proof of the studio's motion system, typography stack, and editorial layout discipline.",
-    tags: ['Next.js', 'GSAP', 'Design system'],
-    image: makePoster('Sagittarius', '#e8c547', '#f5f0e8', '#1a1208'),
+    id: 'edna',
+    title: 'Oceanography AI',
+    subtitle: 'eDNA biodiversity pipeline',
+    category: 'AI × Marine science',
+    summary: 'An AI-driven pipeline for identifying deep-sea biodiversity from eDNA sequencing data.',
+    tags: ['eDNA sequencing', 'Deep-sea biodiversity', 'AI pipeline', 'DNA barcoding'],
+    readout: [
+      ['Input', 'eDNA sequencing data'],
+      ['Method', 'AI-driven pipeline'],
+      ['Output', 'Deep-sea species identification'],
+    ],
+    image: {
+      src: encodeURI('/project_images/Ai pipeline eDNA..png'),
+      width: 1898,
+      height: 872,
+      alt: 'The eDNA platform: identifying species through DNA barcodes, with a DNA prediction panel.',
+    },
+    theme: 'ocean',
   },
   {
-    title: 'Zenith de-extinction engine',
-    category: 'WebGL',
-    body: 'A reactive specimen viewer with bone animation, HUD overlays, and a procedural scene that treats the lab as a product.',
-    tags: ['Three.js', 'HUD', 'Simulation'],
-    image: makePoster('Zenith', '#4a90d9', '#f5f0e8', '#0a0a0a'),
-  },
-  {
-    title: 'Sagittarius LLM',
-    category: 'AI systems',
-    body: 'A dual-module assistant stack with organizer routing, research mode, and a practical response layer for day-to-day use.',
-    tags: ['RAG', 'Routing', 'Automation'],
-    image: makePoster('LLM', '#e85d24', '#f5f0e8', '#21150c'),
-  },
-  {
-    title: 'EDITH AR system',
-    category: 'Hardware',
-    body: 'An augmented-reality prototype that pairs Raspberry Pi hardware, overlay logic, and a lightweight field interface.',
-    tags: ['Raspberry Pi', 'AR', 'Vision'],
-    image: makePoster('EDITH', '#2ecc71', '#f5f0e8', '#10190f'),
-  },
-  {
-    title: 'Sagittarix',
-    category: 'Education',
-    body: "A STEM initiative focused on curriculum design, systems thinking, and making technical ideas usable for younger builders.",
-    tags: ['Curriculum', 'Community'],
-    image: makePoster('X', '#e8c547', '#f5f0e8', '#17120a'),
+    id: 'tars',
+    title: 'TARS',
+    subtitle: 'Local LLM Augmentation & Retrieval System',
+    category: 'Local AI × Orchestration',
+    summary:
+      'A fine-tuned orchestration layer. Connect a local LLM to it and the model takes on the voice of TARS from Interstellar, the robot famous for its sarcastic way of speaking.',
+    tags: ['Local LLM', 'Retrieval (RAG)', 'Orchestration', 'Persona tuning'],
+    readout: [
+      ['Core', 'Fine-tuned orchestration'],
+      ['Connects to', 'A local LLM'],
+      ['Voice', 'TARS, sarcasm included'],
+    ],
+    image: {
+      src: encodeURI('/project_images/The TARS profile.png'),
+      width: 1469,
+      height: 880,
+      alt: 'The TARS interface: a personality matrix with humor, honesty and discretion controls, and a command line.',
+    },
+    theme: 'terminal',
   },
 ];

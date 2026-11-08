@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { FOUNDERS } from '@/features/team/founders';
 import { teamFontVariables } from '@/features/team/fonts';
 import Exhibit from '@/features/team/Exhibit';
+import FounderCard from '@/features/team/FounderCard';
 import HeroPortrait from '@/features/team/HeroPortrait';
 import AssemblyChoreography from '@/features/team/AssemblyChoreography';
 import styles from '@/features/team/team.module.css';
@@ -14,13 +15,14 @@ export const metadata: Metadata = {
   alternates: { canonical: '/team' },
 };
 
-const SHORT_ROLE = { anbu: 'CEO', brajin: 'CTO', arun: 'COO' } as const;
-
 const STATS = [
   { value: '03', label: 'Founders' },
   { value: '03', label: 'Disciplines' },
   { value: '01', label: 'Shared standard' },
 ];
+
+// The hand: outer cards fan out a little, the middle one rises (large screens only).
+const HAND = ['md:-rotate-[4deg] md:translate-y-5', 'md:z-10 md:-translate-y-2 md:scale-[1.04]', 'md:rotate-[4deg] md:translate-y-5'];
 
 // Elements marked `data-assemble` are hidden at first and pulled into place by AssemblyChoreography.
 // `data-from` is the side they arrive from; without it the side is chosen from the element's position.
@@ -30,6 +32,7 @@ export default function TeamPage() {
   return (
     <div
       data-team-root=""
+      data-cursor-scale="1.6"
       className={`${teamFontVariables} ${styles.page} ${styles.pending} relative min-h-screen overflow-x-clip text-[#f5f0e8]`}
     >
       <noscript>
@@ -38,20 +41,15 @@ export default function TeamPage() {
       <div className="pointer-events-none fixed left-3 top-0 z-30 hidden h-full w-px bg-[#ff3b3b]/50 sm:block" />
       <AssemblyChoreography />
 
-      <header className="fixed inset-x-0 top-4 z-40 flex justify-center px-3">
-        <div className="flex h-12 w-full max-w-3xl items-center justify-between rounded-full border border-white/10 bg-[rgba(10,10,12,0.8)] px-4 backdrop-blur-2xl">
-          <Link href="/" className="flex items-center gap-2.5 font-mono text-[11px] font-bold tracking-[0.18em] text-white">
-            <span className="flex h-6 w-6 items-center justify-center bg-[#ff3b3b] text-[10px] text-white">SG</span>
-            SAGITTARIUS
-          </Link>
-          <nav className="flex items-center gap-6 font-mono text-[11px] uppercase tracking-[0.22em] text-white/65">
-            <a href="#index" className="transition-colors hover:text-white">Founders</a>
-            <Link href="/#contact" className="transition-colors hover:text-white">Contact</Link>
-          </nav>
-        </div>
-      </header>
+      <Link
+        href="/"
+        aria-label="Back to the main page"
+        className="fixed left-5 top-4 z-40 inline-flex h-11 items-center gap-2 rounded-full border border-white/15 bg-[rgba(10,10,12,0.8)] pl-3.5 pr-5 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-white/80 backdrop-blur-2xl transition-all duration-200 hover:-translate-x-0.5 hover:border-[#ff3b3b] hover:text-white"
+      >
+        <ArrowLeft className="h-4 w-4" /> Back
+      </Link>
 
-      <main id="main-content" className="relative z-10">
+      <main id="main-content">
         {/* ── Hero ── */}
         <section className="relative mx-auto max-w-7xl px-6 pb-16 pt-28 lg:pt-32">
           <h1 data-assemble="" data-from="top" className={`${styles.outline} w-fit select-none text-[clamp(3.5rem,19.5vw,17rem)]`} aria-label="The team">
@@ -116,32 +114,11 @@ export default function TeamPage() {
             </h2>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-14 grid gap-12 pb-6 md:grid-cols-3 md:gap-6">
             {FOUNDERS.map((founder, i) => (
-              <a
-                key={founder.id}
-                href={`#${founder.id}`}
-                data-assemble=""
-                data-from="bottom"
-                className={`${styles.card} block border p-6 ${i === 0 ? 'border-[#ff3b3b]' : 'border-white/15'}`}
-              >
-                <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em]">
-                  <span className="bg-[#ff3b3b]/15 px-2 py-1 font-bold text-[#ff3b3b]">{founder.role}</span>
-                  <span className="text-white/40">#SYS-0{i + 1}</span>
-                </div>
-                <h3 className="mt-6 text-[2rem] leading-[1] text-white" style={{ fontFamily: founder.nameFont }}>
-                  {founder.name}
-                </h3>
-                <p className="mt-3 text-[13.5px] leading-6 text-white/65">{founder.tagline}</p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {founder.focus.map((tag) => (
-                    <span key={tag} className="border border-white/15 px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.15em] text-white/70">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">{SHORT_ROLE[founder.id]} → profile</p>
-              </a>
+              <div key={founder.id} className={HAND[i]}>
+                <FounderCard founder={founder} index={i} />
+              </div>
             ))}
           </div>
         </section>

@@ -56,19 +56,6 @@ const PEOPLE: PersonCard[] = [
     noteFont: 'var(--font-serif)',
     overlap: 'lg:translate-y-2',
   },
-  {
-    name: 'Clintan S',
-    label: 'Developer',
-    summary: 'Clintan turns the concept into the actual build. He keeps the implementation practical, resilient, and polished where it matters most.',
-    portrait: encodeURI('/images/Portfolio Photos/Clintan S.png'),
-    background: encodeURI('/images/Portfolio Photos/Background/For_Clintan.png'),
-    accent: 'rgba(244, 214, 131, 0.92)',
-    alignment: 'left',
-    bodyFont: 'var(--font-body)',
-    nameFont: 'var(--font-display)',
-    noteFont: 'var(--font-mono)',
-    overlap: 'lg:-translate-y-6',
-  },
 ];
 
 function PersonPanel({ person, index }: { person: PersonCard; index: number }) {
@@ -142,7 +129,7 @@ export default function AboutPortraitSection() {
           </div>
           <div className="overflow-hidden">
             <h2 className="header-anim-item mt-4 text-[clamp(2.7rem,5vw,5.4rem)] font-normal leading-[0.92] tracking-[-0.06em] text-[#f7f0e4]" style={{ fontFamily: 'var(--font-serif)' }}>
-              Four portraits, four roles, one system.
+              Three portraits, three roles, one system.
             </h2>
           </div>
           <div className="overflow-hidden">
@@ -157,7 +144,7 @@ export default function AboutPortraitSection() {
         {PEOPLE.map((person, index) => (
           <div
             key={person.name}
-            className={index === 0 ? 'lg:col-span-7' : index === 1 ? 'lg:col-span-5' : index === 2 ? 'lg:col-span-5' : 'lg:col-span-7'}
+            className={index === 0 ? 'lg:col-span-7' : index === 1 ? 'lg:col-span-5' : 'lg:col-span-6 lg:col-start-4'}
           >
             <PersonPanel person={person} index={index} />
           </div>

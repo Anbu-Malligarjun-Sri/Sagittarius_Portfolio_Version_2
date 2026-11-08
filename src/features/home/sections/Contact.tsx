@@ -385,7 +385,7 @@ type StickyNote = {
 
 const POSTER_CARDS: PosterCard[] = [
   {
-    src: '/images/bg_posters/ChatGPT Image Apr 30, 2026, 02_59_31 PM.png',
+    src: '/images/bg_posters/optimized/ChatGPT Image Apr 30, 2026, 02_59_31 PM.webp',
     width: 260,
     height: 380,
     top: '6%',
@@ -394,7 +394,7 @@ const POSTER_CARDS: PosterCard[] = [
     zIndex: 1,
   },
   {
-    src: '/images/bg_posters/Warner 100th Anniversary_ Art of 100th - Batman Wall Poster.jpg',
+    src: '/images/bg_posters/optimized/Warner 100th Anniversary_ Art of 100th - Batman Wall Poster.webp',
     width: 180,
     height: 250,
     top: '17%',
@@ -403,7 +403,7 @@ const POSTER_CARDS: PosterCard[] = [
     zIndex: 1,
   },
   {
-    src: '/images/bg_posters/ChatGPT Image Apr 30, 2026, 02_51_19 PM.png',
+    src: '/images/bg_posters/optimized/ChatGPT Image Apr 30, 2026, 02_51_19 PM.webp',
     width: 260,
     height: 350,
     bottom: '10%',
@@ -413,7 +413,7 @@ const POSTER_CARDS: PosterCard[] = [
     hiddenOnMobile: true,
   },
   {
-    src: '/images/bg_posters/What If It Works_ _ Dark Aesthetic Motivational Wall Poster.jpg',
+    src: '/images/bg_posters/optimized/What If It Works_ _ Dark Aesthetic Motivational Wall Poster.webp',
     width: 172,
     height: 236,
     top: '16%',
@@ -422,7 +422,7 @@ const POSTER_CARDS: PosterCard[] = [
     zIndex: 1,
   },
   {
-    src: '/images/bg_posters/Just a man.jpg',
+    src: '/images/bg_posters/optimized/Just a man.webp',
     width: 252,
     height: 372,
     top: '2.5%',
@@ -431,7 +431,7 @@ const POSTER_CARDS: PosterCard[] = [
     zIndex: 1,
   },
   {
-    src: '/images/bg_posters/Developers Are Not Happy.jpg',
+    src: '/images/bg_posters/optimized/Developers Are Not Happy.webp',
     width: 164,
     height: 112,
     top: '46%',
@@ -441,7 +441,7 @@ const POSTER_CARDS: PosterCard[] = [
     hiddenOnMobile: true,
   },
   {
-    src: '/images/bg_posters/graphic design advert flyer.jpg',
+    src: '/images/bg_posters/optimized/graphic design advert flyer.webp',
     width: 200,
     height: 250,
     bottom: '7%',
@@ -451,7 +451,7 @@ const POSTER_CARDS: PosterCard[] = [
     hiddenOnMobile: true,
   },
   {
-    src: '/images/bg_posters/stamp.jpg',
+    src: '/images/bg_posters/optimized/stamp.webp',
     width: 96,
     height: 96,
     bottom: '33%',
@@ -461,7 +461,7 @@ const POSTER_CARDS: PosterCard[] = [
     hiddenOnMobile: true,
   },
   {
-    src: '/images/bg_posters/van_gough.jpg',
+    src: '/images/bg_posters/optimized/van_gough.webp',
     width: 150,
     height: 188,
     top: '33%',

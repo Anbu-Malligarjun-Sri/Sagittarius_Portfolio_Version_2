@@ -8,12 +8,21 @@ export type ServiceRow = {
   description: string;
 };
 
+export type ProjectTheme = 'ocean' | 'terminal' | 'default';
+
 export type ProjectCard = {
+  id: string;
   title: string;
+  subtitle: string;
   category: string;
-  body: string;
-  image: string;
+  summary: string;
   tags: string[];
+  /** Short "mission readout" rows shown beside the image: [label, value]. */
+  readout: [string, string][];
+  image: { src: string; width: number; height: number; alt: string };
+  /** Visual world for the project's panel. Omit for the neutral gold frame. */
+  theme?: ProjectTheme;
+  links?: { label: string; href: string }[];
 };
 
 export type Testimonial = {

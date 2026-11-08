@@ -21,8 +21,10 @@ export default function CustomCursor() {
       });
     };
 
-    const handleHover = () => {
-      gsap.to(cursor, { scale: 3, duration: 0.3, ease: "back.out(1.7)" });
+    const handleHover = (e: Event) => {
+      // An element (or any ancestor) can opt into a different size with data-cursor-scale; everything else grows to 3x.
+      const custom = Number((e.currentTarget as HTMLElement).closest<HTMLElement>('[data-cursor-scale]')?.dataset.cursorScale);
+      gsap.to(cursor, { scale: custom || 3, duration: 0.3, ease: "back.out(1.7)" });
     };
 
     const handleHoverOut = () => {

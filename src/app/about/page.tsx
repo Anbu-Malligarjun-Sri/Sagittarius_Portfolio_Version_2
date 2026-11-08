@@ -62,19 +62,6 @@ const FOUNDERS: PersonCard[] = [
     noteFont: 'var(--font-serif)',
     overlap: 'lg:translate-y-2',
   },
-  {
-    name: 'Clintan S',
-    label: 'Developer',
-    summary: 'Clintan turns the concept into the actual build. He keeps the implementation practical, resilient, and polished where it matters most.',
-    portrait: encodeURI('/images/Portfolio Photos/Clintan S.png'),
-    background: encodeURI('/images/Portfolio Photos/Background/For_Clintan.png'),
-    accent: 'rgba(244, 214, 131, 0.92)',
-    alignment: 'left',
-    bodyFont: 'var(--font-body)',
-    nameFont: 'var(--font-display)',
-    noteFont: 'var(--font-mono)',
-    overlap: 'lg:-translate-y-6',
-  },
 ];
 
 function FounderPanel({ person, index }: { person: PersonCard; index: number }) {
@@ -270,7 +257,7 @@ export default function AboutPage() {
           <div className="mb-16 text-center">
             <p className="font-mono text-[11px] uppercase tracking-[0.45em] text-[#e8c547]">THE TEAM</p>
             <h2 className="mt-4 font-serif text-[clamp(2.5rem,5vw,4.5rem)] font-normal leading-[0.96] text-[#f7f0e4]">
-              Four people, one mission.
+              Three people, one mission.
             </h2>
             <p className="mt-6 max-w-2xl mx-auto text-[1.05rem] leading-8 text-[#f5f0e8]/72">
               We're small by choice. Each person can articulate why we're building this, and each decision carries their conviction.
@@ -286,9 +273,7 @@ export default function AboutPage() {
                     ? 'lg:col-span-7'
                     : index === 1
                       ? 'lg:col-span-5'
-                      : index === 2
-                        ? 'lg:col-span-5'
-                        : 'lg:col-span-7'
+                      : 'lg:col-span-6 lg:col-start-4'
                 }`}
               >
                 <FounderPanel person={founder} index={index} />

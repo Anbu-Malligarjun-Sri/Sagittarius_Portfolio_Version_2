@@ -29,7 +29,9 @@ export default function FounderDialog({ founder, onClose }: { founder: Founder; 
       onClick={(event) => {
         if (event.target === ref.current) ref.current?.close();
       }}
-      className="founder-dialog m-auto w-[min(92vw,780px)] max-w-none overflow-visible bg-transparent p-0 text-[#f5f0e8] backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+      // The site hides the native cursor and draws its own, but a <dialog> sits in the top layer above that
+      // custom cursor. So inside the dialog (and its backdrop) the real cursor is restored.
+      className="m-auto w-[min(92vw,780px)] max-w-none cursor-default overflow-visible bg-transparent p-0 text-[#f5f0e8] backdrop:cursor-default backdrop:bg-black/75 backdrop:backdrop-blur-sm [&_*]:cursor-auto [&_a]:cursor-pointer! [&_button]:cursor-pointer!"
     >
       <div className="relative grid overflow-hidden rounded-[20px] border border-white/12 bg-[#0c0b0a] shadow-[0_40px_120px_rgba(0,0,0,0.7)] md:grid-cols-[0.85fr_1.15fr]">
         <div className="relative min-h-[280px] md:min-h-[420px]" style={{ background: PHOTO_BG[founder.medium] }}>
@@ -68,9 +70,9 @@ export default function FounderDialog({ founder, onClose }: { founder: Founder; 
           type="button"
           aria-label="Close profile"
           onClick={() => ref.current?.close()}
-          className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/40 text-[#f5f0e8] backdrop-blur transition-transform hover:scale-105"
+          className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/60 bg-black/70 text-white shadow-[0_4px_16px_rgba(0,0,0,0.5)] backdrop-blur transition-all duration-200 hover:scale-110 hover:border-[#e8c547] hover:bg-[#e8c547] hover:text-[#0a0a0a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e8c547]"
         >
-          <X className="h-4 w-4" />
+          <X className="h-[18px] w-[18px]" strokeWidth={2.75} />
         </button>
       </div>
     </dialog>

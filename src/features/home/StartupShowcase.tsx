@@ -210,7 +210,7 @@ export default function StartupShowcase() {
             {NAV_ITEMS.map((item, index) => (
               <a
                 key={item.id}
-                href={item.id === 'about' ? '/about' : `#${item.id}`}
+                href={item.id === 'about' ? '/team' : `#${item.id}`}
                 className={`nav-link group relative text-[13.5px] font-medium transition-colors duration-200 ${activeSection === item.id ? 'text-[#f5f0e8]' : 'text-[#f5f0e8]/60 hover:text-[#f5f0e8]'}`}
                 style={{ animationDelay: `calc(var(--delay-layer-2-nav) + ${index * 80}ms)` }}
               >
@@ -221,12 +221,6 @@ export default function StartupShowcase() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <Link
-              href="/about"
-              className="hidden rounded-full border border-white/15 px-4 py-2 text-[12px] font-semibold tracking-[0.02em] text-[#f5f0e8] transition-all duration-200 hover:border-[#e8c547]/70 hover:text-[#e8c547] lg:inline-flex"
-            >
-              About Us
-            </Link>
             <a
               href="#contact"
               className="hidden rounded-full bg-[#e8c547] px-5 py-2.25 text-[13px] font-semibold tracking-[0.02em] text-[#0a0a0a] transition-all duration-200 hover:scale-[1.04] hover:shadow-[0_0_20px_rgba(232,197,71,0.3)] md:inline-flex items-center"
@@ -254,7 +248,7 @@ export default function StartupShowcase() {
               {NAV_ITEMS.map((item, index) => (
                 <a
                   key={item.id}
-                  href={item.id === 'about' ? '/about' : `#${item.id}`}
+                  href={item.id === 'about' ? '/team' : `#${item.id}`}
                   className="flex items-baseline gap-4 border-b border-white/10 pb-4 text-[clamp(2rem,7vw,3.2rem)] font-display font-bold tracking-[-0.04em]"
                   onClick={() => setMenuOpen(false)}
                 >
@@ -264,13 +258,6 @@ export default function StartupShowcase() {
               ))}
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/about"
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 px-5 py-3 font-medium text-[#f5f0e8]"
-                onClick={() => setMenuOpen(false)}
-              >
-                About Us
-              </Link>
               <button type="button" className="inline-flex w-fit items-center gap-2 rounded-full bg-[#e8c547] px-5 py-3 font-medium text-[#0a0a0a]" onClick={() => {
               setMenuOpen(false);
               document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
