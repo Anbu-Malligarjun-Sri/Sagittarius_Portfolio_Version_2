@@ -11,7 +11,7 @@ import styles from '@/features/team/team.module.css';
 
 export const metadata: Metadata = {
   title: 'The Team',
-  description: 'Meet the three founders behind Sagittarius: Anbu Malligarjun Sri, Brajin S J and Arun G.',
+  description: 'Meet the three founders behind Sagittariuz: Anbu Malligarjun Sri, Brajin S J and Arun G.',
   alternates: { canonical: '/team' },
 };
 
@@ -67,7 +67,7 @@ export default function TeamPage() {
                 className="mt-2 block w-fit bg-[#ff3b3b] px-4 py-1 text-[clamp(2.2rem,5.4vw,3.8rem)] font-extrabold leading-tight tracking-[-0.03em] text-white"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                SAGITTARIUS.
+                SAGITTARIUZ.
               </p>
 
               <p data-assemble="" data-from="left" className="mt-6 flex w-fit items-center gap-2 border border-white/15 bg-white/[0.03] px-3 py-2 font-mono text-[10.5px] font-bold uppercase tracking-[0.2em] text-white/80">
@@ -76,7 +76,7 @@ export default function TeamPage() {
               </p>
 
               <p data-assemble="" data-from="left" className="mt-6 max-w-[48ch] text-[1.05rem] leading-8 text-white/72">
-                Three founders, three very different ways of seeing, and one shared standard for the work we put our name on. Sagittarius is the archer: aim first, then release.
+                Three founders, three very different ways of seeing, and one shared standard for the work we put our name on. Sagittariuz is the archer: aim first, then release.
               </p>
 
               <div data-assemble="" data-from="bottom" className="mt-8 flex w-fit flex-wrap gap-3 font-mono text-[11px] font-bold uppercase tracking-[0.2em]">
@@ -154,7 +154,7 @@ export default function TeamPage() {
               </a>
             ))}
           </div>
-          <p className="mt-16 font-mono text-[10px] uppercase tracking-[0.25em] text-white/30">© Sagittarius · Built from first principles</p>
+          <p className="mt-16 font-mono text-[10px] uppercase tracking-[0.25em] text-white/30">© Sagittariuz · Built from first principles</p>
         </section>
       </main>
     </div>

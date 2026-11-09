@@ -23,7 +23,7 @@ export function Postmark({ date }: { date: string }) {
       </g>
       <text fill="currentColor" fontSize="9.5" fontWeight="700" letterSpacing="2.6" style={{ fontFamily: 'var(--font-mono), monospace' }}>
         <textPath href={`#pm-${uid}`} startOffset="0">
-          SAGITTARIUS ✦ RESERVED ✦ SAGITTARIUS ✦
+          SAGITTARIUZ ✦ RESERVED ✦ SAGITTARIUZ ✦
         </textPath>
       </text>
       <g fill="currentColor" style={{ fontFamily: 'var(--font-mono), monospace' }} textAnchor="middle" fontWeight="700">
@@ -43,6 +43,11 @@ const HOLE_R = 8;
 const holes: [number, number][] = [];
 for (let i = 0; i <= 10; i++) holes.push([i * 24, 0], [i * 24, SHEET_H]);
 for (let j = 1; j < 12; j++) holes.push([0, j * 25], [SHEET_W, j * 25]);
+
+// The paper grain is a pre-rendered image (not a live SVG filter), so stamps with moving parts don't re-run the noise every frame.
+const GRAIN = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="600" viewBox="0 0 240 300"><filter id="g" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4"/><feColorMatrix type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.1  0 0 0 0 0.06  1.1 0 0 0 -0.42"/></filter><rect width="240" height="300" filter="url(#g)"/></svg>',
+)}`;
 
 const label = { fontFamily: 'var(--font-body), sans-serif' } as const;
 
@@ -76,10 +81,6 @@ export default function StampFace({ stamp, reservedAt, className = '', style }: 
           <clipPath id={`${uid}-clip`}>
             <path d={WINDOW_PATHS[stamp.motif]} />
           </clipPath>
-          <filter id={`${uid}-grain`} x="0" y="0" width="100%" height="100%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" result="noise" />
-            <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.16  0 0 0 0 0.1  0 0 0 0 0.06  1.1 0 0 0 -0.42" />
-          </filter>
           <linearGradient id={`${uid}-sheen`} x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#fff" stopOpacity="0" />
             <stop offset="0.5" stopColor="#fff" stopOpacity="0.85" />
@@ -126,11 +127,11 @@ export default function StampFace({ stamp, reservedAt, className = '', style }: 
               {stamp.status}
             </text>
             <text x="120" y="60" textAnchor="middle" fontSize="6" letterSpacing="2.8" fontWeight="600" style={label}>
-              SAGITTARIUS ✦ {stamp.name.toUpperCase()}
+              SAGITTARIUZ ✦ {stamp.name.toUpperCase()}
             </text>
           </g>
 
-          <rect width={SHEET_W} height={SHEET_H} filter={`url(#${uid}-grain)`} opacity="0.34" style={{ mixBlendMode: 'multiply' }} />
+          <image href={GRAIN} width={SHEET_W} height={SHEET_H} opacity="0.34" style={{ mixBlendMode: 'multiply' }} />
           <rect className={styles.band} x="-60" y="-30" width="48" height="360" fill={`url(#${uid}-sheen)`} />
         </g>
       </svg>

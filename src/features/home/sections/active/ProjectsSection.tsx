@@ -68,7 +68,7 @@ export default function ProjectsSection({ activeSection }: ProjectsSectionProps)
                 {lead.title}
               </ProjectLink>
             </h3>
-            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#1a1208]/50">By Sagittarius · Design & engineering</div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#1a1208]/50">By Sagittariuz · Design & engineering</div>
             <div className="grid gap-4 md:grid-cols-2">
               <p className="text-[13px] leading-8 text-[#1a1208]">{lead.summary}</p>
               <blockquote className="border-l-4 border-[#1a1208] pl-4 font-display text-[16px] font-bold italic leading-7">{lead.pullQuote}</blockquote>

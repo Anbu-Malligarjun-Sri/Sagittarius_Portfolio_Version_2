@@ -1,4 +1,4 @@
-/* The Daily Sagittarius: an aged broadsheet, one project to a page. Pages run edge to edge. */
+/* The Daily Sagittariuz: an aged broadsheet, one project to a page. Pages run edge to edge. */
 
 @keyframes pan {
   0% { transform: scale(1.06) translate(0%, 0%); }
@@ -265,20 +265,13 @@
   background: #1a130b;
 }
 
-/* The photograph is "alive": it drifts slowly, and wakes into colour when touched. */
+/* The photograph is "alive": it drifts slowly, and is always shown in full colour. */
 .shot img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(0.85) sepia(0.45) contrast(1.1) brightness(0.96);
-  transition: filter 0.6s ease;
   animation: pan 18s ease-in-out infinite alternate;
-}
-
-.photo:hover .shot img,
-.photo[data-drag] .shot img {
-  filter: none;
 }
 
 .caption {

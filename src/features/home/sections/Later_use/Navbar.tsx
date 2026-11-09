@@ -115,12 +115,12 @@ export default function Navbar() {
         ref={navRef}
         className="fixed top-0 inset-x-0 z-200 pointer-events-auto flex items-center justify-between px-6 md:px-16 transition-all duration-500 py-6 md:py-8 text-xs font-mono tracking-widest bg-black/45 backdrop-blur-md border-b border-white/10"
       >
-        <Link href="/" ref={logoRef} className="flex items-center gap-3 cursor-pointer group" aria-label="Sagittarius home">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white group-hover:text-cyan-400 transition-colors" role="img" aria-label="Sagittarius logo">
+        <Link href="/" ref={logoRef} className="flex items-center gap-3 cursor-pointer group" aria-label="Sagittariuz home">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white group-hover:text-cyan-400 transition-colors" role="img" aria-label="Sagittariuz logo">
             <path d="M12 2v20M17 5c0 0-3.5 3-5 3S7 5 7 5M12 2L9 5M12 2l3 3" />
           </svg>
           <span className="font-display font-bold text-lg tracking-widest text-white group-hover:text-cyan-400 transition-colors">
-            SAGITTARIUS
+            SAGITTARIUZ
           </span>
         </Link>
 

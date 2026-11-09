@@ -203,7 +203,7 @@ export default function StartupShowcase() {
       >
         <div className="mx-auto flex h-13 w-full max-w-6xl items-center justify-between gap-4 rounded-full border border-white/10 bg-[rgba(10,10,10,0.82)] px-5 shadow-[0_4px_30px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-2xl">
           <Link href="/" className="font-display text-[0.72rem] font-bold tracking-[0.12em] text-[#e8c547] shrink-0">
-            SAGITTARIUS
+            SAGITTARIUZ
           </Link>
 
           <nav className="hidden items-center gap-7 md:flex">

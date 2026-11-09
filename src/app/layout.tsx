@@ -40,14 +40,14 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sagittarius.ai'),
+  metadataBase: new URL('https://sagittariuz.ai'),
   title: {
-    default: 'Sagittarius',
-    template: '%s | Sagittarius',
+    default: 'Sagittariuz',
+    template: '%s | Sagittariuz',
   },
-  description: 'Sagittarius is a premium startup studio building software, brands, and product systems that ship with rigor.',
-  keywords: ['Sagittarius', 'startup studio', 'product design', 'engineering', 'branding'],
-  authors: [{ name: 'Sagittarius Studio' }],
+  description: 'Sagittariuz is a premium startup studio building software, brands, and product systems that ship with rigor.',
+  keywords: ['Sagittariuz', 'startup studio', 'product design', 'engineering', 'branding'],
+  authors: [{ name: 'Sagittariuz Studio' }],
   themeColor: [
     { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
     { media: '(prefers-color-scheme: light)', color: '#0a0a0a' },
@@ -57,22 +57,22 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    url: 'https://sagittarius.ai',
-    title: 'Sagittarius',
+    url: 'https://sagittariuz.ai',
+    title: 'Sagittariuz',
     description: 'Premium startup systems for ambitious teams.',
-    siteName: 'Sagittarius',
+    siteName: 'Sagittariuz',
     images: [
       {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Sagittarius preview',
+        alt: 'Sagittariuz preview',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sagittarius',
+    title: 'Sagittariuz',
     description: 'Premium startup systems for ambitious teams.',
     images: ['/opengraph-image'],
   },
@@ -105,8 +105,8 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'Sagittarius',
-              url: 'https://sagittarius.ai',
+              name: 'Sagittariuz',
+              url: 'https://sagittariuz.ai',
               sameAs: [
                 'https://github.com/Anbu-Malligarjun-Sri',
               ],

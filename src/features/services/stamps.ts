@@ -1,7 +1,7 @@
 import { SERVICES } from '@/features/home/sections/active/data';
 import type { ServiceRow } from '@/features/home/sections/active/types';
 
-export type StampMotif = 'ui' | 'web' | 'mobile' | 'brand' | 'ai' | 'advice';
+export type StampMotif = 'ui' | 'web' | 'mobile' | 'brand' | 'ai' | 'advice' | 'seo';
 
 type StampExtras = {
   id: string;
@@ -70,8 +70,8 @@ const EXTRAS: Record<string, StampExtras> = {
   },
   'AI Integration': {
     id: 'ai',
-    ink: '#14243d',
-    glow: '#f4b13d',
+    ink: '#8c3d1d',
+    glow: '#cf6a3c',
     motif: 'ai',
     rest: -1.8,
     tagline: 'Practical models, wired into real workflows.',
@@ -91,6 +91,18 @@ const EXTRAS: Record<string, StampExtras> = {
       'A focused week with founders, product leads and early engineering teams: we pressure-test the plan, name the risks and leave you with decisions rather than a slide deck.',
     includes: ['Discovery conversation', 'Scope and risk review', 'Prioritised recommendations', 'A written decision summary'],
     how: 'One week, one clear outcome.',
+  },
+  'SEO Optimization': {
+    id: 'seo',
+    ink: '#0b4a5a',
+    glow: '#ffd36b',
+    motif: 'seo',
+    rest: -1.4,
+    tagline: 'Be found by the people already looking.',
+    story:
+      "Good work is no use if nobody can find it. We build and tune your site so search engines can read it, and so a person searching can tell at a glance that yours is the page they were after.",
+    includes: ['Technical and on-page audit', 'Search-friendly structure and metadata', 'Content and keyword plan', 'Speed and page-experience pass'],
+    how: 'Fix the foundations first, then measure what moves.',
   },
 };
 

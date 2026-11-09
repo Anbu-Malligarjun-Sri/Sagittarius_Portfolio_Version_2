@@ -20,7 +20,7 @@ function canScroll(el: HTMLElement, dy: number) {
 }
 
 /**
- * The Daily Sagittarius: one project to a page. On a wide screen each page is a live broadsheet: the story is laid out
+ * The Daily Sagittariuz: one project to a page. On a wide screen each page is a live broadsheet: the story is laid out
  * around a photograph you can brush aside or drag, and the letters react to the cursor. Scrolling glides to the next
  * page. On phones, tablets, with reduced motion, or without JavaScript, the same stories are a plain printed page.
  */
@@ -203,7 +203,7 @@ export default function LivingNewspaper({ onOpenCaseFile }: { onOpenCaseFile?: (
           <span>Price: one curious glance</span>
         </div>
         <h1 id="paper-title" className={styles.title}>
-          The Daily Sagittarius
+          The Daily Sagittariuz
         </h1>
         <p className={styles.motto}>All the news that&rsquo;s fit to ship, and a few stories that move.</p>
         <div className={styles.rule} />
@@ -229,7 +229,7 @@ export default function LivingNewspaper({ onOpenCaseFile }: { onOpenCaseFile?: (
                 </span>
                 <span>Price: one curious glance</span>
               </div>
-              <p className={styles.pageTitle}>The Daily Sagittarius</p>
+              <p className={styles.pageTitle}>The Daily Sagittariuz</p>
               <div className={styles.rule} />
             </header>
 

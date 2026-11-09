@@ -37,7 +37,7 @@ export default function AboutSection({ activeSection }: AboutSectionProps) {
         <div className="hidden bg-[linear-gradient(to_right,rgba(0,0,0,0.08),rgba(0,0,0,0.02),rgba(0,0,0,0.08))] lg:block" />
 
         <article className="relative overflow-hidden rounded-none border border-white/10 bg-[#fefcf8] px-8 py-10 text-[#1a1208] shadow-[0_14px_40px_rgba(0,0,0,0.2)]">
-          <p className="max-w-prose text-[14px] leading-8">Sagittarius began as a small studio for founders who wanted design and engineering to feel like one decision, not two different disciplines.</p>
+          <p className="max-w-prose text-[14px] leading-8">Sagittariuz began as a small studio for founders who wanted design and engineering to feel like one decision, not two different disciplines.</p>
           <p className="mt-4 max-w-prose text-[14px] leading-8">We pair editorial structure with product rigor so teams can launch with confidence, tighten the message, and keep the system maintainable after the first release.</p>
           <div className="absolute bottom-6 right-6 rotate-[5deg] border-2 border-black/10 px-4 py-3 font-mono text-[11px] uppercase tracking-[0.35em] text-black/60">
             Est. 2024

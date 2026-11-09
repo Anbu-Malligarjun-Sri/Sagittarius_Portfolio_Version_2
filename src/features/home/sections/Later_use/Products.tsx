@@ -97,7 +97,7 @@ export default function Products() {
 
   const products = [
     { id: '01', name: 'TARS ROBOT', desc: 'Voice · Movement · AI Conscious Interface.', status: 'PROTOTYPE', href: '#mission' },
-    { id: '02', name: 'SAGITTARIUS LLM', desc: 'RAG · Vector DB · Neural Memory Systems.', status: 'ACTIVE', href: '#llm' },
+    { id: '02', name: 'SAGITTARIUZ LLM', desc: 'RAG · Vector DB · Neural Memory Systems.', status: 'ACTIVE', href: '#llm' },
     { id: '03', name: 'EDITH SMART GLASS', desc: 'AR Vision · Real-time Cognition · Voice.', status: 'IN DEV', href: '#tech' },
     { id: '04', name: 'SCIENTIFIC AI', desc: 'Astrophysics · Quantum Simulations Engine.', status: 'CONCEPT', href: '#roadmap' },
   ];

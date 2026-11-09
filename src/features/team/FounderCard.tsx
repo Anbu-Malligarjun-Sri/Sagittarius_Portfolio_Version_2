@@ -134,7 +134,7 @@ export default function FounderCard({ founder, index }: { founder: Founder; inde
             <path d="M88 12 L74 14 M88 12 L86 26" strokeWidth="2.2" strokeLinecap="round" stroke="#ff3b3b" />
           </svg>
           <p className="absolute inset-x-0 text-center font-mono font-bold uppercase text-[#e8c547]" style={{ bottom: '9cqw', fontSize: '3cqw', letterSpacing: '0.4em' }}>
-            Sagittarius
+            Sagittariuz
           </p>
           <span className="absolute font-mono text-[#e8c547]/60" style={{ left: '6cqw', top: '5cqw', fontSize: '3cqw' }}>
             0{index + 1}

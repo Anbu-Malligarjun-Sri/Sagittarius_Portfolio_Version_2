@@ -9,7 +9,7 @@ export default function Hero() {
   const containerRef = useRef<HTMLElement | null>(null);
   const typeLines = [
     '> DE-EXTINCTION PROTOCOL ACTIVE',
-    '> SAGITTARIUS LLM [M1/M2] ONLINE',
+    '> SAGITTARIUZ LLM [M1/M2] ONLINE',
     '> TARS ROBOTICS SYSTEM BOOTING…',
     '> SPECIES REVIVAL IN PROGRESS',
   ];
@@ -54,7 +54,7 @@ export default function Hero() {
           <span>// ADV. AI + ROBOTICS INITIATIVE</span>
         </div>
 
-        <h1 className="hero-anim font-display font-black text-6xl md:text-[7rem] leading-[0.9] tracking-tighter mb-6 text-white uppercase deep-scroll-item" data-text="SAGITTARIUS">
+        <h1 className="hero-anim font-display font-black text-6xl md:text-[7rem] leading-[0.9] tracking-tighter mb-6 text-white uppercase deep-scroll-item" data-text="SAGITTARIUZ">
           <span className="glitch-text block" data-text="SAGIT">SAGIT</span>
           <span className="glitch-text block" data-text="TARIUS">TARIUS</span>
         </h1>
@@ -67,7 +67,7 @@ export default function Hero() {
         </div>
 
         <div className="hero-anim flex flex-wrap gap-4 font-mono text-xs deep-scroll-item">
-          {['De-Extinction', 'Sagittarius LLM', 'Robotics', 'Astrophysics AI'].map((badge) => (
+          {['De-Extinction', 'Sagittariuz LLM', 'Robotics', 'Astrophysics AI'].map((badge) => (
             <span key={badge} className="px-4 py-2 glass-panel rounded-full text-white/80 hover:text-cyan-400 transition-colors">
               {badge}
             </span>

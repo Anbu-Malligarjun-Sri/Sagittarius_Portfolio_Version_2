@@ -110,10 +110,10 @@ const Terminal = ({ hasStarted }: TerminalProps) => {
 
   const lines: TerminalLine[] = [
     { text: 'INITIATING NEURAL BOOT SEQUENCE...', type: 'system', delay: 100 },
-    { text: 'connect --host sagittarius-core', type: 'command', delay: 400 },
+    { text: 'connect --host sagittariuz-core', type: 'command', delay: 400 },
     { text: 'ESTABLISHING QUANTUM LINK [||||||||||] 100%', type: 'output', delay: 200 },
     { text: 'whoami', type: 'command', delay: 500 },
-    { text: 'USER: [founder]@sagittarius', type: 'output', delay: 200 },
+    { text: 'USER: [founder]@sagittariuz', type: 'output', delay: 200 },
     { text: 'status: ACTIVE_BUILDER', type: 'output', delay: 100 },
     { text: 'focus: AI + Robotics Engineering', type: 'output', delay: 100 },
     { text: 'stack: Python | ML | NLP | Vision | C++', type: 'output', delay: 100 },
@@ -253,7 +253,7 @@ export default function FounderTerminal() {
             <strong className="font-medium text-slate-200">What if AI could fix what nature lost?</strong>
           </p>
           <p>
-            Sagittarius was born from that obsession - merging artificial intelligence, precision robotics, and bio-informatics into systems that don't just compute, but <em className="text-cyan-300 font-medium not-italic">think</em>.
+            Sagittariuz was born from that obsession - merging artificial intelligence, precision robotics, and bio-informatics into systems that don't just compute, but <em className="text-cyan-300 font-medium not-italic">think</em>.
           </p>
         </div>
 
@@ -287,7 +287,7 @@ export default function FounderTerminal() {
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              sagittarius-os v0.9.1
+              sagittariuz-os v0.9.1
             </div>
           </div>
 

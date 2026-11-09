@@ -51,7 +51,7 @@ export default function Mission() {
       </h2>
 
       <p className="max-w-2xl text-lg text-white/50 mb-20 font-light">
-        Sagittarius is the intersection of artificial intelligence, scientific computing, and the audacity to reverse extinction - one species, one algorithm at a time.
+        Sagittariuz is the intersection of artificial intelligence, scientific computing, and the audacity to reverse extinction - one species, one algorithm at a time.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl transform-style-3d">

@@ -26,7 +26,7 @@ export const FOUNDERS: Founder[] = [
     role: 'Founder & CEO',
     tagline: 'Sets the direction and the pace, and keeps every build pointed at a clear standard.',
     bio: [
-      'Anbu started Sagittarius and sets the direction for everything the studio takes on, from research systems to launch pages.',
+      'Anbu started Sagittariuz and sets the direction for everything the studio takes on, from research systems to launch pages.',
       'He cares about clarity first: a sharp idea, a bounded scope, and work that ships with rigor instead of noise.',
     ],
     photo: encodeURI('/images/Portfolio Photos/Anbu Malligarjun Sri.png'),
@@ -43,7 +43,7 @@ export const FOUNDERS: Founder[] = [
     role: 'Co-Founder & CTO',
     tagline: 'Owns the technical architecture and turns ambitious ideas into systems that hold up.',
     bio: [
-      'Brajin leads technology at Sagittarius: architecture, engineering standards, and the choices that decide whether a prototype can grow into a product.',
+      'Brajin leads technology at Sagittariuz: architecture, engineering standards, and the choices that decide whether a prototype can grow into a product.',
       'He keeps the stack practical and dependable, so the team can move fast without breaking what already works.',
     ],
     photo: encodeURI('/images/Portfolio Photos/Brajin S.jpeg'),
@@ -59,7 +59,7 @@ export const FOUNDERS: Founder[] = [
     role: 'Co-Founder & COO',
     tagline: 'Runs the machinery behind the work so projects stay calm, on time, and well delivered.',
     bio: [
-      'Arun runs operations at Sagittarius: planning, delivery, and the day-to-day rhythm that turns good intentions into finished work.',
+      'Arun runs operations at Sagittariuz: planning, delivery, and the day-to-day rhythm that turns good intentions into finished work.',
       'He is the reason timelines hold and handoffs feel unusually calm.',
     ],
     photo: encodeURI('/images/Portfolio Photos/Arun G.png'),

@@ -1,0 +1,691 @@
+/* ───────── the board ───────── */
+.frame {
+  position: relative;
+  padding: 14px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #6b4526, #3e2614 55%, #59381e);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* cork: warm brown with fine dark speckle, lit from above like a desk lamp */
+.board {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .14 0 0 0 0 .05 1.7 0 0 0 -.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 90% at 50% 0%, #c89a68, #a97b4d 60%, #8e6338);
+  box-shadow: inset 0 6px 22px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.board::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 45% at 50% 0%, rgba(255, 240, 200, 0.4), transparent 70%);
+}
+
+.board::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  box-shadow: inset 0 0 90px rgba(30, 14, 0, 0.55);
+}
+
+/* No z-index here on purpose: the grid must not become its own layer, or the notes could not sit above the thread. */
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 46px;
+  margin: 0;
+  padding: 24px 18px 48px;
+  list-style: none;
+}
+
+/* On a wide screen the six pieces hang in two rows of three, the second row running back the other way so the thread
+   never has to cross the whole board. */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 6px;
+    padding: 28px 22px 50px;
+  }
+  .pos0 { grid-column: 1; grid-row: 1; }
+  .pos1 { grid-column: 2; grid-row: 1; }
+  .pos2 { grid-column: 3; grid-row: 1; }
+  .pos3 { grid-column: 3; grid-row: 2; }
+  .pos4 { grid-column: 2; grid-row: 2; }
+  .pos5 { grid-column: 1; grid-row: 2; }
+}
+
+.cell {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 1023px) {
+  .cell:nth-child(odd) {
+    align-items: flex-start;
+  }
+  .cell:nth-child(even) {
+    align-items: flex-end;
+  }
+}
+
+.slot {
+  --w: min(74vw, 250px);
+  position: relative;
+  left: var(--dx);
+  width: var(--w);
+  margin-top: var(--pt);
+}
+
+@media (min-width: 1024px) {
+  .slot {
+    --w: 190px;
+  }
+}
+
+/* the pin's position: an untransformed point near the top of the piece, so threads stay put when the piece tilts */
+.anchor {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+}
+
+.item {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  transform-origin: 50% 0;
+  transform: rotate(var(--rot));
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.item:hover {
+  transform: rotate(calc(var(--rot) * 0.35)) translateY(-3px);
+}
+
+.item[data-focus='true'] {
+  z-index: 2;
+  transform: rotate(0deg) translateY(-6px) scale(1.04);
+}
+
+.item:focus-visible {
+  outline: 2px solid #ffe08a;
+  outline-offset: 10px;
+}
+
+.drop {
+  position: relative;
+  display: block;
+}
+
+/* the red marker ring drawn round the piece that is open */
+.mark {
+  position: absolute;
+  top: -12px;
+  left: -14px;
+  width: calc(100% + 28px);
+  height: calc(100% + 30px);
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+}
+
+.mark path {
+  fill: none;
+  stroke: #d6332f;
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+.item[data-focus='true'] .mark {
+  opacity: 1;
+  transform: none;
+}
+
+/* the tape label stuck across the bottom of each piece */
+.label {
+  position: absolute;
+  right: -8px;
+  bottom: -13px;
+  left: -8px;
+  padding: 3px 8px 4px;
+  border: 1px solid #cdb98a;
+  background: #f4ead0;
+  color: #2e2112;
+  font-family: var(--font-handwriting), cursive;
+  font-size: 1.02rem;
+  line-height: 1.15;
+  text-align: center;
+  transform: rotate(-1.2deg);
+  box-shadow: 0 3px 6px rgba(30, 15, 0, 0.35);
+}
+
+/* ───────── the pieces of evidence ───────── */
+.polaroid {
+  padding: 9px 9px 32px;
+  background: #f8f4ea;
+  box-shadow: 0 10px 22px rgba(30, 15, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+.photo {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: #222;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.photo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 100% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.38)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 38%);
+}
+
+.blueprint {
+  aspect-ratio: 190 / 150;
+  padding: 6px;
+  background: #1f5ba8;
+  box-shadow: 0 10px 22px rgba(0, 12, 40, 0.5);
+}
+
+.blueprint svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.clipWrap {
+  filter: drop-shadow(0 8px 9px rgba(30, 15, 0, 0.45));
+}
+
+.clipping {
+  padding: 24px 12px 17px;
+  background: #e9e1cb;
+  color: #2b2418;
+  clip-path: polygon(0 3%, 6% 0, 14% 2%, 24% 0, 35% 2%, 47% 0, 58% 2%, 70% 0, 82% 2%, 92% 0, 100% 2%, 100% 97%, 94% 100%, 84% 98%, 72% 100%, 60% 98%, 48% 100%, 36% 98%, 24% 100%, 12% 98%, 5% 100%, 0 97%);
+}
+
+.clipKicker {
+  margin: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #6b5f48;
+}
+
+.clipHead {
+  margin: 7px 0 0;
+  font-family: var(--font-serif), serif;
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.clipRule {
+  height: 3px;
+  margin: 8px 0;
+  border-top: 2px solid #2b2418;
+  border-bottom: 1px solid #2b2418;
+}
+
+.clipBody {
+  display: flex;
+  gap: 8px;
+}
+
+.clipFigure {
+  width: 46px;
+  flex: none;
+  border: 1px solid #2b2418;
+}
+
+.clipFigure svg {
+  display: block;
+  width: 100%;
+}
+
+.clipLines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.clipLines i {
+  display: block;
+  height: 3px;
+  background: #8a826c;
+  opacity: 0.7;
+}
+
+.clipLines i:nth-child(3) {
+  width: 70%;
+}
+
+.clipLines i:nth-child(5) {
+  width: 45%;
+}
+
+.clipSmall {
+  margin: 9px 0 0;
+  font-family: var(--font-serif), serif;
+  font-size: 10px;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.indexCard {
+  position: relative;
+  padding: 18px 14px 38px;
+  border-top: 3px solid #d65a5a;
+  background:
+    repeating-linear-gradient(transparent 0 19px, rgba(70, 110, 170, 0.32) 19px 20px),
+    #fbf7ea;
+  color: #2a241a;
+  box-shadow: 0 10px 22px rgba(30, 15, 0, 0.45);
+}
+
+.cardHead {
+  margin: 0 0 6px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.indexCard ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 20px;
+}
+
+.rubber {
+  position: absolute;
+  right: 10px;
+  bottom: 12px;
+  padding: 1px 8px;
+  border: 2px solid #c0392b;
+  color: #c0392b;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  transform: rotate(-12deg);
+}
+
+/* ───────── pins and thread ───────── */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.thread,
+.threadShadow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.thread {
+  stroke: #b3232b;
+  stroke-width: 2.4;
+}
+
+.threadShadow {
+  stroke: rgba(20, 8, 0, 0.4);
+  stroke-width: 3;
+}
+
+.loop .thread {
+  stroke: #d6454d;
+  stroke-width: 2;
+}
+
+.pin {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Everything is on the board by default. Once JS arms it, the board waits to scroll into view, then the pieces drop,
+   the pins go in, and the thread is drawn from one pin to the next. */
+.board[data-armed='true']:not([data-in='true']) .drop {
+  opacity: 0;
+  transform: translateY(-40px) rotate(-5deg);
+}
+
+.board[data-armed='true']:not([data-in='true']) .pin {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.board[data-armed='true']:not([data-in='true']) .thread,
+.board[data-armed='true']:not([data-in='true']) .threadShadow {
+  stroke-dashoffset: 1;
+}
+
+.board[data-armed='true']:not([data-in='true']) .tag {
+  opacity: 0;
+}
+
+.board[data-in='true'] .drop {
+  animation: dropIn 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+  animation-delay: calc(var(--i, 0) * 0.15s);
+}
+
+.board[data-in='true'] .pin {
+  animation: pinIn 0.4s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(var(--i, 0) * 0.15s + 0.5s);
+}
+
+.board[data-in='true'] .thread,
+.board[data-in='true'] .threadShadow {
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1) calc(1s + var(--t, 0) * 0.5s);
+}
+
+.board[data-in='true'] .tag {
+  transition: opacity 0.5s ease 4.2s;
+}
+
+@keyframes dropIn {
+  0% { opacity: 0; transform: translateY(-44px) rotate(-6deg); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes pinIn {
+  0% { opacity: 0; transform: scale(0.2) translateY(-10px); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* ───────── the case file ───────── */
+.folderWrap {
+  position: sticky;
+  top: 7rem;
+  padding-top: 26px;
+}
+
+.folder {
+  position: relative;
+  padding: 26px 24px 20px;
+  border-radius: 4px 10px 10px 10px;
+  background: linear-gradient(160deg, #eddcb1, #dcc58f);
+  color: #2a1f12;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: rotate(0.6deg);
+}
+
+.folderTab {
+  position: absolute;
+  top: -26px;
+  left: 18px;
+  padding: 6px 14px 5px;
+  border-radius: 8px 8px 0 0;
+  background: #dcc58f;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.paperclip {
+  position: absolute;
+  top: -14px;
+  right: 26px;
+  width: 22px;
+  height: 56px;
+}
+
+.paper {
+  animation: fileIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes fileIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: none; }
+}
+
+.kicker {
+  margin: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #7a6238;
+}
+
+.fileTitle {
+  margin: 6px 0 0;
+  font-family: var(--font-serif), serif;
+  font-size: 1.7rem;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.happens {
+  margin: 10px 0 14px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #3d2f1c;
+}
+
+.details {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(42, 31, 18, 0.4);
+}
+
+.details dt {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #7a6238;
+}
+
+.details dd {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.details ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.details li {
+  position: relative;
+  padding-left: 16px;
+}
+
+.details li::before {
+  content: '';
+  position: absolute;
+  top: 0.55em;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  background: #b3232b;
+  transform: rotate(45deg);
+}
+
+.sign {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border: 2px solid #2e7d4f;
+  color: #2e7d4f;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+}
+
+.fileNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(42, 31, 18, 0.4);
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+}
+
+.fileNav button {
+  display: inline-flex;
+  width: 2.2rem;
+  height: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #2a1f12;
+  border-radius: 999px;
+  background: transparent;
+  color: #2a1f12;
+  transition: background 0.2s, color 0.2s;
+}
+
+.fileNav button:hover {
+  background: #2a1f12;
+  color: #eddcb1;
+}
+
+.fileNav button:focus-visible {
+  outline: 2px solid #b3232b;
+  outline-offset: 3px;
+}
+
+.facts {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.55;
+  color: #6a5733;
+}
+
+.facts li + li {
+  margin-top: 6px;
+}
+
+.hintLine {
+  font-style: normal;
+  color: #b3232b;
+}
+
+/* the same file, laid out under each photograph on smaller screens */
+.note {
+  position: relative;
+  z-index: 6;
+  align-self: stretch;
+  margin-top: 26px;
+  padding: 14px 16px 16px;
+  border-radius: 3px;
+  background: linear-gradient(160deg, #eddcb1, #dcc58f);
+  color: #2a1f12;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.note h3 {
+  margin: 0;
+  font-family: var(--font-serif), serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.note p {
+  margin: 8px 0 12px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #3d2f1c;
+}
+
+@media (min-width: 1024px) {
+  .note {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board[data-in='true'] .drop,
+  .board[data-in='true'] .pin,
+  .paper {
+    animation: none;
+  }
+  .board[data-armed='true']:not([data-in='true']) .drop,
+  .board[data-armed='true']:not([data-in='true']) .pin,
+  .board[data-armed='true']:not([data-in='true']) .tag {
+    opacity: 1;
+    transform: none;
+  }
+  .board[data-armed='true']:not([data-in='true']) .thread,
+  .board[data-armed='true']:not([data-in='true']) .threadShadow {
+    stroke-dashoffset: 0;
+  }
+  .board[data-in='true'] .thread,
+  .board[data-in='true'] .threadShadow,
+  .board[data-in='true'] .tag,
+  .item,
+  .mark {
+    transition: none;
+  }
+}

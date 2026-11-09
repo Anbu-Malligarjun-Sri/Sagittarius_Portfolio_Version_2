@@ -14,7 +14,7 @@ export default function FooterSection({ activeSection }: FooterSectionProps) {
       </div>
 
       <div className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 font-mono text-[11px] text-[#f5f0e8]/30">
-        <div>© 2025 Sagittarius. All rights reserved.</div>
+        <div>© 2025 Sagittariuz. All rights reserved.</div>
       </div>
     </footer>
   );

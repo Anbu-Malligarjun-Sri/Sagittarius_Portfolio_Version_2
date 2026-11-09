@@ -25,13 +25,210 @@
   pointer-events: none;
 }
 
+/* ── small movements inside the artwork (all stop under reduced motion) ── */
+.fb {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.vb {
+  transform-box: view-box;
+}
+
 .twinkle {
   animation: twinkle 3.4s ease-in-out infinite;
+}
+
+.flap {
+  animation: flap 2.4s ease-in-out infinite;
+}
+
+.wake {
+  animation: wake 8s ease-in-out infinite;
+}
+
+.breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+.flag {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  animation: flutter 1.8s ease-in-out infinite;
+}
+
+.pulse {
+  animation: pulse 2.6s ease-in-out infinite;
+}
+
+.drift {
+  animation: drift 18s ease-in-out infinite alternate;
+}
+
+.roll {
+  animation: roll 3.4s linear infinite;
+}
+
+.sway {
+  animation: sway 5s ease-in-out infinite alternate;
+}
+
+.bob {
+  animation: bob 2.8s ease-in-out infinite alternate;
+}
+
+.sonar {
+  animation: sonar 4s ease-out infinite;
+}
+
+.shoot {
+  animation: shoot 8s ease-in infinite;
+}
+
+.spin {
+  animation: spin 90s linear infinite;
+}
+
+.glint {
+  animation: glint 3.2s ease-in-out infinite;
+}
+
+.shimmer {
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+.blink {
+  animation: blink 5.5s ease-in-out infinite;
+}
+
+.trace {
+  stroke-dasharray: 4 3;
+  animation: march 1.6s linear infinite;
+}
+
+.march {
+  animation: march 1.4s linear infinite;
+}
+
+.swing {
+  animation: swing 7s ease-in-out infinite alternate;
+}
+
+.hop {
+  animation: hop 2.6s ease-in-out infinite;
+}
+
+.sweep {
+  animation: sweep 7s ease-in-out infinite;
+}
+
+/* the owl's eyes follow the cursor: --ex / --ey (-1 to 1) are set from the pointer position */
+.pupil {
+  transform: translate(calc(var(--ex, 0) * 2.5px), calc(var(--ey, 0) * 2.2px));
+  transition: transform 0.14s ease-out;
 }
 
 @keyframes twinkle {
   0%, 100% { opacity: 0.25; }
   50% { opacity: 1; }
+}
+
+@keyframes flap {
+  0%, 55%, 100% { transform: scaleY(1); }
+  72% { transform: scaleY(0.15); }
+}
+
+@keyframes wake {
+  0%, 52%, 100% { fill: #12213f; }
+  62%, 84% { fill: #f6e3bf; }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+
+@keyframes flutter {
+  0%, 100% { transform: skewY(-9deg) scaleX(1); }
+  50% { transform: skewY(9deg) scaleX(0.86); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(16px); }
+}
+
+@keyframes roll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-20px); }
+}
+
+@keyframes sway {
+  from { transform: rotate(-2.2deg); }
+  to { transform: rotate(2.2deg); }
+}
+
+@keyframes bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3.2px); }
+}
+
+@keyframes sonar {
+  0% { transform: scale(0.88); opacity: 0; }
+  25% { opacity: 0.4; }
+  100% { transform: scale(1.22); opacity: 0; }
+}
+
+@keyframes shoot {
+  0%, 6% { transform: translate(0, 0); opacity: 0; }
+  10% { opacity: 1; }
+  22% { transform: translate(52px, 28px); opacity: 0; }
+  100% { transform: translate(52px, 28px); opacity: 0; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glint {
+  0%, 100% { transform: scale(0.4) rotate(0deg); opacity: 0.3; }
+  50% { transform: scale(1.15) rotate(45deg); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%, 55% { transform: translateX(0) skewX(-18deg); }
+  100% { transform: translateX(200px) skewX(-18deg); }
+}
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95.5% { transform: scaleY(0.06); }
+}
+
+@keyframes march {
+  to { stroke-dashoffset: -12; }
+}
+
+@keyframes swing {
+  from { transform: rotate(-6deg); }
+  to { transform: rotate(7deg); }
+}
+
+@keyframes sweep {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(-1); }
+}
+
+@keyframes hop {
+  0%, 100% { transform: translateY(0); }
+  45% { transform: translateY(-3.5px); }
+  60% { transform: translateY(0); }
 }
 
 /* The postmark: ink thumped onto the stamp. */
@@ -129,21 +326,41 @@
   transform: rotate(-4deg);
 }
 
+/* Six columns so every stamp spans two: three to a row, and a lone last stamp sits in the middle. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+.grid > * {
+  grid-column: span 2;
+}
+
+.grid > :last-child:nth-child(3n + 1) {
+  grid-column: 3 / span 2;
 }
 
 @media (max-width: 900px) {
   .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .grid > :last-child:nth-child(3n + 1) {
+    grid-column: span 2;
+  }
+  .grid > :last-child:nth-child(odd) {
+    grid-column: 2 / span 2;
   }
 }
 
 @media (max-width: 400px) {
   .grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .grid > *,
+  .grid > :last-child:nth-child(odd),
+  .grid > :last-child:nth-child(3n + 1) {
+    grid-column: auto;
   }
 }
 
@@ -237,20 +454,47 @@
 }
 
 /* ───────── the card ───────── */
-.dialogBody {
+.shell {
   position: relative;
+}
+
+/* Sized to the visible window, never taller: on small screens it scrolls inside itself. */
+.dialogBody {
   display: grid;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc(100dvh - 1.5rem);
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: #0c0b0a;
   box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7);
   animation: cardIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  overscroll-behavior: contain;
 }
 
 @media (min-width: 768px) {
   .dialogBody {
-    grid-template-columns: 0.82fr 1.18fr;
+    grid-template-columns: 0.8fr 1.2fr;
+    grid-template-rows: minmax(0, 1fr);
+    height: min(calc(100dvh - 1.5rem), 580px);
+    overflow-y: hidden;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-height: 0;
+  padding: 1.5rem 1.4rem 1.4rem;
+  overscroll-behavior: contain;
+}
+
+@media (min-width: 768px) {
+  .info {
+    justify-content: center;
+    padding: 1.4rem 2rem 1.4rem 1.8rem;
+    overflow-y: auto;
   }
 }
 
@@ -264,7 +508,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2.5rem 1.5rem 4.4rem;
+  min-height: 0;
+  padding: 1.6rem 1rem 3.6rem;
   background:
     radial-gradient(90% 60% at 50% 42%, color-mix(in srgb, var(--glow, #e8c547) 22%, transparent), transparent 80%),
     radial-gradient(110% 80% at 50% 0%, #241b11 0%, #140f0a 70%);
@@ -272,8 +517,17 @@
 }
 
 .bigStamp {
-  width: min(100%, 290px);
+  width: min(100%, 200px);
   animation: lift 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (min-width: 768px) {
+  .mount {
+    padding: 2rem 1.2rem 3.8rem;
+  }
+  .bigStamp {
+    width: min(100%, 270px);
+  }
 }
 
 @keyframes lift {
@@ -281,11 +535,39 @@
   100% { opacity: 1; transform: none; }
 }
 
+.how {
+  max-width: 14rem;
+  font-family: var(--font-body), sans-serif !important;
+  font-size: 12.5px !important;
+  line-height: 1.4;
+}
+
+.cta {
+  margin-top: 0.1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* On a phone the card scrolls inside itself, so the actions stay pinned to its bottom edge. */
+@media (max-width: 767px) {
+  .cta {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    margin: 0.4rem -1.4rem -1.4rem;
+    padding: 0.8rem 1.4rem 1rem;
+    background: linear-gradient(to bottom, rgba(12, 11, 10, 0.92), #0c0b0a 40%);
+  }
+  .bigStamp {
+    width: min(100%, 170px);
+  }
+}
+
 .facts {
   display: grid;
-  grid-template-columns: repeat(2, auto);
+  grid-template-columns: repeat(3, auto);
   justify-content: start;
-  gap: 0.25rem 2rem;
+  gap: 0.25rem 1.6rem;
 }
 
 .facts dt {
@@ -306,7 +588,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.7rem 1.2rem;
+  padding: 0.6rem 1.1rem;
   border-radius: 999px;
   border: 1.5px solid var(--ink-bright, #e8c547);
   font-family: var(--font-mono), monospace;
@@ -332,7 +614,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.7rem 0.4rem;
+  padding: 0.6rem 0.3rem;
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   letter-spacing: 0.22em;
@@ -381,7 +663,28 @@
   .album[data-in='true'] .drop,
   .postmark,
   .dialogBody,
-  .bigStamp {
+  .bigStamp,
+  .twinkle,
+  .flap,
+  .wake,
+  .breathe,
+  .flag,
+  .pulse,
+  .drift,
+  .roll,
+  .sway,
+  .bob,
+  .sonar,
+  .shoot,
+  .spin,
+  .glint,
+  .shimmer,
+  .blink,
+  .trace,
+  .march,
+  .swing,
+  .hop,
+  .sweep {
     animation: none;
   }
   .album[data-armed='true']:not([data-in='true']) .drop {

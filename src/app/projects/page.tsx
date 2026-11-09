@@ -5,7 +5,7 @@ import ProjectsView from '@/features/projects/ProjectsView';
 
 export const metadata: Metadata = {
   title: 'Projects',
-  description: 'The projects of the Sagittarius lab, told as a living newspaper: Oceanography AI, TARS and the Techazura Symposium website.',
+  description: 'The projects of the Sagittariuz lab, told as a living newspaper: Oceanography AI, TARS and the Techazura Symposium website.',
   alternates: { canonical: '/projects' },
 };
 

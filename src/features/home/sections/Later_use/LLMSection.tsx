@@ -38,9 +38,9 @@ function LLMSection() {
     return () => ctx.revert();
   }, []);
 
-  const pythonSnippet = `from sagittarius import SagittariusM1, Organizer
+  const pythonSnippet = `from sagittariuz import SagittariuzM1, Organizer
 
-model = SagittariusM1.load('sgr-m1-base')
+model = SagittariuzM1.load('sgr-m1-base')
 org = Organizer(models=[model])
 
 response = org.run(
@@ -63,7 +63,7 @@ print(response.output)
             // CORE INTELLIGENCE
           </div>
           <h2 className="llm-element font-sans font-bold text-4xl md:text-5xl mb-8 text-white">
-            Sagittarius LLM
+            Sagittariuz LLM
           </h2>
 
           <div className="llm-element flex gap-4 mb-8 border-b border-white/10 pb-4">
@@ -207,7 +207,7 @@ export default function App() {
       {/* Spacer to allow scrolling to see the animation trigger */}
       <div className="h-[80vh] flex flex-col items-center justify-center border-b border-white/5 relative">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,229,255,0.05)_0%,transparent_50%)]" />
-        <h1 className="text-3xl font-light tracking-widest text-white/50 font-mono mb-4">SAGITTARIUS OS</h1>
+        <h1 className="text-3xl font-light tracking-widest text-white/50 font-mono mb-4">SAGITTARIUZ OS</h1>
         <p className="text-white/30 font-mono text-sm animate-pulse">Scroll down to trigger animation ↓</p>
       </div>
       

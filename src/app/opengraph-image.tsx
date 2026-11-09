@@ -37,7 +37,7 @@ export default function Image() {
             }}
           />
           <div style={{ fontSize: '24px', letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(245, 240, 232, 0.72)' }}>
-            Sagittarius
+            Sagittariuz
           </div>
         </div>
 
@@ -52,10 +52,10 @@ export default function Image() {
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <div style={{ fontSize: '18px', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(245, 240, 232, 0.48)' }}>
-            Sagittarius Portfolio
+            Sagittariuz Portfolio
           </div>
           <div style={{ fontSize: '18px', color: '#e8c547' }}>
-            sagittarius.ai
+            sagittariuz.ai
           </div>
         </div>
       </div>

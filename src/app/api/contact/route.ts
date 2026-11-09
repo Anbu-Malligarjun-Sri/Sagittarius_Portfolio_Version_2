@@ -86,7 +86,7 @@ export async function POST(request: Request) {
   try {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL ?? 'Sagittarius <onboarding@resend.dev>',
+      from: process.env.RESEND_FROM_EMAIL ?? 'Sagittariuz <onboarding@resend.dev>',
       to: process.env.CONTACT_TO_EMAIL ?? 'anbumalligarjunsri@gmail.com',
       replyTo: email,
       subject: `New message from ${name.replace(/[\r\n]+/g, ' ')}`,

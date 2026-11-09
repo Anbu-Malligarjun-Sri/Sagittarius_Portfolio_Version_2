@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
 
-/* Design tokens for Sagittarius hero */
+/* Design tokens for Sagittariuz hero */
 :root {
   --bg-primary: #050505;
   --bg-secondary: #0a0a0a;

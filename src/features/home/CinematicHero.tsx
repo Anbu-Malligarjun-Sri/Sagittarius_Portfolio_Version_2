@@ -216,7 +216,7 @@ export default function CinematicHero() {
               </h1>
 
               <p className="hero-copy pt-0.5">
-                Sagittarius is a design and engineering studio for teams that want clarity before velocity.
+                Sagittariuz is a design and engineering studio for teams that want clarity before velocity.
                 We turn research, product ambition, and technical complexity into systems that are easier to understand,
                 easier to run, and harder to break.
               </p>
@@ -283,7 +283,7 @@ export default function CinematicHero() {
                 <div className="relative w-full max-w-md hero-float">
                   <Image
                     src="/images/Bg_Blackhole.png"
-                    alt="Abstract Sagittarius visual"
+                    alt="Abstract Sagittariuz visual"
                     width={1200}
                     height={1200}
                     priority

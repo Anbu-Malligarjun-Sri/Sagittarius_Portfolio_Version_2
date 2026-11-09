@@ -95,11 +95,16 @@ export default function StampAlbum() {
     el.style.setProperty('--ry', `${((px - 0.5) * 14).toFixed(2)}deg`);
     el.style.setProperty('--rx', `${((0.5 - py) * 12).toFixed(2)}deg`);
     el.style.setProperty('--sx', (px * 300 - 40).toFixed(1));
+    // where the owl's eyes should look (its eyes sit about a third of the way down the stamp)
+    el.style.setProperty('--ex', Math.max(-1, Math.min(1, (px - 0.5) * 3)).toFixed(2));
+    el.style.setProperty('--ey', Math.max(-1, Math.min(1, (py - 0.35) * 3)).toFixed(2));
   };
   const untilt = (event: PointerEvent<HTMLButtonElement>) => {
     const el = event.currentTarget;
     el.style.setProperty('--ry', '0deg');
     el.style.setProperty('--rx', '0deg');
+    el.style.setProperty('--ex', '0');
+    el.style.setProperty('--ey', '0');
   };
 
   const count = STAMPS.filter((stamp) => reserved[stamp.id]).length;
@@ -108,7 +113,7 @@ export default function StampAlbum() {
     <div ref={albumRef} className={`${styles.album} ${stampFontVariables}`}>
       <div className={styles.albumHead}>
         <div>
-          <p className={styles.albumTitle}>The Sagittarius album</p>
+          <p className={styles.albumTitle}>The Sagittariuz album</p>
           <p className={styles.albumNote}>
             One stamp for every kind of work we do. Open one to see what is inside. Finish a project with us and the matching stamp is yours, postmarked with
             the delivery date.

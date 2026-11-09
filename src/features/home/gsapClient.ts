@@ -23,7 +23,7 @@ const registerPluginOnce = () => {
 const logFailureOnce = (message: string) => {
   if (hasLoggedFailure) return;
   hasLoggedFailure = true;
-  console.warn(`[Sagittarius] Animations running in safe mode: ${message}`);
+  console.warn(`[Sagittariuz] Animations running in safe mode: ${message}`);
 };
 
 export const initializeGSAP = async (): Promise<GsapLoadResult> => {

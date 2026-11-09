@@ -1,4 +1,4 @@
-# Sagittarius Portfolio: Codebase Review
+# Sagittariuz Portfolio: Codebase Review
 
 Read-only audit. No code was changed. Based on reading the source and file sizes; the app was not run and no Lighthouse audit was performed.
 
@@ -34,7 +34,7 @@ Shared pieces are the gold `#e8c547` accent, a noise overlay, a custom cursor, a
 
 ### Credibility (the most damaging)
 1. **The content is placeholder copy presented as fact.** The team (Mina Sol, Rowan Vale, and others) is fictional, and the testimonials are invented (Cinder Lane, Northglass). The stats say "200+ projects, 12+ years, 40 countries, 98% satisfaction". The hero says "12+ years", yet the team's own `/about` page shows founders who appear to be students. The footer has `+1 (555) ...` and "Tuesday, January 2025". A visitor who spots one fake claim will distrust the real work too. This is the biggest issue.
-2. **There are two identities.** "Six people" says team, "Sagittarius is a studio" says agency, and the projects say research lab and STEM initiative. The site doesn't say who it is for or what to buy.
+2. **There are two identities.** "Six people" says team, "Sagittariuz is a studio" says agency, and the projects say research lab and STEM initiative. The site doesn't say who it is for or what to buy.
 3. **Pricing ($499/mo, "5 projects") contradicts the 4-12 week project timelines**, and the "Reserve a spot" button does nothing.
 4. **Dead links and buttons:** the footer has 20 links that all go to `href="#"` (Careers, Blog, Terms, Twitter, LinkedIn and others). The three footer icons are decorative. The projects say "Continued on page 2 →" but there is no page 2, and no project has a case-study page or link.
 5. **Project images are generated SVG posters** (`makePoster`), not real screenshots. For a portfolio, you can't see any of the work.
@@ -71,7 +71,7 @@ Shared pieces are the gold `#e8c547` accent, a noise overlay, a custom cursor, a
 - No security headers or CSP are configured in `next.config.ts`.
 
 ### SEO and meta
-- `layout.tsx` hardcodes `https://sagittarius.ai`. If you don't own that domain, canonical URLs, the sitemap and Open Graph are all pointing at someone else's site.
+- `layout.tsx` hardcodes `https://sagittariuz.ai`. If you don't own that domain, canonical URLs, the sitemap and Open Graph are all pointing at someone else's site.
 - `themeColor` should be in `viewport`, and the `Organization` JSON-LD is minimal.
 - The OG image text says "Proof of work for ambitious systems", which is different from the hero copy.
 - The `/about` page, `/species-de-extinction` and the sitemap have no per-page metadata.
@@ -95,7 +95,7 @@ Shared pieces are the gold `#e8c547` accent, a noise overlay, a custom cursor, a
 
 Ordered by impact for effort:
 
-1. **Make the portfolio the proof.** Add real case-study pages for Zenith, EDITH and Sagittarius LLM, each with a live demo or video, and the stack, role and result. These are your strongest, most unique assets, so link them from the Projects cards and replace the posters with screenshots.
+1. **Make the portfolio the proof.** Add real case-study pages for Zenith, EDITH and Sagittariuz LLM, each with a live demo or video, and the stack, role and result. These are your strongest, most unique assets, so link them from the Projects cards and replace the posters with screenshots.
 2. **Pick one positioning line and one audience** (for example "AI + robotics prototyping studio for founders"). Cut or rewrite the 4-5 sections that contradict it, such as the generic services table and the pricing. Replace the pricing with "Engagement models" or "How we work together" only if you can back it.
 3. **Turn the metaphors into one cohesive system.** Right now each section is a different gimmick. A shared motion grammar (one easing, one reveal pattern) and a rule such as "one signature interaction per scroll screen" would make it feel designed rather than collected.
 4. **Add an interactive "proof" moment on the home page.** Embed a small live version of the Zenith scene or the black hole, behind a lazy import and a reduced-motion fallback. That is more memorable than the 2D hero image.

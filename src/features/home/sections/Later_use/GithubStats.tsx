@@ -35,7 +35,7 @@ export default function GithubStats() {
   }, []);
 
   const repos = [
-    { name: 'sagittarius-core', desc: 'Core AI engine and M1 reasoning module implementations.', lang: 'Python', color: '#3572A5', stars: 124, forks: 12 },
+    { name: 'sagittariuz-core', desc: 'Core AI engine and M1 reasoning module implementations.', lang: 'Python', color: '#3572A5', stars: 124, forks: 12 },
     { name: 'tars-voice-os', desc: 'ROS-based conversational node for physical actuators.', lang: 'C++', color: '#f34b7d', stars: 89, forks: 8 },
     { name: 'astrophys-sim', desc: 'WebGL and WebGPU astrophysics simulation playground.', lang: 'TypeScript', color: '#3178c6', stars: 210, forks: 45 },
   ];

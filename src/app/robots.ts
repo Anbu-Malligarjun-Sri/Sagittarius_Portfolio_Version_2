@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/',
     },
-    sitemap: 'https://sagittarius.ai/sitemap.xml',
+    sitemap: 'https://sagittariuz.ai/sitemap.xml',
   };
 }
 

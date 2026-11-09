@@ -12,7 +12,7 @@ type Command =
 
 const COMMANDS: Command[] = [
   { id: 'home', group: 'Go to', label: 'Home', kind: 'page', target: '/', keywords: 'start top landing' },
-  { id: 'services', group: 'Go to', label: 'Services', hint: 'Home', kind: 'section', target: 'services', keywords: 'design web mobile ai consulting' },
+  { id: 'services', group: 'Go to', label: 'Services', hint: 'Home', kind: 'section', target: 'services', keywords: 'design web mobile ai consulting seo' },
   { id: 'process', group: 'Go to', label: 'Process', hint: 'Home', kind: 'section', target: 'process', keywords: 'how we work steps' },
   { id: 'work', group: 'Go to', label: 'Work', hint: 'Home', kind: 'section', target: 'projects', keywords: 'projects portfolio case studies' },
   { id: 'pricing', group: 'Go to', label: 'Pricing', hint: 'Home', kind: 'section', target: 'pricing', keywords: 'plans cost' },

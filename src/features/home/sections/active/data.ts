@@ -15,6 +15,7 @@ export const SERVICES: ServiceRow[] = [
   { name: 'Brand Identity', category: 'Design', timeline: '2-3 wks', status: 'LIMITED', description: 'Naming, visual identity, and launch-ready art direction for new products.' },
   { name: 'AI Integration', category: 'Engineering', timeline: '4-6 wks', status: 'BOOKING', description: 'Workflow automation, assistant surfaces, and practical model integration.' },
   { name: 'Consulting', category: 'Strategy', timeline: '1 wk', status: 'AVAILABLE', description: 'Decision support for founders, product leads, and early engineering teams.' },
+  { name: 'SEO Optimization', category: 'Growth', timeline: '3-5 wks', status: 'AVAILABLE', description: 'Technical audits, search-ready structure, and content planning so the right people can find the work.' },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
