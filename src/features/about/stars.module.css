@@ -82,12 +82,11 @@
 }
 
 .core {
-  fill: #fff8e6;
-  transition: fill 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .halo {
-  opacity: 0.55;
+  opacity: 0.6;
   transition: opacity 0.3s ease;
 }
 
@@ -95,6 +94,36 @@
   fill: none;
   stroke: rgba(255, 248, 230, 0.55);
   stroke-width: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+/* the orbit round a star we build for: solid gold where we have started, empty and dashed where we have not */
+.orbit {
+  fill: none;
+  stroke-width: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.star[data-state='started'] .orbit {
+  stroke: rgba(232, 197, 71, 0.7);
+}
+
+.star[data-state='listening'] .orbit {
+  stroke: rgba(244, 236, 214, 0.38);
+  stroke-dasharray: 1.6 3;
+}
+
+/* a star we have not lit yet is dimmer */
+.star[data-state='listening'] .halo {
+  opacity: 0.2;
+}
+
+.star[data-state='listening'] .spike {
+  opacity: 0.28;
+}
+
+.star[data-state='listening'] .core {
+  opacity: 0.6;
 }
 
 .ring {
@@ -106,11 +135,13 @@
   transform-origin: center;
 }
 
-.star[data-active='true'] .core {
-  fill: #ffe08a;
+/* the star being looked at is always bright, lit or not */
+.star[data-active='true'] .halo {
+  opacity: 1;
 }
 
-.star[data-active='true'] .halo {
+.star[data-active='true'] .spike,
+.star[data-active='true'] .core {
   opacity: 1;
 }
 
@@ -126,13 +157,16 @@
 
 .label {
   fill: #f1e9d2;
-  opacity: 0.86;
+  opacity: 0.92;
   font-family: var(--font-paper-title), Georgia, serif;
   font-size: 20px;
   font-style: italic;
   font-weight: 600;
-  text-anchor: middle;
   transition: fill 0.3s ease, opacity 0.3s ease;
+}
+
+.label[data-state='listening'] {
+  opacity: 0.66;
 }
 
 .label[data-active='true'] {
@@ -140,22 +174,14 @@
   opacity: 1;
 }
 
-/* the touch target over each labelled star */
+/* the touch target over each star (the key below is the way in for keyboards and screen readers) */
 .hit {
   position: absolute;
   width: 46px;
   height: 46px;
-  padding: 0;
-  border: 0;
   border-radius: 50%;
-  background: none;
   transform: translate(-50%, -50%);
   -webkit-tap-highlight-color: transparent;
-}
-
-.hit:focus-visible {
-  outline: 1.5px solid #e8c547;
-  outline-offset: 2px;
 }
 
 /* Everything is on the chart by default. Once JS arms it, it waits to scroll into view: the lines are drawn, then the
@@ -184,60 +210,213 @@
   to { opacity: 1; }
 }
 
-/* ───────── the note under the chart ───────── */
-.note {
+/* ───────── the key to the plate ───────── */
+.key {
   max-width: 520px;
-  min-height: 7.6rem;
-  margin: 1.4rem auto 0;
-  padding-top: 1.1rem;
-  border-top: 1px solid rgba(244, 236, 214, 0.16);
+  margin: 1.5rem auto 0;
 }
 
-.noteKicker {
-  margin: 0;
+.keyTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 0.35rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(244, 236, 214, 0.18);
   font-family: var(--font-mono), monospace;
   font-size: 10.5px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: #e8c547;
-  animation: noteIn 0.45s ease both;
 }
 
-.noteBody {
-  margin: 0.55rem 0 0;
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: rgba(244, 236, 214, 0.55);
+}
+
+.dotLit,
+.dotDark {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+}
+
+.dotLit {
+  background: #ffe08a;
+  box-shadow: 0 0 6px rgba(255, 224, 138, 0.8);
+}
+
+.dotDark {
+  border: 1px dashed rgba(244, 236, 214, 0.65);
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  border-bottom: 1px solid rgba(244, 236, 214, 0.09);
+  transition: background 0.3s ease;
+}
+
+.row[data-open='true'] {
+  background: linear-gradient(90deg, rgba(232, 197, 71, 0.08), transparent 75%);
+  box-shadow: inset 2px 0 0 #e8c547;
+}
+
+.rowButton {
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.62rem 0.5rem 0.62rem 0.4rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.rowButton:focus-visible {
+  outline: 1.5px solid #e8c547;
+  outline-offset: -2px;
+}
+
+.numeral {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(244, 236, 214, 0.45);
+}
+
+.name {
   font-family: var(--font-paper-title), Georgia, serif;
-  font-size: 1.4rem;
+  font-size: 1.18rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.15;
+  color: #f1e9d2;
+  transition: color 0.3s ease;
+}
+
+.row[data-state='listening'] .name {
+  color: rgba(241, 233, 210, 0.78);
+}
+
+.row[data-open='true'] .name,
+.rowButton:hover .name {
+  color: #ffe08a;
+}
+
+.starName {
+  font-family: var(--font-mono), monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 214, 0.4);
+}
+
+.chip {
+  padding: 0.18rem 0.55rem;
+  border: 1px solid rgba(244, 236, 214, 0.22);
+  border-radius: 999px;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 214, 0.5);
+}
+
+.row[data-state='started'] .chip {
+  border-color: rgba(232, 197, 71, 0.6);
+  color: #e8c547;
+}
+
+.detail {
+  padding: 0.1rem 0.7rem 1rem 2.7rem;
+  animation: detailIn 0.4s ease both;
+}
+
+.friction {
+  margin: 0;
+  font-family: var(--font-paper-title), Georgia, serif;
+  font-size: 1.3rem;
   font-style: italic;
   font-weight: 500;
   line-height: 1.3;
   color: #f1e9d2;
-  animation: noteIn 0.45s ease both;
 }
 
-.noteSmall {
-  margin: 0.6rem 0 0;
+.work {
+  margin: 0.45rem 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(244, 236, 214, 0.62);
+}
+
+.link {
+  display: inline-flex;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(232, 197, 71, 0.4);
   font-family: var(--font-mono), monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: rgba(244, 236, 214, 0.42);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #e8c547;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-@keyframes noteIn {
+.link:hover {
+  color: #ffe08a;
+  border-bottom-color: #ffe08a;
+}
+
+.link:focus-visible {
+  outline: 1.5px solid #e8c547;
+  outline-offset: 3px;
+}
+
+@keyframes detailIn {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 480px) {
+  .rowButton {
+    grid-template-columns: 1.9rem minmax(0, 1fr) auto;
+  }
+  .starName {
+    display: none;
+  }
+  .detail {
+    padding-left: 2.5rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .twinkle,
   .star[data-active='true'] .ring,
-  .noteKicker,
-  .noteBody,
+  .detail,
   .plate[data-in='true'] .star,
   .plate[data-in='true'] .label {
     animation: none;
   }
   .far,
-  .edge {
+  .edge,
+  .row {
     transition: none;
   }
   .plate[data-armed='true']:not([data-in='true']) .edge {

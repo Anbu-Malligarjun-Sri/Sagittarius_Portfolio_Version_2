@@ -27,7 +27,7 @@ export default function AboutSection({ activeSection }: AboutSectionProps) {
       </div>
 
       <div className="mx-auto mt-12 grid max-w-7xl items-start gap-12 px-0 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
-        <div className="order-2 lg:sticky lg:top-32 lg:order-1">
+        <div className="order-2 lg:order-1">
           <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-[#f5f0e8]/45">Who we are building for</p>
           <div className="mt-8">
             <StarChart />

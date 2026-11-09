@@ -6,9 +6,11 @@ import { CHART, CHART_EDGES, CHART_STARS, DEC_TICKS, ECLIPTIC, FIELDS, RA_TICKS 
 import styles from './stars.module.css';
 
 /*
- * A star chart: the "teapot" of the archer constellation, with five of its real stars standing for the kinds of work we
- * are building for. Hover, focus or tap a star and it lights, with the lines that meet at it, and a catalogue note below
- * gives the star's traditional name and a small everyday example of the friction we want to take out of that work.
+ * A star chart that tells the truth about where we are. It is the "teapot" of the archer constellation, drawn from its
+ * real stars. Each of the six kinds of work we are building for is a star: the ones where we have made a first thing are
+ * lit, and the rest are still dark, with an empty orbit, because we are listening and nothing is built there yet.
+ * The key under the chart lists them all, and opens the one you choose: a small everyday example of the friction we want
+ * to take out of that work, what exists, and where to go next (the work itself, or a conversation with us).
  */
 
 const byId = new Map(CHART_STARS.map((star) => [star.id, star]));
@@ -23,24 +25,37 @@ function seeded(seed: number) {
   };
 }
 
+// The Milky Way runs through this part of the sky, from upper left to lower right, so faint stars crowd along that band.
+const BAND = { x: 290, y: 235, angle: 27, width: 70 };
+const bandDistance = (x: number, y: number) => {
+  const a = (BAND.angle * Math.PI) / 180;
+  return Math.abs((x - BAND.x) * -Math.sin(a) + (y - BAND.y) * Math.cos(a));
+};
+
 // faint background stars, kept clear of the chart's stars, names and edge marks
 const BACKDROP = (() => {
   const rand = seeded(1846);
   const rooms = [
     ...CHART_STARS.map((star) => ({ x1: star.x - 20, x2: star.x + 20, y1: star.y - 20, y2: star.y + 20 })),
     ...FIELDS.map((field) => {
-      const half = field.label.length * 5.2 + 10;
-      return { x1: field.labelAt.x - half, x2: field.labelAt.x + half, y1: field.labelAt.y - 24, y2: field.labelAt.y + 10 };
+      const wide = field.label.length * 10.4 + 12;
+      const { x, y, anchor = 'middle' } = field.labelAt;
+      const x1 = anchor === 'start' ? x - 6 : anchor === 'end' ? x - wide : x - wide / 2;
+      return { x1, x2: x1 + wide, y1: y - 24, y2: y + 10 };
     }),
+    { x1: 330, x2: 500, y1: 380, y2: 404 }, // the note about the galactic centre
   ];
   const sky: { x: number; y: number; r: number; o: number; twinkle: boolean; delay: number }[] = [];
-  while (sky.length < 110) {
+  let guard = 0;
+  while (sky.length < 130 && guard++ < 4000) {
     const x = 34 + rand() * (CHART.w - 68);
     const y = 38 + rand() * (CHART.h - 76);
+    const crowd = 0.3 + 1.2 * Math.exp(-((bandDistance(x, y) / BAND.width) ** 2) / 2);
     const r = 0.4 + rand() * 0.9;
     const o = 0.25 + rand() * 0.55;
     const twinkle = rand() > 0.72;
     const delay = rand() * 5;
+    if (rand() * 1.5 > crowd) continue;
     if (rooms.some((room) => x > room.x1 && x < room.x2 && y > room.y1 && y < room.y2)) continue;
     sky.push({ x: +x.toFixed(1), y: +y.toFixed(1), r: +r.toFixed(2), o: +o.toFixed(2), twinkle, delay: +delay.toFixed(2) });
   }
@@ -50,9 +65,10 @@ const BACKDROP = (() => {
 export default function StarChart() {
   const uid = useId().replace(/:/g, '');
   const plateRef = useRef<HTMLDivElement>(null);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const field = FIELDS.find((f) => f.id === activeId) ?? null;
-  const hot = field?.starId ?? null;
+  const [openId, setOpenId] = useState<string>(FIELDS[0].id); // the entry that is open in the key
+  const [peekId, setPeekId] = useState<string | null>(null); // the star the pointer or keyboard is on, before it is chosen
+  const lit = FIELDS.find((f) => f.id === (peekId ?? openId))!;
+  const hot = lit.starId;
 
   // The lines draw themselves, and the stars come out, the first time the chart scrolls into view.
   useEffect(() => {
@@ -83,8 +99,8 @@ export default function StarChart() {
     event.currentTarget.style.setProperty('--px', '0');
     event.currentTarget.style.setProperty('--py', '0');
   };
-  // The page's typewriter listens for keys on the whole window and cancels Enter, Space and Tab; keep those for the stars.
-  const keepKeys = (event: KeyboardEvent<HTMLButtonElement>) => {
+  // The page's typewriter listens for keys on the whole window and cancels Enter, Space and Tab; keep those for these controls.
+  const keepKeys = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === 'Enter' || event.key === ' ' || event.key === 'Tab') event.stopPropagation();
   };
 
@@ -95,17 +111,24 @@ export default function StarChart() {
           className={styles.svg}
           viewBox={`0 0 ${CHART.w} ${CHART.h}`}
           role="img"
-          aria-label="A star chart. Five of its stars stand for the kinds of work we are building for: biology, physics, chemistry, mathematics, and cafés, shops and homes."
+          aria-label="A star chart. Each of six stars stands for a kind of work we are building for. Two are lit, where we have made a first thing, and four are dark, where nothing is built yet. The key below lists them."
         >
           <defs>
-            <radialGradient id={`${uid}-halo`}>
-              <stop offset="0" stopColor="#fff3cf" stopOpacity="0.5" />
-              <stop offset="1" stopColor="#fff3cf" stopOpacity="0" />
+            <radialGradient id={`${uid}-band`}>
+              <stop offset="0" stopColor="#f4ecd6" stopOpacity="0.14" />
+              <stop offset="1" stopColor="#f4ecd6" stopOpacity="0" />
             </radialGradient>
+            {CHART_STARS.map((star) => (
+              <radialGradient key={star.id} id={`${uid}-h-${star.id}`}>
+                <stop offset="0" stopColor={star.tint} stopOpacity="0.55" />
+                <stop offset="1" stopColor={star.tint} stopOpacity="0" />
+              </radialGradient>
+            ))}
           </defs>
 
-          {/* the distant sky: graticule, the Sun's path, and faint stars */}
+          {/* the distant sky: the Milky Way, graticule, the Sun's path, and faint stars */}
           <g className={styles.far}>
+            <ellipse cx={BAND.x} cy={BAND.y} rx="320" ry={BAND.width} transform={`rotate(${BAND.angle} ${BAND.x} ${BAND.y})`} fill={`url(#${uid}-band)`} />
             <g className={styles.grid}>
               {RA_TICKS.map((tick) => (
                 <path key={tick.label} d={`M${tick.x} 16V424`} />
@@ -150,6 +173,9 @@ export default function StarChart() {
               </text>
             </g>
           ))}
+          <text className={styles.tick} x="496" y="393" textAnchor="end">
+            GALACTIC CENTRE →
+          </text>
 
           {/* the teapot's lines */}
           {CHART_EDGES.map(([from, to], i) => {
@@ -167,58 +193,99 @@ export default function StarChart() {
             );
           })}
 
-          {/* the stars */}
+          {/* the stars: lit where we have made something, dark (with an empty orbit) where we are still listening */}
           {CHART_STARS.map((star, i) => {
-            const isField = FIELDS.some((f) => f.starId === star.id);
-            const lit = hot === star.id;
-            const reach = star.r * (isField ? 5.5 : 4);
+            const field = FIELDS.find((f) => f.starId === star.id);
+            const state = field ? field.status : 'plain';
+            const reach = star.r * (field ? 5.5 : 4);
             return (
-              <g key={star.id} className={styles.star} data-active={lit ? 'true' : 'false'} style={css({ '--s': i })}>
-                <circle className={styles.halo} cx={star.x} cy={star.y} r={star.r * 4.6} fill={`url(#${uid}-halo)`} />
+              <g key={star.id} className={styles.star} data-state={state} data-active={hot === star.id ? 'true' : 'false'} style={css({ '--s': i })}>
+                <circle className={styles.halo} cx={star.x} cy={star.y} r={star.r * 4.6} fill={`url(#${uid}-h-${star.id})`} />
                 <path className={styles.spike} d={`M${star.x - reach} ${star.y}H${star.x + reach}M${star.x} ${star.y - reach}V${star.y + reach}`} />
-                <circle className={styles.core} cx={star.x} cy={star.y} r={star.r} />
-                {isField ? <circle className={styles.ring} cx={star.x} cy={star.y} r={star.r + 7} /> : null}
+                {field ? <circle className={styles.orbit} cx={star.x} cy={star.y} r={star.r + 7.5} /> : null}
+                <circle className={styles.core} cx={star.x} cy={star.y} r={star.r} fill={star.tint} />
+                {field ? <circle className={styles.ring} cx={star.x} cy={star.y} r={star.r + 7} /> : null}
               </g>
             );
           })}
 
           {/* what each one stands for */}
           {FIELDS.map((f, i) => (
-            <text key={f.id} className={styles.label} data-active={hot === f.starId ? 'true' : 'false'} style={css({ '--s': i + 3 })} x={f.labelAt.x} y={f.labelAt.y}>
+            <text
+              key={f.id}
+              className={styles.label}
+              data-state={f.status}
+              data-active={hot === f.starId ? 'true' : 'false'}
+              style={css({ '--s': i + 3 })}
+              x={f.labelAt.x}
+              y={f.labelAt.y}
+              textAnchor={f.labelAt.anchor ?? 'middle'}
+            >
               {f.label}
             </text>
           ))}
         </svg>
 
+        {/* the touch target over each star (the key below is the keyboard and screen reader way in) */}
         {FIELDS.map((f) => {
           const star = byId.get(f.starId)!;
           return (
-            <button
+            <div
               key={f.id}
-              type="button"
-              className={styles.hit}
-              style={{ left: `${(star.x / CHART.w) * 100}%`, top: `${(star.y / CHART.h) * 100}%` }}
-              aria-pressed={activeId === f.id}
-              aria-label={`${f.label}, the star ${f.starName}. Where friction hides: ${f.friction}`}
+              aria-hidden="true"
+              className={`${styles.hit} magnetic-target`}
               data-cursor-scale="1.6"
-              onPointerEnter={() => setActiveId(f.id)}
-              onFocus={() => setActiveId(f.id)}
-              onClick={() => setActiveId(f.id)}
-              onKeyDown={keepKeys}
+              style={{ left: `${(star.x / CHART.w) * 100}%`, top: `${(star.y / CHART.h) * 100}%` }}
+              onPointerEnter={() => setOpenId(f.id)}
+              onClick={() => setOpenId(f.id)}
             />
           );
         })}
       </div>
 
-      {/* the catalogue note for the star that is lit */}
-      <div className={styles.note}>
-        <p key={`k-${activeId ?? 'none'}`} className={styles.noteKicker}>
-          {field ? `${field.label} · ${field.starName}` : 'The work we are mapping'}
+      {/* the key to the plate */}
+      <div className={styles.key}>
+        <p className={styles.keyTitle}>
+          <span>Key to the plate</span>
+          <span className={styles.legend}>
+            <i className={styles.dotLit} /> first work <i className={styles.dotDark} /> listening
+          </span>
         </p>
-        <p key={`b-${activeId ?? 'none'}`} className={styles.noteBody}>
-          {field ? field.friction : 'Friction is the small, daily drag on good work. Each star is a kind of work where we think it hides.'}
-        </p>
-        <p className={styles.noteSmall}>{field ? 'An everyday example of friction in this kind of work.' : ' '}</p>
+        <ul className={styles.rows}>
+          {FIELDS.map((f) => {
+            const open = openId === f.id;
+            return (
+              <li key={f.id} className={styles.row} data-open={open ? 'true' : 'false'} data-state={f.status}>
+                <button
+                  type="button"
+                  className={styles.rowButton}
+                  aria-expanded={open}
+                  data-cursor-scale="1.4"
+                  onClick={() => setOpenId(f.id)}
+                  onPointerEnter={() => setPeekId(f.id)}
+                  onPointerLeave={() => setPeekId(null)}
+                  onFocus={() => setPeekId(f.id)}
+                  onBlur={() => setPeekId(null)}
+                  onKeyDown={keepKeys}
+                >
+                  <span className={styles.numeral}>{f.numeral}</span>
+                  <span className={styles.name}>{f.label}</span>
+                  <span className={styles.starName}>{f.starName}</span>
+                  <span className={styles.chip}>{f.status === 'started' ? 'First work' : 'Listening'}</span>
+                </button>
+                {open ? (
+                  <div className={styles.detail}>
+                    <p className={styles.friction}>{f.friction}</p>
+                    <p className={styles.work}>{f.work}</p>
+                    <a className={styles.link} href={f.status === 'started' ? '#projects' : '#contact'} data-cursor-scale="1.4" onKeyDown={keepKeys}>
+                      {f.status === 'started' ? 'See the work' : 'Tell us what slows you down'} <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );

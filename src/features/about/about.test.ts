@@ -118,12 +118,15 @@ describe('the letter', () => {
 describe('the star chart', () => {
   const ids = new Set(CHART_STARS.map((star) => star.id));
 
-  it('has one star for each of the four sciences, plus everyday places, in the order the letter names them', () => {
-    expect(FIELDS.map((field) => field.label)).toEqual([...FOR_WHOM]);
+  it('names the four sciences and everyday places in the order the letter does, then adds the companion', () => {
+    const labels = FIELDS.map((field) => field.label);
+    expect(labels.filter((label) => label !== 'Companion')).toEqual([...FOR_WHOM]);
+    expect(labels).toContain('Companion');
   });
 
   it('gives every field a different, real star and a small everyday example of friction', () => {
     expect(new Set(FIELDS.map((field) => field.starId)).size).toBe(FIELDS.length);
+    expect(new Set(FIELDS.map((field) => field.numeral)).size).toBe(FIELDS.length);
     for (const field of FIELDS) {
       expect(ids.has(field.starId)).toBe(true);
       expect(field.starName.length).toBeGreaterThan(3);
@@ -131,6 +134,21 @@ describe('the star chart', () => {
       // an everyday frustration, not a claim: no percentages, no numbers, no "faster" or "better"
       expect(field.friction).not.toMatch(/\d+%|\d{2,}|faster|better|best/i);
     }
+  });
+
+  it('only shows a star as lit where there is real work, and that matches what the letter says we have built', () => {
+    const started = FIELDS.filter((field) => field.status === 'started');
+    // the letter says "two small things": an AI that reads deep-sea DNA, and a local AI assistant
+    expect(started.map((field) => field.id).sort()).toEqual(['biology', 'companion']);
+    expect(LETTER_TEXT).toMatch(/two small things/i);
+    expect(started.find((field) => field.id === 'biology')!.work).toMatch(/deep-sea DNA/i);
+    expect(started.find((field) => field.id === 'companion')!.work).toMatch(/local AI assistant/i);
+    // and the dark ones say plainly that nothing is built there yet, rather than implying it
+    for (const field of FIELDS.filter((f) => f.status === 'listening')) expect(field.work).toMatch(/nothing built here yet/i);
+  });
+
+  it('does not list the symposium website or any showcase site as work', () => {
+    for (const field of FIELDS) expect(`${field.work} ${field.friction}`).not.toMatch(/symposium|techazura/i);
   });
 
   it('joins stars that exist, once each, into one connected pattern', () => {
@@ -158,13 +176,16 @@ describe('the star chart', () => {
       expect(star.x).toBeLessThan(CHART.w - 30);
       expect(star.y).toBeGreaterThan(40);
       expect(star.y).toBeLessThan(CHART.h - 40);
+      expect(star.tint).toMatch(/^#[0-9a-f]{6}$/i);
     }
     for (const field of FIELDS) {
-      const half = field.label.length * 5.2 + 10; // a generous guess at half the width of the name, in drawing units
-      expect(field.labelAt.x - half).toBeGreaterThan(22);
-      expect(field.labelAt.x + half).toBeLessThan(CHART.w - 22);
-      expect(field.labelAt.y).toBeGreaterThan(30);
-      expect(field.labelAt.y).toBeLessThan(CHART.h - 24);
+      const wide = field.label.length * 10.4 + 12; // a generous guess at the width of the name, in drawing units
+      const { x, y, anchor = 'middle' } = field.labelAt;
+      const left = anchor === 'start' ? x - 6 : anchor === 'end' ? x - wide : x - wide / 2;
+      expect(left).toBeGreaterThan(22);
+      expect(left + wide).toBeLessThan(CHART.w - 22);
+      expect(y).toBeGreaterThan(30);
+      expect(y).toBeLessThan(CHART.h - 24);
     }
   });
 });
