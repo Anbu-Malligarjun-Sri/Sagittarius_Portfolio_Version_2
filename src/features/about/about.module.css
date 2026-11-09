@@ -1,0 +1,158 @@
+/* The box the live paper is drawn in. Its shape is set by the sheet's length once the paper has been built. */
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+  aspect-ratio: 0.74;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  outline: none;
+  transition: opacity 0.6s ease;
+  /* a finger can still scroll the page up and down; press and hold squeezes the paper */
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stage[data-mode='live'] .canvas {
+  opacity: 1;
+}
+
+/* while the paper is being made: the outline of a sheet on the desk */
+.stage[data-mode='loading']::before {
+  content: '';
+  position: absolute;
+  inset: 5% 11%;
+  border: 1px dashed rgba(247, 240, 223, 0.38);
+  background: rgba(247, 240, 223, 0.07);
+  animation: waiting 1.8s ease-in-out infinite;
+}
+
+@keyframes waiting {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.stage[data-mode='static'] {
+  aspect-ratio: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage[data-mode='loading']::before {
+    animation: none;
+  }
+}
+
+.stage[data-mode='static'] .canvas {
+  display: none;
+}
+
+/* warm light from a desk lamp, behind the paper */
+.lamp {
+  position: relative;
+}
+
+.lamp::before {
+  content: '';
+  position: absolute;
+  inset: -8% -10%;
+  pointer-events: none;
+  background: radial-gradient(60% 50% at 50% 42%, rgba(255, 214, 140, 0.17), transparent 72%);
+}
+
+/* ───────── the printed letter, for when the paper cannot be live ───────── */
+.printed {
+  position: relative;
+  padding: clamp(1.6rem, 5vw, 3rem);
+  border-radius: 2px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 30%),
+    #f4ecd9;
+  color: #1c2434;
+  font-family: var(--font-paper-body), Georgia, serif;
+  font-size: clamp(1rem, 2.2vw, 1.1rem);
+  line-height: 1.55;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45), inset 0 0 60px rgba(120, 90, 40, 0.12);
+  transform: rotate(-0.5deg);
+}
+
+.printed header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(28, 36, 52, 0.4);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.printed h3 {
+  margin: 0 0 1.2rem;
+  font-family: var(--font-paper-title), Georgia, serif;
+  font-size: clamp(1.7rem, 4.2vw, 2.3rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.printed p {
+  margin: 0 0 0.9rem;
+}
+
+.printed .promiseLead {
+  margin-bottom: 0.2rem;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.printed ul {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-handwriting), cursive;
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.printed li::before {
+  content: '✓';
+  margin-right: 0.6rem;
+  color: #b8431f;
+}
+
+.printed .closing {
+  margin-top: 1.4rem;
+  font-family: var(--font-paper-title), Georgia, serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.printed .signature {
+  margin: 1rem 0 0;
+  font-family: var(--font-handwriting), cursive;
+  font-size: 2.2rem;
+  line-height: 1.1;
+}
+
+.printed .signoff {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
