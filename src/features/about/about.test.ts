@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { FOR_WHOM, LETTER, LETTER_TEXT } from './copy';
 import { PaperSim } from './paperPhysics';
+import { CHART, CHART_EDGES, CHART_STARS, FIELDS } from './stars';
 
 const run = (sim: PaperSim, frames: number) => {
   let last = { disp: 0, speed: 0 };
@@ -104,5 +105,66 @@ describe('the letter', () => {
     const words = LETTER_TEXT.split(/\s+/).length;
     expect(words).toBeGreaterThan(120);
     expect(words).toBeLessThan(260);
+  });
+
+  it('only lists work that is really ours to show: the two early projects, and not the symposium website', () => {
+    expect(LETTER_TEXT).not.toMatch(/symposium|techazura/i);
+    expect(LETTER_TEXT).toMatch(/two small things/i);
+    expect(LETTER_TEXT).toMatch(/deep-sea DNA/i);
+    expect(LETTER_TEXT).toMatch(/local AI assistant/i);
+  });
+});
+
+describe('the star chart', () => {
+  const ids = new Set(CHART_STARS.map((star) => star.id));
+
+  it('has one star for each of the four sciences, plus everyday places, in the order the letter names them', () => {
+    expect(FIELDS.map((field) => field.label)).toEqual([...FOR_WHOM]);
+  });
+
+  it('gives every field a different, real star and a small everyday example of friction', () => {
+    expect(new Set(FIELDS.map((field) => field.starId)).size).toBe(FIELDS.length);
+    for (const field of FIELDS) {
+      expect(ids.has(field.starId)).toBe(true);
+      expect(field.starName.length).toBeGreaterThan(3);
+      expect(field.friction.length).toBeGreaterThan(15);
+      // an everyday frustration, not a claim: no percentages, no numbers, no "faster" or "better"
+      expect(field.friction).not.toMatch(/\d+%|\d{2,}|faster|better|best/i);
+    }
+  });
+
+  it('joins stars that exist, once each, into one connected pattern', () => {
+    const seen = new Set<string>();
+    for (const [a, b] of CHART_EDGES) {
+      expect(ids.has(a) && ids.has(b)).toBe(true);
+      expect(a).not.toBe(b);
+      const key = [a, b].sort().join('|');
+      expect(seen.has(key)).toBe(false);
+      seen.add(key);
+    }
+    const reach = new Set<string>([CHART_STARS[0].id]);
+    for (let pass = 0; pass < CHART_STARS.length; pass++) {
+      for (const [a, b] of CHART_EDGES) {
+        if (reach.has(a)) reach.add(b);
+        if (reach.has(b)) reach.add(a);
+      }
+    }
+    expect(reach.size).toBe(CHART_STARS.length);
+  });
+
+  it('keeps every star and every name inside the frame', () => {
+    for (const star of CHART_STARS) {
+      expect(star.x).toBeGreaterThan(30);
+      expect(star.x).toBeLessThan(CHART.w - 30);
+      expect(star.y).toBeGreaterThan(40);
+      expect(star.y).toBeLessThan(CHART.h - 40);
+    }
+    for (const field of FIELDS) {
+      const half = field.label.length * 5.2 + 10; // a generous guess at half the width of the name, in drawing units
+      expect(field.labelAt.x - half).toBeGreaterThan(22);
+      expect(field.labelAt.x + half).toBeLessThan(CHART.w - 22);
+      expect(field.labelAt.y).toBeGreaterThan(30);
+      expect(field.labelAt.y).toBeLessThan(CHART.h - 24);
+    }
   });
 });

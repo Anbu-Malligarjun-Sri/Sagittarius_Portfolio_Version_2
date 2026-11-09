@@ -1,0 +1,250 @@
+/* The chart: hairline ivory on deep blue, like a plate from an observatory. */
+.plate {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+  aspect-ratio: 520 / 440;
+  border: 1px solid rgba(244, 236, 214, 0.14);
+  border-radius: 3px;
+  background: radial-gradient(110% 85% at 50% 38%, #141d33 0%, #0a0f1d 55%, #060810 100%);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), inset 0 0 90px rgba(0, 0, 0, 0.5);
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* the distant sky shifts slightly against the chart as the cursor moves */
+.far {
+  transform: translate(calc(var(--px, 0) * -5px), calc(var(--py, 0) * -4px));
+  transition: transform 0.5s ease-out;
+}
+
+.grid path {
+  fill: none;
+  stroke: rgba(244, 236, 214, 0.11);
+  stroke-width: 0.5;
+  stroke-dasharray: 2 4;
+}
+
+.ecliptic {
+  fill: none;
+  stroke: rgba(232, 197, 71, 0.38);
+  stroke-width: 0.6;
+  stroke-dasharray: 4 5;
+}
+
+.tick {
+  fill: rgba(244, 236, 214, 0.5);
+  font-family: var(--font-mono), monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+}
+
+.frame {
+  fill: none;
+  stroke: rgba(244, 236, 214, 0.32);
+  stroke-width: 0.6;
+}
+
+.back {
+  fill: #f4ecd6;
+}
+
+.twinkle {
+  animation: twinkle 5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.95; }
+}
+
+/* the teapot's lines: each is drawn from one star to the next */
+.edge {
+  fill: none;
+  stroke: rgba(244, 236, 214, 0.42);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke 0.4s ease, stroke-width 0.4s ease;
+}
+
+.edge[data-hot='true'] {
+  stroke: #e8c547;
+  stroke-width: 1.3;
+}
+
+.core {
+  fill: #fff8e6;
+  transition: fill 0.3s ease;
+}
+
+.halo {
+  opacity: 0.55;
+  transition: opacity 0.3s ease;
+}
+
+.spike {
+  fill: none;
+  stroke: rgba(255, 248, 230, 0.55);
+  stroke-width: 0.6;
+}
+
+.ring {
+  fill: none;
+  stroke: #e8c547;
+  stroke-width: 0.9;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.star[data-active='true'] .core {
+  fill: #ffe08a;
+}
+
+.star[data-active='true'] .halo {
+  opacity: 1;
+}
+
+.star[data-active='true'] .ring {
+  opacity: 0.9;
+  animation: ping 2.4s ease-out infinite;
+}
+
+@keyframes ping {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+.label {
+  fill: #f1e9d2;
+  opacity: 0.86;
+  font-family: var(--font-paper-title), Georgia, serif;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 600;
+  text-anchor: middle;
+  transition: fill 0.3s ease, opacity 0.3s ease;
+}
+
+.label[data-active='true'] {
+  fill: #ffe08a;
+  opacity: 1;
+}
+
+/* the touch target over each labelled star */
+.hit {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  transform: translate(-50%, -50%);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hit:focus-visible {
+  outline: 1.5px solid #e8c547;
+  outline-offset: 2px;
+}
+
+/* Everything is on the chart by default. Once JS arms it, it waits to scroll into view: the lines are drawn, then the
+   stars and names come out. */
+.plate[data-armed='true']:not([data-in='true']) .edge {
+  stroke-dashoffset: 1;
+}
+
+.plate[data-armed='true']:not([data-in='true']) .star,
+.plate[data-armed='true']:not([data-in='true']) .label {
+  opacity: 0;
+}
+
+.plate[data-in='true'] .edge {
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.4, 0, 0.2, 1) calc(0.3s + var(--i, 0) * 0.17s), stroke 0.4s ease, stroke-width 0.4s ease;
+}
+
+.plate[data-in='true'] .star,
+.plate[data-in='true'] .label {
+  animation: appear 0.9s ease both;
+  animation-delay: calc(0.15s + var(--s, 0) * 0.14s);
+}
+
+@keyframes appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ───────── the note under the chart ───────── */
+.note {
+  max-width: 520px;
+  min-height: 7.6rem;
+  margin: 1.4rem auto 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(244, 236, 214, 0.16);
+}
+
+.noteKicker {
+  margin: 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #e8c547;
+  animation: noteIn 0.45s ease both;
+}
+
+.noteBody {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-paper-title), Georgia, serif;
+  font-size: 1.4rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #f1e9d2;
+  animation: noteIn 0.45s ease both;
+}
+
+.noteSmall {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(244, 236, 214, 0.42);
+}
+
+@keyframes noteIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twinkle,
+  .star[data-active='true'] .ring,
+  .noteKicker,
+  .noteBody,
+  .plate[data-in='true'] .star,
+  .plate[data-in='true'] .label {
+    animation: none;
+  }
+  .far,
+  .edge {
+    transition: none;
+  }
+  .plate[data-armed='true']:not([data-in='true']) .edge {
+    stroke-dashoffset: 0;
+  }
+  .plate[data-armed='true']:not([data-in='true']) .star,
+  .plate[data-armed='true']:not([data-in='true']) .label {
+    opacity: 1;
+  }
+}
