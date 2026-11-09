@@ -17,7 +17,7 @@ export const LETTER = {
   headline: 'Every invention begins with someone tired of the hard way.',
   paragraphs: [
     'The wheel took the weight out of carrying. The map took the guesswork out of wandering. Every tool we love is friction, quietly removed.',
-    'We are Sagittariuz: three of us, started in 2026. That makes us new, and we would rather say so than dress it up. Our idea is small and stubborn: use AI to take the friction out of ordinary days, first for cafés, shops and homes, and, closest to our hearts, for science.',
+    'We are Sagittariuz: three of us, started in 2026. That makes us new, and we would rather say so than dress it up. Our idea is small and stubborn: use AI to take the friction out of day-to-day work, and to begin where we care most, in science.',
     'Biologists, physicists, chemists, mathematicians, this is for you. Lately, machines have begun to settle some questions that took people years, and awe and grief are both fair responses. We do not want a louder machine. We want a kinder colleague: one that talks like a person, knows when it is unsure, and remembers that you are tired, curious, and allowed to be wrong.',
     'So far we have built two small things: an AI that reads deep-sea DNA, and a local AI assistant. They are early. Judge us by them.',
   ],
@@ -29,6 +29,6 @@ export const LETTER = {
 };
 
 /** Who the letter is for, shown as little notes beside the paper. */
-export const FOR_WHOM = ['Biology', 'Physics', 'Chemistry', 'Mathematics', 'Cafés, shops & homes'] as const;
+export const FOR_WHOM = ['Biology', 'Physics', 'Chemistry', 'Mathematics'] as const;
 
 export const LETTER_TEXT = [LETTER.headline, ...LETTER.paragraphs, `${LETTER.promisesLead} ${LETTER.promises.join(' ')}`, LETTER.closing, `${LETTER.signature}. ${LETTER.signoff}`].join('\n\n');

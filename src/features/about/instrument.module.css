@@ -1,0 +1,528 @@
+/* The instrument: hairline ivory and gold on near-black, like the readout of a laboratory instrument. */
+.panel {
+  /* each field sets its own type for the figure */
+  --f-ui: var(--font-mono), monospace;
+  --f-label: var(--font-mono), monospace;
+  --fs: 1;
+  --label-style: normal;
+  --label-weight: 700;
+  --title-case: uppercase;
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+  aspect-ratio: 520 / 292;
+  border: 1px solid color-mix(in srgb, var(--accent, #e8c547) 22%, rgba(244, 236, 214, 0.1));
+  border-radius: 3px;
+  background: radial-gradient(120% 100% at 50% 30%, color-mix(in srgb, var(--accent, #e8c547) 10%, #0b1019) 0%, #0a0f1b 58%, #060810 100%);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), inset 0 0 70px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.5s ease;
+}
+
+/* physics: a spectrometer's condensed labels */
+.panel[data-field='physics'] {
+  --f-ui: var(--font-field-physics), 'Arial Narrow', sans-serif;
+  --f-label: var(--font-field-physics), 'Arial Narrow', sans-serif;
+  --fs: 1.22;
+  --label-weight: 600;
+}
+
+/* chemistry: a lab notebook */
+.panel[data-field='chemistry'] {
+  --f-ui: var(--font-field-chemistry), Georgia, serif;
+  --f-label: var(--font-field-chemistry), Georgia, serif;
+  --fs: 1;
+  --label-style: italic;
+  --label-weight: 600;
+}
+
+/* mathematics: typeset maths */
+.panel[data-field='mathematics'] {
+  --f-ui: var(--font-field-mathematics), 'Times New Roman', serif;
+  --f-label: var(--font-field-mathematics), 'Times New Roman', serif;
+  --fs: 1.28;
+  --label-style: italic;
+  --label-weight: 400;
+  --title-case: none;
+}
+
+/* the companion: a plain, friendly voice */
+.panel[data-field='companion'] {
+  --f-ui: var(--font-field-companion), system-ui, sans-serif;
+  --f-label: var(--font-field-companion), system-ui, sans-serif;
+  --fs: 1.04;
+  --label-style: italic;
+  --label-weight: 500;
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.figure {
+  fill: var(--accent, #e8c547);
+  font-family: var(--f-ui);
+  font-size: calc(9.5px * var(--fs));
+  letter-spacing: 0.22em;
+}
+
+.tick {
+  fill: rgba(244, 236, 214, 0.55);
+  font-family: var(--f-ui);
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: 0.1em;
+}
+
+.axisTitle {
+  fill: rgba(244, 236, 214, 0.46);
+  font-family: var(--f-ui);
+  font-size: calc(8.5px * var(--fs));
+  letter-spacing: 0.16em;
+  text-transform: var(--title-case);
+}
+
+.grid path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent, #e8c547) 16%, transparent);
+  stroke-width: 0.6;
+}
+
+/* the visible light, as a spectrometer shows it */
+.strip {
+  opacity: 0.92;
+}
+
+.axis {
+  fill: none;
+  stroke: rgba(244, 236, 214, 0.4);
+  stroke-width: 0.8;
+}
+
+.guide {
+  fill: none;
+  stroke: rgba(232, 197, 71, 0.4);
+  stroke-width: 0.7;
+  stroke-dasharray: 3 4;
+}
+
+/* the traces */
+.line {
+  fill: none;
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.fill {
+  stroke: none;
+}
+
+.labels {
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.note {
+  font-family: var(--f-label);
+  font-size: calc(12px * var(--fs));
+  font-style: var(--label-style);
+  font-weight: var(--label-weight);
+}
+
+.base {
+  font-family: var(--f-label);
+  font-size: calc(9.5px * var(--fs));
+  font-weight: 700;
+}
+
+/* The traces are drawn in the first time the instrument scrolls into view. */
+.panel[data-armed='true']:not([data-in='true']) .line {
+  stroke-dashoffset: 1;
+}
+
+.panel[data-armed='true']:not([data-in='true']) .fill {
+  opacity: 0 !important;
+}
+
+.panel[data-in='true'] .line {
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
+}
+
+/* ───────── the friction control ───────── */
+.control {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1rem;
+  max-width: 520px;
+  margin: 1.1rem auto 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 214, 0.55);
+}
+
+.control > span {
+  padding-bottom: 0.2rem;
+}
+
+.rangeWrap {
+  display: block;
+}
+
+.rangeTitle {
+  display: block;
+  margin-bottom: 0.15rem;
+  text-align: center;
+  color: var(--accent, #e8c547);
+  transition: color 0.5s ease;
+}
+
+.range {
+  display: block;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  padding: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(244, 236, 214, 0.3) 0 1px, transparent 1px 10%) center / 100% 9px no-repeat,
+    linear-gradient(rgba(244, 236, 214, 0.38), rgba(244, 236, 214, 0.38)) center / 100% 1px no-repeat;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 22px;
+  background: transparent;
+}
+
+.range::-webkit-slider-thumb {
+  width: 9px;
+  height: 22px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--accent, #e8c547);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent, #e8c547) 22%, transparent);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.range::-moz-range-track {
+  height: 22px;
+  background: transparent;
+}
+
+.range::-moz-range-thumb {
+  width: 9px;
+  height: 22px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--accent, #e8c547);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent, #e8c547) 22%, transparent);
+}
+
+.range:focus-visible {
+  outline: 1.5px solid var(--accent, #e8c547);
+  outline-offset: 4px;
+}
+
+.caption {
+  max-width: 520px;
+  margin: 0.9rem auto 0;
+  font-family: var(--font-mono), monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: rgba(244, 236, 214, 0.4);
+}
+
+/* ───────── the list ───────── */
+.key {
+  max-width: 520px;
+  margin: 1.6rem auto 0;
+}
+
+.keyTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 0.35rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(244, 236, 214, 0.18);
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #e8c547;
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: rgba(244, 236, 214, 0.55);
+}
+
+.dotLit,
+.dotDark {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin: 0 0.4rem 0 0.7rem;
+  border-radius: 50%;
+}
+
+.dotLit {
+  background: #e8c547;
+  box-shadow: 0 0 6px rgba(232, 197, 71, 0.8);
+}
+
+.dotDark {
+  border: 1px dashed rgba(244, 236, 214, 0.65);
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  border-bottom: 1px solid rgba(244, 236, 214, 0.09);
+  transition: background 0.3s ease;
+}
+
+.row[data-open='true'] {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 11%, transparent), transparent 75%);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.rowButton {
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr) 5.4rem auto;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.55rem 0.5rem 0.55rem 0.4rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.rowButton:focus-visible {
+  outline: 1.5px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.numeral {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(244, 236, 214, 0.45);
+}
+
+.name {
+  font-family: var(--font-paper-title), Georgia, serif;
+  font-size: 1.18rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.15;
+  color: #f1e9d2;
+  transition: color 0.3s ease;
+}
+
+.row[data-state='listening'] .name {
+  color: rgba(241, 233, 210, 0.78);
+}
+
+.row[data-open='true'] .name,
+.rowButton:hover .name {
+  color: var(--accent);
+}
+
+/* a small picture of each signal */
+.spark {
+  width: 100%;
+  height: 24px;
+  overflow: visible;
+}
+
+.spark path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent) 55%, transparent);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transition: stroke 0.3s ease;
+}
+
+.row[data-open='true'] .spark path,
+.rowButton:hover .spark path {
+  stroke: var(--accent);
+}
+
+/* each field's name and example are set in that field's own type */
+.row[data-field='physics'] .name {
+  font-family: var(--font-field-physics), 'Arial Narrow', sans-serif;
+  font-size: 1.12rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.row[data-field='physics'] .friction {
+  font-family: var(--font-field-physics), 'Arial Narrow', sans-serif;
+  font-size: 1.4rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.row[data-field='chemistry'] .name {
+  font-family: var(--font-field-chemistry), Georgia, serif;
+  font-size: 1.02rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.row[data-field='chemistry'] .friction {
+  font-family: var(--font-field-chemistry), Georgia, serif;
+  font-size: 1.08rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.row[data-field='mathematics'] .name {
+  font-family: var(--font-field-mathematics), 'Times New Roman', serif;
+  font-size: 1.28rem;
+  font-weight: 600;
+}
+
+.row[data-field='mathematics'] .friction {
+  font-family: var(--font-field-mathematics), 'Times New Roman', serif;
+  font-size: 1.38rem;
+  font-weight: 400;
+}
+
+.row[data-field='companion'] .name {
+  font-family: var(--font-field-companion), system-ui, sans-serif;
+  font-size: 1.02rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.row[data-field='companion'] .friction {
+  font-family: var(--font-field-companion), system-ui, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.chip {
+  padding: 0.18rem 0.55rem;
+  border: 1px solid rgba(244, 236, 214, 0.22);
+  border-radius: 999px;
+  font-family: var(--font-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(244, 236, 214, 0.5);
+}
+
+.row[data-state='started'] .chip {
+  border-color: rgba(232, 197, 71, 0.6);
+  color: #e8c547;
+}
+
+.detail {
+  padding: 0.1rem 0.7rem 1rem 2.7rem;
+  animation: detailIn 0.4s ease both;
+}
+
+.friction {
+  margin: 0;
+  font-family: var(--font-paper-title), Georgia, serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #f1e9d2;
+}
+
+.work {
+  margin: 0.45rem 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(244, 236, 214, 0.62);
+}
+
+.link {
+  display: inline-flex;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+  padding-bottom: 2px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.link:hover {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+.link:focus-visible {
+  outline: 1.5px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@keyframes detailIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 480px) {
+  .rowButton {
+    grid-template-columns: 1.9rem minmax(0, 1fr) 3.6rem auto;
+    gap: 0.5rem;
+  }
+  .detail {
+    padding-left: 2.5rem;
+  }
+  .legend {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail {
+    animation: none;
+  }
+  .row,
+  .labels {
+    transition: none;
+  }
+  .panel[data-armed='true']:not([data-in='true']) .line {
+    stroke-dashoffset: 0;
+  }
+  .panel[data-armed='true']:not([data-in='true']) .fill {
+    opacity: inherit !important;
+  }
+  .panel[data-in='true'] .line {
+    transition: none;
+  }
+}

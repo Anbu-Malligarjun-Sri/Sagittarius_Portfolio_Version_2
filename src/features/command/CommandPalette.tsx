@@ -15,7 +15,7 @@ const COMMANDS: Command[] = [
   { id: 'services', group: 'Go to', label: 'Services', hint: 'Home', kind: 'section', target: 'services', keywords: 'design web mobile ai consulting seo' },
   { id: 'process', group: 'Go to', label: 'Process', hint: 'Home', kind: 'section', target: 'process', keywords: 'how we work steps' },
   { id: 'work', group: 'Go to', label: 'Work', hint: 'Home', kind: 'section', target: 'projects', keywords: 'projects portfolio case studies' },
-  { id: 'pricing', group: 'Go to', label: 'Pricing', hint: 'Home', kind: 'section', target: 'pricing', keywords: 'plans cost' },
+  { id: 'start', group: 'Go to', label: 'Ways to begin', hint: 'Home', kind: 'section', target: 'start', keywords: 'start begin pricing cost quote price' },
   { id: 'contact', group: 'Go to', label: 'Contact', hint: 'Home', kind: 'section', target: 'contact', keywords: 'hire message email start a project typewriter' },
   { id: 'projects', group: 'Pages', label: 'All projects', hint: 'Case files', kind: 'page', target: '/projects', keywords: 'work portfolio edna tars techazura oceanography symposium' },
   { id: 'team', group: 'Pages', label: 'The team', kind: 'page', target: '/team', keywords: 'founders anbu brajin arun about people' },

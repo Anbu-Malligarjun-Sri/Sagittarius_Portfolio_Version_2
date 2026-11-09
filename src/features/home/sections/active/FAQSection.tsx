@@ -2,42 +2,27 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Sparkles, ArrowRight } from 'lucide-react';
+import { FAQS } from './data';
 
-// --- DATA ARCHITECTURE ---
-// We define a rigorous, strongly-typed data structure to drive the grid.
-// Empty cells are intentional to create negative space and direct the eye.
+// --- DATA ---
+// The grid is filled from the site's real questions and answers (FAQS in data.ts). Empty cells are intentional negative space.
 type GridCell = {
   id: string;
+  /** The small label in the corner: the question's category. */
   year: string;
   title?: string;
   text: string;
   isEmpty: boolean;
-  isHero?: boolean;
 };
 
-const GRID_DATA: GridCell[] = [
-  { id: 'c1', year: '2016', text: 'An era sparked. A conceptual framework built on human-centric design, looking beyond immediate logic to uncover profound truths.', isEmpty: false },
-  { id: 'c2', year: '2018', text: 'The foundation solidified. Seamless integrations and protocol establishment for absolute global connectivity.', isEmpty: false },
-  { id: 'c3', year: '', text: '', isEmpty: true },
-  { id: 'c4', year: '2020', text: 'A paradigm shift. The integration of advanced neural networks reshaped the very possibilities of creative workflows.', isEmpty: false },
-  
-  { id: 'c5', year: '2021', text: 'Architectural supremacy achieved. Zero-latency systems deployed across disparate environments with brutal efficiency.', isEmpty: false },
-  { id: 'c6', year: '', text: '', isEmpty: true },
-  { 
-    id: 'c7', 
-    year: '2024', 
-    title: 'The Golden Standard',
-    text: 'All year round support for pioneers and visionaries together with caring people. Creation of unprecedented milestones and master classes.', 
-    isEmpty: false,
-    isHero: true // Represents the highlighted block in your reference
-  },
-  { id: 'c8', year: '2024', text: 'The second major protocol implemented, resulting in flawless algorithmic synchronization across all global nodes.', isEmpty: false },
-  
-  { id: 'c9', year: '2025', text: 'Physical spaces reimagined. The absolute merging of digital persistence with tangible architectural forms.', isEmpty: false },
-  { id: 'c10', year: '2026', text: 'A completely autonomous ecosystem driven by collective intelligence, ruthless optimization, and decentralized governance.', isEmpty: false },
-  { id: 'c11', year: '', text: '', isEmpty: true },
-  { id: 'c12', year: '2027', text: 'The singularity point. Where human intention and computational execution become indistinguishable.', isEmpty: false },
-];
+const SLOTS = 12;
+const FILLED = [0, 1, 3, 4, 6, 7, 8, 9]; // which of the 12 cells hold a question; the others stay empty
+const GRID_DATA: GridCell[] = Array.from({ length: SLOTS }, (_, i) => {
+  const faq = FILLED.includes(i) ? FAQS[FILLED.indexOf(i)] : undefined;
+  return faq
+    ? { id: `c${i + 1}`, year: faq.category, title: faq.question, text: faq.answer, isEmpty: false }
+    : { id: `c${i + 1}`, year: '', text: '', isEmpty: true };
+});
 
 export default function InteractiveRevealGrid() {
   const [isLightOn, setIsLightOn] = useState(false);
@@ -92,7 +77,7 @@ export default function InteractiveRevealGrid() {
   }, [handleMouseLeave]);
 
   return (
-    <section className="relative min-h-screen w-full bg-[#030303] text-[#f5f5f5] selection:bg-[#e8c547] selection:text-black font-sans overflow-hidden py-24 px-4 sm:px-8 lg:px-16 flex flex-col justify-center">
+    <section id="faq" className="relative min-h-screen w-full bg-[#030303] text-[#f5f5f5] selection:bg-[#e8c547] selection:text-black font-sans overflow-hidden py-24 px-4 sm:px-8 lg:px-16 flex flex-col justify-center">
       
       {/* Background Ambient Noise/Texture (Optional, adds cinematic depth) */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.015] mix-blend-screen" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
@@ -103,16 +88,16 @@ export default function InteractiveRevealGrid() {
         <header className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-20 gap-10">
           <div className="max-w-xs">
             <h2 className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-white/40 leading-relaxed">
-              The future reveals itself<br />
-              when you care enough to<br />
-              look.
+              Questions we expect<br />
+              you to ask, answered<br />
+              plainly.
             </h2>
           </div>
 
           <div className="flex flex-col items-start lg:items-end gap-8">
             <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl tracking-tight text-white/95 leading-[1.1]">
-              Your Light <br className="hidden md:block"/>
-              <span className="text-white/60 italic">Uncovers the Path</span>
+              Switch on the light, <br className="hidden md:block"/>
+              <span className="text-white/60 italic">read it all</span>
             </h1>
 
             {/* Hyper-Modern Toggle Switch */}
@@ -125,7 +110,7 @@ export default function InteractiveRevealGrid() {
                 className="relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e8c547] focus-visible:ring-offset-2 focus-visible:ring-offset-[#030303]"
                 style={{ backgroundColor: isLightOn ? '#e8c547' : 'rgba(255,255,255,0.1)' }}
               >
-                <span className="sr-only">Toggle absolute visibility</span>
+                <span className="sr-only">Toggle: show every answer at once</span>
                 <span
                   aria-hidden="true"
                   className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-300 ease-in-out ${
@@ -134,7 +119,7 @@ export default function InteractiveRevealGrid() {
                 />
               </button>
               <span className="font-mono text-xs uppercase tracking-widest text-white/70 pr-2 select-none">
-                {isLightOn ? 'Kill the light' : 'Turn on the light'}
+                {isLightOn ? 'Dim the light' : 'Turn on the light'}
               </span>
             </div>
           </div>

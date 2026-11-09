@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { FOR_WHOM, LETTER, LETTER_TEXT } from './copy';
 import { PaperSim } from './paperPhysics';
-import { CHART, CHART_EDGES, CHART_STARS, FIELDS } from './stars';
+import { FIELDS } from './fields';
+import { SIGNALS } from './signals';
 
 const run = (sim: PaperSim, frames: number) => {
   let last = { disp: 0, speed: 0 };
@@ -115,77 +116,44 @@ describe('the letter', () => {
   });
 });
 
-describe('the star chart', () => {
-  const ids = new Set(CHART_STARS.map((star) => star.id));
-
-  it('names the four sciences and everyday places in the order the letter does, then adds the companion', () => {
+describe('the list of what we are building for', () => {
+  it('names the four sciences in the order the letter does, then adds the companion', () => {
     const labels = FIELDS.map((field) => field.label);
     expect(labels.filter((label) => label !== 'Companion')).toEqual([...FOR_WHOM]);
     expect(labels).toContain('Companion');
   });
 
-  it('gives every field a different, real star and a small everyday example of friction', () => {
-    expect(new Set(FIELDS.map((field) => field.starId)).size).toBe(FIELDS.length);
+  it('does not offer cafes, shops or homes anywhere: that is not work we do', () => {
+    expect(FOR_WHOM.join(' ')).not.toMatch(/caf|shop|home/i);
+    expect(FIELDS.map((field) => `${field.label} ${field.friction} ${field.work}`).join(' ')).not.toMatch(/caf|shop|homes?/i);
+    expect(LETTER_TEXT).not.toMatch(/caf|shop|homes?/i);
+    expect(FIELDS).toHaveLength(5);
+  });
+
+  it('has a signal to draw for every field, in the same order', () => {
+    expect(SIGNALS.map((signal) => signal.id)).toEqual(FIELDS.map((field) => field.id));
     expect(new Set(FIELDS.map((field) => field.numeral)).size).toBe(FIELDS.length);
+  });
+
+  it('gives every field a small everyday example of friction that is a frustration, not a claim', () => {
     for (const field of FIELDS) {
-      expect(ids.has(field.starId)).toBe(true);
-      expect(field.starName.length).toBeGreaterThan(3);
       expect(field.friction.length).toBeGreaterThan(15);
-      // an everyday frustration, not a claim: no percentages, no numbers, no "faster" or "better"
       expect(field.friction).not.toMatch(/\d+%|\d{2,}|faster|better|best/i);
     }
   });
 
-  it('only shows a star as lit where there is real work, and that matches what the letter says we have built', () => {
+  it('only shows work as started where there is real work, matching what the letter says we have built', () => {
     const started = FIELDS.filter((field) => field.status === 'started');
     // the letter says "two small things": an AI that reads deep-sea DNA, and a local AI assistant
     expect(started.map((field) => field.id).sort()).toEqual(['biology', 'companion']);
     expect(LETTER_TEXT).toMatch(/two small things/i);
     expect(started.find((field) => field.id === 'biology')!.work).toMatch(/deep-sea DNA/i);
     expect(started.find((field) => field.id === 'companion')!.work).toMatch(/local AI assistant/i);
-    // and the dark ones say plainly that nothing is built there yet, rather than implying it
+    // and the others say plainly that nothing is built there yet, rather than implying it
     for (const field of FIELDS.filter((f) => f.status === 'listening')) expect(field.work).toMatch(/nothing built here yet/i);
   });
 
   it('does not list the symposium website or any showcase site as work', () => {
     for (const field of FIELDS) expect(`${field.work} ${field.friction}`).not.toMatch(/symposium|techazura/i);
-  });
-
-  it('joins stars that exist, once each, into one connected pattern', () => {
-    const seen = new Set<string>();
-    for (const [a, b] of CHART_EDGES) {
-      expect(ids.has(a) && ids.has(b)).toBe(true);
-      expect(a).not.toBe(b);
-      const key = [a, b].sort().join('|');
-      expect(seen.has(key)).toBe(false);
-      seen.add(key);
-    }
-    const reach = new Set<string>([CHART_STARS[0].id]);
-    for (let pass = 0; pass < CHART_STARS.length; pass++) {
-      for (const [a, b] of CHART_EDGES) {
-        if (reach.has(a)) reach.add(b);
-        if (reach.has(b)) reach.add(a);
-      }
-    }
-    expect(reach.size).toBe(CHART_STARS.length);
-  });
-
-  it('keeps every star and every name inside the frame', () => {
-    for (const star of CHART_STARS) {
-      expect(star.x).toBeGreaterThan(30);
-      expect(star.x).toBeLessThan(CHART.w - 30);
-      expect(star.y).toBeGreaterThan(40);
-      expect(star.y).toBeLessThan(CHART.h - 40);
-      expect(star.tint).toMatch(/^#[0-9a-f]{6}$/i);
-    }
-    for (const field of FIELDS) {
-      const wide = field.label.length * 10.4 + 12; // a generous guess at the width of the name, in drawing units
-      const { x, y, anchor = 'middle' } = field.labelAt;
-      const left = anchor === 'start' ? x - 6 : anchor === 'end' ? x - wide : x - wide / 2;
-      expect(left).toBeGreaterThan(22);
-      expect(left + wide).toBeLessThan(CHART.w - 22);
-      expect(y).toBeGreaterThan(30);
-      expect(y).toBeLessThan(CHART.h - 24);
-    }
   });
 });

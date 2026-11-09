@@ -1,4 +1,4 @@
-export type SectionId = 'about' | 'services' | 'process' | 'projects' | 'stats' | 'team' | 'testimonials' | 'pricing' | 'faq' | 'contact';
+export type SectionId = 'about' | 'services' | 'process' | 'projects' | 'stats' | 'team' | 'testimonials' | 'pricing' | 'start' | 'faq' | 'contact';
 
 export type ServiceRow = {
   name: string;

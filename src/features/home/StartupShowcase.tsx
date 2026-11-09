@@ -19,10 +19,8 @@ import AboutSection from './sections/active/AboutSection';
 import ServicesSection from './sections/active/ServicesSection';
 import ProcessSection from './sections/active/ProcessSection';
 import ProjectsSection from './sections/active/ProjectsSection';
-import StatsSection from './sections/active/StatsSection';
 import TeamSection from './sections/active/TeamSection';
-import TestimonialsSection from './sections/active/TestimonialsSection';
-import PricingSection from './sections/active/PricingSection';
+import StartSection from './sections/active/StartSection';
 import FAQSection from './sections/active/FAQSection';
 import FooterSection from './sections/active/FooterSection';
 
@@ -39,7 +37,6 @@ export default function StartupShowcase() {
   const [expandedNav, setExpandedNav] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionId>('about');
   const [teamIndex, setTeamIndex] = useState(0);
-  const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [faqIndex, setFaqIndex] = useState<number | null>(0);
 
   useEffect(() => {
@@ -56,7 +53,7 @@ export default function StartupShowcase() {
       setExpandedNav(window.scrollY > 100);
     };
 
-    const sectionObserverIds: SectionId[] = ['about', 'services', 'process', 'projects', 'stats', 'team', 'testimonials', 'pricing', 'faq', 'contact'];
+    const sectionObserverIds: SectionId[] = ['about', 'services', 'process', 'projects', 'team', 'start', 'faq', 'contact'];
     const triggers = sectionObserverIds
       .map((id) => {
         const element = document.getElementById(id);
@@ -283,10 +280,8 @@ export default function StartupShowcase() {
         <ServicesSection activeSection={activeSection} />
         <ProcessSection activeSection={activeSection} />
         <ProjectsSection activeSection={activeSection} />
-        <StatsSection activeSection={activeSection} />
         <TeamSection activeSection={activeSection} teamIndex={teamIndex} setTeamIndex={setTeamIndex} />
-        <TestimonialsSection activeSection={activeSection} testimonialIndex={testimonialIndex} setTestimonialIndex={setTestimonialIndex} />
-        <PricingSection activeSection={activeSection} />
+        <StartSection />
         <FAQSection />
 
         {/* ── CONTACT SECTION (External Component) ── */}

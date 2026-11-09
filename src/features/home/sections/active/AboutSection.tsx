@@ -2,7 +2,7 @@
 
 import { aboutFontVariables } from '@/features/about/fonts';
 import LivePaper from '@/features/about/LivePaper';
-import StarChart from '@/features/about/StarChart';
+import Instrument from '@/features/about/Instrument';
 import styles from '@/features/about/about.module.css';
 
 interface AboutSectionProps {
@@ -30,7 +30,7 @@ export default function AboutSection({ activeSection }: AboutSectionProps) {
         <div className="order-2 lg:order-1">
           <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-[#f5f0e8]/45">Who we are building for</p>
           <div className="mt-8">
-            <StarChart />
+            <Instrument />
           </div>
         </div>
 
