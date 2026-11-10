@@ -1,0 +1,25 @@
+.tokens {
+  --u: min(calc(100vw / 1440), calc(100svh / 760));
+  --sky-0: #c8e6ff;
+  --sky-1: #a3cae6;
+  --sky-2: #7eadcd;
+  --sky-3: #5799cf;
+  --sky-4: #3085d2;
+  --white: #fff;
+  --lime: #d0f24b;
+  --ink: #17242b;
+  --black: #000;
+  --glass-fill: rgb(255 255 255 / 6%);
+  --glass-strong: rgb(255 255 255 / 15%);
+  --glass-edge: rgb(255 255 255 / 75%);
+  --glass-soft: rgb(255 255 255 / 12%);
+  --cursor-fill: rgb(255 255 255 / 50%);
+  --edge: calc(28 * var(--u));
+  --body-size: calc(20 * var(--u));
+  --body-leading: calc(22 * var(--u));
+  --pill: 99px;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+@media(max-width:1023px) {
+  .tokens { --u: min(calc(100vw / 415), calc(100svh / 760)); --edge: calc(20 * var(--u)); --body-size: calc(16 * var(--u)); --body-leading: calc(20 * var(--u)); }
+}

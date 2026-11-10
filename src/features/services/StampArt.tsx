@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { StampMotif } from './stamps';
 import styles from './stamps.module.css';
+import AgentsArt from './AgentsArt';
 
 /*
  * The printed artwork for each stamp. Every scene is drawn in a 192 x 190 window and is clipped to that
@@ -40,13 +41,11 @@ export const WINDOW_PATHS: Record<StampMotif, string> = {
   // A phone, with breathing room around it for the signal rings
   mobile: 'M30 4H162A26 26 0 0 1 188 30V160A26 26 0 0 1 162 186H30A26 26 0 0 1 4 160V30A26 26 0 0 1 30 4Z',
   // Chamfered (jewel-cut) corners
-  brand: 'M18 0H174L192 18V172L174 190H18L0 172V18Z',
+  agents: 'M0 190V66Q0 0 96 0Q192 0 192 66V190Z',
   // The panel of a Greek vase: a wide oval between two bands of key pattern
   ai: 'M12 95A84 78 0 1 1 180 95A84 78 0 1 1 12 95Z',
   // A flat-topped hexagon, like a lantern room
   seo: 'M48 0H144L192 95L144 190H48L0 95Z',
-  // Map sheet with concave corners
-  advice: 'M16 0H176A16 16 0 0 0 192 16V174A16 16 0 0 0 176 190H16A16 16 0 0 0 0 174V16A16 16 0 0 0 16 0Z',
 };
 
 type ArtProps = { uid: string };
@@ -411,91 +410,6 @@ function MobileArt({ uid }: ArtProps) {
   );
 }
 
-/* ───────────── 4. Brand: the jewel seal ───────────── */
-function BrandArt({ uid }: ArtProps) {
-  const font = 'var(--font-stamp-brand), Georgia, serif';
-  const rays = Array.from({ length: 18 }, (_, i) => {
-    const [x0, y0] = polar(96, 86, 150, i * 20 - 90);
-    const [x1, y1] = polar(96, 86, 150, i * 20 + 10 - 90);
-    return <path key={i} d={`M96 86L${n(x0)} ${n(y0)}L${n(x1)} ${n(y1)}Z`} fill="#d8aa52" opacity="0.09" />;
-  });
-  const dots = Array.from({ length: 36 }, (_, i) => {
-    const [x, y] = polar(96, 86, 79, i * 10);
-    return <circle key={i} cx={n(x)} cy={n(y)} r={i % 3 === 0 ? 1.1 : 0.6} fill="#d8aa52" />;
-  });
-  const sparkle = (x: number, y: number, s: number, key: string, delay: number) => (
-    <g key={key} transform={`translate(${x} ${y})`}>
-      <path className={`${styles.fb} ${styles.glint}`} style={delayed(delay)} d="M0-6Q0 0 6 0Q0 0 0 6Q0 0-6 0Q0 0 0-6Z" transform={`scale(${s})`} fill="#f9e9b8" />
-    </g>
-  );
-  return (
-    <>
-      <defs>
-        <radialGradient id={`${uid}-bg`} cx="0.5" cy="0.45" r="0.7">
-          <stop offset="0" stopColor="#4a1d62" />
-          <stop offset="1" stopColor="#210a30" />
-        </radialGradient>
-        <path id={`${uid}-ring`} d="M96 86m-66 0a66 66 0 1 1 132 0a66 66 0 1 1-132 0" />
-        <clipPath id={`${uid}-gem`}>
-          <path d="M48 76L72 52H120L144 76L96 126Z" />
-        </clipPath>
-        <linearGradient id={`${uid}-shine`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#fff" stopOpacity="0" />
-          <stop offset="0.5" stopColor="#fff" stopOpacity="0.9" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <rect width="192" height="190" fill={`url(#${uid}-bg)`} />
-      {rays}
-      <rect x="6" y="6" width="180" height="178" fill="none" stroke="#d8aa52" strokeWidth="0.5" opacity="0.4" />
-      {/* deco fans in the top corners */}
-      <g fill="none" stroke="#d8aa52" strokeWidth="0.7" opacity="0.55">
-        {[12, 20, 28, 36].map((r) => (
-          <g key={r}>
-            <path d={`M0 ${r}A${r} ${r} 0 0 0 ${r} 0`} />
-            <path d={`M192 ${r}A${r} ${r} 0 0 1 ${192 - r} 0`} />
-          </g>
-        ))}
-      </g>
-      {/* the seal turns slowly */}
-      <g className={`${styles.vb} ${styles.spin}`} style={{ transformOrigin: '96px 86px' }}>
-        <circle cx="96" cy="86" r="73" fill="none" stroke="#d8aa52" strokeWidth="0.9" />
-        <circle cx="96" cy="86" r="59" fill="none" stroke="#d8aa52" strokeWidth="0.6" strokeDasharray="1 3" />
-        {dots}
-        <text fontSize="6.6" letterSpacing="3.1" fill="#e9c97a" style={{ fontFamily: font, fontWeight: 700 }}>
-          <textPath href={`#${uid}-ring`}>NAME ✦ MARK ✦ COLOUR ✦ TYPE ✦ VOICE ✦ RULES ✦ NAME ✦</textPath>
-        </text>
-      </g>
-      {/* the gem */}
-      <g stroke="#3b1850" strokeWidth="0.6" strokeLinejoin="round">
-        <path d="M48 76L72 52L72 76Z" fill="#f3d98a" />
-        <path d="M72 52L96 76L72 76Z" fill="#e2b95e" />
-        <path d="M72 52L120 52L96 76Z" fill="#f9e9b8" />
-        <path d="M120 52L120 76L96 76Z" fill="#e2b95e" />
-        <path d="M120 52L144 76L120 76Z" fill="#f3d98a" />
-        <path d="M48 76L72 76L96 126Z" fill="#b98a3e" />
-        <path d="M72 76L96 76L96 126Z" fill="#e2b95e" />
-        <path d="M96 76L120 76L96 126Z" fill="#c99a48" />
-        <path d="M120 76L144 76L96 126Z" fill="#9c7230" />
-      </g>
-      <g clipPath={`url(#${uid}-gem)`}>
-        <rect className={styles.shimmer} x="-30" y="40" width="26" height="100" fill={`url(#${uid}-shine)`} opacity="0.85" style={{ mixBlendMode: 'soft-light' }} />
-      </g>
-      {sparkle(150, 46, 1.1, 'a', 0)}
-      {sparkle(40, 108, 0.8, 'b', 1.1)}
-      {sparkle(128, 24, 0.7, 'c', 2.1)}
-      <g stroke="#d8aa52" strokeWidth="0.7">
-        <path d="M14 168H64M128 168H178" />
-      </g>
-      <path d="M96 163l4 5-4 5-4-5z" fill="#d8aa52" />
-      <text x="96" y="184" textAnchor="middle" fontSize="12" letterSpacing="3.2" fill="#e9c97a" style={{ fontFamily: font, fontWeight: 700 }}>
-        BRAND IDENTITY
-      </text>
-    </>
-  );
-}
-
-/* ───────────── 5. AI: Athena's owl, on a Greek vase ───────────── */
 function greekKey(y: number) {
   let d = `M24 ${y + 9}H168`;
   for (let x = 24; x < 160; x += 12) d += `M${x} ${y + 9}V${y}H${x + 8}V${y + 6}H${x + 3}V${y + 3}H${x + 5}`;
@@ -633,121 +547,6 @@ function AiArt({ uid }: ArtProps) {
   );
 }
 
-/* ───────────── 6. Consulting: the chart room ───────────── */
-function blob(cx: number, cy: number, r: number, seed: number) {
-  const count = 12;
-  const pts = Array.from({ length: count }, (_, i) => {
-    const wobble = 1 + 0.16 * Math.sin(i * 1.7 + seed) + 0.1 * Math.sin(i * 3.1 + seed * 2);
-    return polar(cx, cy, r * wobble, (i * 360) / count);
-  });
-  let d = `M${n(pts[0][0])} ${n(pts[0][1])}`;
-  for (let i = 0; i < count; i++) {
-    const p0 = pts[(i - 1 + count) % count];
-    const p1 = pts[i];
-    const p2 = pts[(i + 1) % count];
-    const p3 = pts[(i + 2) % count];
-    d += `C${n(p1[0] + (p2[0] - p0[0]) / 6)} ${n(p1[1] + (p2[1] - p0[1]) / 6)} ${n(p2[0] - (p3[0] - p1[0]) / 6)} ${n(p2[1] - (p3[1] - p1[1]) / 6)} ${n(p2[0])} ${n(p2[1])}`;
-  }
-  return `${d}Z`;
-}
-
-function AdviceArt({ uid }: ArtProps) {
-  const font = 'var(--font-stamp-advice), Georgia, serif';
-  const cx = 62;
-  const cy = 102;
-  const point = (angle: number, length: number, half: number, light: string, dark: string, key: string) => {
-    const [tx, ty] = polar(cx, cy, length, angle);
-    const [lx, ly] = polar(cx, cy, half, angle - 45);
-    const [rx, ry] = polar(cx, cy, half, angle + 45);
-    return (
-      <g key={key}>
-        <path d={`M${n(tx)} ${n(ty)}L${n(lx)} ${n(ly)}L${cx} ${cy}Z`} fill={dark} />
-        <path d={`M${n(tx)} ${n(ty)}L${n(rx)} ${n(ry)}L${cx} ${cy}Z`} fill={light} />
-      </g>
-    );
-  };
-  const ticks = Array.from({ length: 48 }, (_, i) => {
-    const [x0, y0] = polar(cx, cy, 36, i * 7.5);
-    const [x1, y1] = polar(cx, cy, i % 4 === 0 ? 31 : 33.5, i * 7.5);
-    return <path key={i} d={`M${n(x0)} ${n(y0)}L${n(x1)} ${n(y1)}`} />;
-  });
-  return (
-    <>
-      <defs>
-        <linearGradient id={`${uid}-bg`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f3e5c2" />
-          <stop offset="1" stopColor="#e4cf9c" />
-        </linearGradient>
-      </defs>
-      <rect width="192" height="190" fill={`url(#${uid}-bg)`} />
-      <g stroke="#14575a" strokeWidth="0.5" opacity="0.14">
-        {[32, 64, 96, 128, 160].map((v) => (
-          <path key={v} d={`M${v} 0V190M0 ${v}H192`} />
-        ))}
-      </g>
-      <g fill="none" stroke="#14575a" strokeWidth="0.8" opacity="0.4">
-        {[9, 19, 29, 39, 49, 60, 72].map((r, i) => (
-          <path key={r} d={blob(146, 64, r, 1.3)} opacity={n(1 - i * 0.08)} />
-        ))}
-      </g>
-      <path d={blob(146, 64, 9, 1.3)} fill="#14575a" opacity="0.13" />
-      {/* the names of places on a map of a decision */}
-      <g fill="#14575a" opacity="0.7" style={{ fontFamily: font }} fontStyle="italic" fontSize="5">
-        <text x="112" y="132" transform="rotate(-6 112 132)">Clarity</text>
-        <text x="20" y="36" transform="rotate(-4 20 36)">Scope</text>
-        <text x="158" y="104" transform="rotate(5 158 104)">Risk</text>
-      </g>
-
-      {/* compass rose: it settles to north, a little to either side */}
-      <g className={`${styles.vb} ${styles.swing}`} style={{ transformOrigin: `${cx}px ${cy}px` }}>
-        <circle cx={cx} cy={cy} r="40" fill="#f6ebcd" stroke="#1a2b2b" strokeWidth="0.9" />
-        <circle cx={cx} cy={cy} r="36" fill="none" stroke="#1a2b2b" strokeWidth="0.5" />
-        <g stroke="#1a2b2b" strokeWidth="0.6">{ticks}</g>
-        {point(-45, 24, 6, '#3d8f8a', '#14575a', 'd1')}
-        {point(45, 24, 6, '#3d8f8a', '#14575a', 'd2')}
-        {point(135, 24, 6, '#3d8f8a', '#14575a', 'd3')}
-        {point(-135, 24, 6, '#3d8f8a', '#14575a', 'd4')}
-        {point(-90, 34, 7.5, '#e57a4d', '#b5532f', 'n')}
-        {point(0, 30, 7.5, '#3d8f8a', '#14575a', 'e')}
-        {point(90, 30, 7.5, '#3d8f8a', '#14575a', 's')}
-        {point(180, 30, 7.5, '#3d8f8a', '#14575a', 'w')}
-        <circle cx={cx} cy={cy} r="3.2" fill="#f6ebcd" stroke="#1a2b2b" strokeWidth="0.7" />
-      </g>
-      <text x={cx} y={cy - 43} textAnchor="middle" fontSize="10" fontStyle="italic" fill="#b5532f" style={{ fontFamily: font }}>
-        N
-      </text>
-
-      {/* the decision route: dead ends crossed out, one road reaches the pin */}
-      <g fill="none" stroke="#1a2b2b" strokeWidth="1.2" strokeDasharray="3 3" strokeLinecap="round">
-        <path className={styles.march} d="M150 138V118" />
-        <path className={styles.march} d="M150 118C150 100 146 90 146 70" />
-        <path className={styles.march} d="M150 118C140 110 126 106 118 94" />
-        <path className={styles.march} d="M150 118C160 110 172 106 176 94" />
-      </g>
-      <g stroke="#b5532f" strokeWidth="1.8" strokeLinecap="round">
-        <path d="M114.5 90.5l7 7M121.5 90.5l-7 7" />
-        <path d="M172.5 90.5l7 7M179.5 90.5l-7 7" />
-      </g>
-      <circle cx="150" cy="140" r="3.6" fill="#1a2b2b" />
-      <circle className={`${styles.fb} ${styles.sonar}`} cx="150" cy="140" r="7" fill="none" stroke="#1a2b2b" strokeWidth="0.8" />
-      <g className={styles.hop}>
-        <path d="M139 56L146 70L153 56Z" fill="#e0a73a" stroke="#1a2b2b" strokeWidth="0.9" strokeLinejoin="round" />
-        <circle cx="146" cy="50" r="9" fill="#e0a73a" stroke="#1a2b2b" strokeWidth="0.9" />
-        <circle cx="146" cy="50" r="3.4" fill="#1a2b2b" />
-      </g>
-
-      {/* title ribbon */}
-      <path d="M8 148H184L176 162L184 176H8L16 162Z" fill="#14575a" />
-      <path d="M12 150.5H180M12 173.5H180" stroke="#e0a73a" strokeWidth="0.7" />
-      <text x="96" y="168" textAnchor="middle" fontSize="15.5" fontStyle="italic" letterSpacing="2" fill="#f4e6c3" style={{ fontFamily: font }}>
-        Consulting
-      </text>
-      <rect x="5" y="5" width="182" height="180" rx="12" fill="none" stroke="#14575a" strokeWidth="0.9" />
-    </>
-  );
-}
-
-/* ───────────── 7. SEO: the lighthouse that gets you found ───────────── */
 const rollingWave = (y: number) => `M-20 ${y}q5-4 10 0${'t10 0'.repeat(25)}`;
 
 function SeoArt({ uid }: ArtProps) {
@@ -862,13 +661,13 @@ export function StampArt({ motif, uid }: { motif: StampMotif; uid: string }) {
       return <WebArt uid={uid} />;
     case 'mobile':
       return <MobileArt uid={uid} />;
-    case 'brand':
-      return <BrandArt uid={uid} />;
+    case 'agents':
+      return <AgentsArt uid={uid} />;
     case 'ai':
       return <AiArt uid={uid} />;
     case 'seo':
       return <SeoArt uid={uid} />;
     default:
-      return <AdviceArt uid={uid} />;
+      return <AgentsArt uid={uid} />;
   }
 }

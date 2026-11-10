@@ -691,3 +691,10 @@
     opacity: 1;
   }
 }
+/* The atelier wakes when its stamp is inspected. Motion stays inside the print. */
+.agentsGear { transform-box:fill-box; transform-origin:center; }
+.stampBtn:hover .agentsGear,.stampBtn:focus-visible .agentsGear { animation:atelierGear 8s linear infinite; }
+.stampBtn:hover .agentParcel,.stampBtn:focus-visible .agentParcel { animation:atelierParcel 2.5s ease-in-out infinite; }
+@keyframes atelierGear { to { transform:rotate(360deg); } }
+@keyframes atelierParcel { 50% { transform:translateY(-3px); } }
+@media(prefers-reduced-motion:reduce) { .stampBtn:hover .agentsGear,.stampBtn:focus-visible .agentsGear,.stampBtn:hover .agentParcel,.stampBtn:focus-visible .agentParcel { animation:none; } }

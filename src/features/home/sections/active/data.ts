@@ -1,8 +1,9 @@
 import { ServiceRow, ProjectCard, Testimonial, FaqItem } from './types';
 
 export const NAV_ITEMS = [
-  { id: 'about' as const, label: 'About Us' },
+  { id: 'about' as const, label: 'About' },
   { id: 'services' as const, label: 'Services' },
+  { id: 'process' as const, label: 'Process' },
   { id: 'projects' as const, label: 'Work' },
   { id: 'team' as const, label: 'Team' },
   { id: 'contact' as const, label: 'Contact' },
@@ -12,9 +13,8 @@ export const SERVICES: ServiceRow[] = [
   { name: 'UI/UX Design', category: 'Design', timeline: '2-4 wks', status: 'AVAILABLE', description: 'Design systems, product stories, and conversion-focused interface work.' },
   { name: 'Web Development', category: 'Engineering', timeline: '4-8 wks', status: 'AVAILABLE', description: 'Next.js builds, motion systems, and resilient frontend architecture.' },
   { name: 'Mobile Apps', category: 'Engineering', timeline: '6-12 wks', status: 'AVAILABLE', description: 'iOS and Android experiences tuned for fast iteration and launch readiness.' },
-  { name: 'Brand Identity', category: 'Design', timeline: '2-3 wks', status: 'LIMITED', description: 'Naming, visual identity, and launch-ready art direction for new products.' },
+  { name: 'AI Agents', category: 'Engineering', timeline: 'Scoped', status: 'AVAILABLE', description: 'Purpose-built agents that plan steps, use connected tools, and carry out workflows with human oversight.' },
   { name: 'AI Integration', category: 'Engineering', timeline: '4-6 wks', status: 'BOOKING', description: 'Workflow automation, assistant surfaces, and practical model integration.' },
-  { name: 'Consulting', category: 'Strategy', timeline: '1 wk', status: 'AVAILABLE', description: 'Decision support for founders, product leads, and early engineering teams.' },
   { name: 'SEO Optimization', category: 'Growth', timeline: '3-5 wks', status: 'AVAILABLE', description: 'Technical audits, search-ready structure, and content planning so the right people can find the work.' },
 ];
 
@@ -52,12 +52,12 @@ export const TESTIMONIALS: Testimonial[] = [
 export const FAQS: FaqItem[] = [
   { question: 'How do we start a project?', answer: 'We begin with a short discovery sprint, then shape the scope into a plan that can be built and measured.', category: 'PROCESS' },
   { question: 'What is your process?', answer: 'We move through discovery, strategy, build, launch, and a short post-launch tuning window.', category: 'PROCESS' },
-  { question: 'How long does a typical project take?', answer: 'Most design-to-build engagements land between three and eight weeks depending on scope.', category: 'TIMELINE' },
+  { question: 'How long does a typical project take?', answer: 'Timing depends on the scope, integrations, and review process. We agree a realistic schedule after understanding the work, rather than promise a date before we know it.', category: 'TIMELINE' },
   { question: 'Do you work with early-stage startups?', answer: 'Yes. We can work from rough clarity, prototype direction, or an existing product that needs a sharper system.', category: 'SCOPE' },
   { question: 'What technologies do you use?', answer: 'This site is built with Next.js, React, TypeScript, Tailwind, and GSAP for the motion layer.', category: 'TECH' },
   { question: 'How do you handle revisions?', answer: 'We keep revisions bounded by checkpoints so the team stays aligned without turning every choice into a loop.', category: 'PROCESS' },
   { question: 'Do you offer maintenance and support?', answer: 'Yes. We can continue with support, monitoring, and structured iterations after launch.', category: 'SUPPORT' },
-  { question: 'What are your payment terms?', answer: 'Projects begin with a deposit, then move through milestone-based payments tied to approved deliverables.', category: 'BILLING' },
+  { question: 'What are your payment terms?', answer: 'We agree the scope, deliverables, payment stages, and terms with you before work begins. There is no fixed price list: the proposal should make the commitments clear.', category: 'BILLING' },
 ];
 
 export const PRICING = [

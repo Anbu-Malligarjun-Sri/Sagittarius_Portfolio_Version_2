@@ -57,6 +57,7 @@ export default function CustomCursor() {
     <>
       <style dangerouslySetInnerHTML={{ __html: `body { cursor: none; } a, button { cursor: none; }` }} />
       <div
+        data-site-cursor
         ref={cursorRef}
         className="fixed top-0 left-0 w-4 h-4 bg-white mix-blend-difference rounded-full pointer-events-none z-[9999]"
         style={{ willChange: "transform" }}

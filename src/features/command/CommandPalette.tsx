@@ -12,7 +12,7 @@ type Command =
 
 const COMMANDS: Command[] = [
   { id: 'home', group: 'Go to', label: 'Home', kind: 'page', target: '/', keywords: 'start top landing' },
-  { id: 'services', group: 'Go to', label: 'Services', hint: 'Home', kind: 'section', target: 'services', keywords: 'design web mobile ai consulting seo' },
+  { id: 'services', group: 'Go to', label: 'Services', hint: 'Home', kind: 'section', target: 'services', keywords: 'design web mobile ai agents integration seo' },
   { id: 'process', group: 'Go to', label: 'Process', hint: 'Home', kind: 'section', target: 'process', keywords: 'how we work steps' },
   { id: 'work', group: 'Go to', label: 'Work', hint: 'Home', kind: 'section', target: 'projects', keywords: 'projects portfolio case studies' },
   { id: 'start', group: 'Go to', label: 'Ways to begin', hint: 'Home', kind: 'section', target: 'start', keywords: 'start begin pricing cost quote price' },
@@ -192,6 +192,7 @@ export default function CommandPalette() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open search (Ctrl K)"
+        data-site-search-launcher
         data-cursor-scale="1.6"
         className="fixed bottom-4 right-4 z-[45] hidden items-center gap-2 rounded-full border border-white/15 bg-[#0c0b0a]/85 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#f5f0e8]/60 backdrop-blur transition-colors duration-200 hover:border-[#e8c547]/70 hover:text-[#e8c547] sm:flex"
       >

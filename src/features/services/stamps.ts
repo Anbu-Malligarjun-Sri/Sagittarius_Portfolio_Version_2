@@ -1,7 +1,7 @@
 import { SERVICES } from '@/features/home/sections/active/data';
 import type { ServiceRow } from '@/features/home/sections/active/types';
 
-export type StampMotif = 'ui' | 'web' | 'mobile' | 'brand' | 'ai' | 'advice' | 'seo';
+export type StampMotif = 'ui' | 'web' | 'mobile' | 'agents' | 'ai' | 'seo';
 
 type StampExtras = {
   id: string;
@@ -56,17 +56,12 @@ const EXTRAS: Record<string, StampExtras> = {
     includes: ['Product scope and screen map', 'iOS and Android builds', 'Store submission support', 'A plan for the first update'],
     how: 'Ship a thin version early, then widen it.',
   },
-  'Brand Identity': {
-    id: 'brand',
-    ink: '#4b1d5f',
-    glow: '#d8aa52',
-    motif: 'brand',
-    rest: 2.4,
-    tagline: 'A name and a look that belong to you.',
-    story:
-      'Naming, logo, colour, type and the rules for using them, drawn together so a new product looks like itself from its first screen to its first poster.',
-    includes: ['Naming and positioning', 'Logo and visual identity', 'Colour, type and usage rules', 'Launch art direction'],
-    how: 'Directions first, then one refined together with you.',
+  'AI Agents': {
+    id: 'ai-agents', ink: '#244d4c', glow: '#c49b58', motif: 'agents', rest: 2.4,
+    tagline: 'From a clear instruction to a considered action.',
+    story: 'We build agents around a defined job: break it into steps, connect the right tools, and check the result. You choose the boundaries, approval points, and actions that must stay in human hands.',
+    includes: ['Workflow and tool design', 'Agent orchestration', 'Human approvals and activity logs', 'Evaluation and handover'],
+    how: 'Start with one bounded task, test it, then expand what it can do.',
   },
   'AI Integration': {
     id: 'ai',
@@ -79,18 +74,6 @@ const EXTRAS: Record<string, StampExtras> = {
       'We find the repeated, slow step in your workflow and put a model to work on it: an assistant surface, an automation, a retrieval layer. Useful first, impressive second.',
     includes: ['Workflow audit', 'Assistant or automation build', 'Model and data integration', 'Guardrails and a way to measure it'],
     how: 'Start with one workflow and prove it before widening.',
-  },
-  Consulting: {
-    id: 'consulting',
-    ink: '#14575a',
-    glow: '#e0a73a',
-    motif: 'advice',
-    rest: 1.2,
-    tagline: 'A week of clear thinking before you commit.',
-    story:
-      'A focused week with founders, product leads and early engineering teams: we pressure-test the plan, name the risks and leave you with decisions rather than a slide deck.',
-    includes: ['Discovery conversation', 'Scope and risk review', 'Prioritised recommendations', 'A written decision summary'],
-    how: 'One week, one clear outcome.',
   },
   'SEO Optimization': {
     id: 'seo',
@@ -110,7 +93,7 @@ const FALLBACK: StampExtras = {
   id: 'other',
   ink: '#14575a',
   glow: '#e0a73a',
-  motif: 'advice',
+  motif: 'agents',
   rest: 0,
   tagline: '',
   story: '',
