@@ -67,8 +67,9 @@ function edgePoint(r: DOMRect, side: Side, f: number): Point {
 /** A top corner (0 = left, 1 = right) of a card that may be rotated and mid-flip, from its live transform. */
 function cardCorner(el: HTMLElement, side: 0 | 1): Point {
   const r = el.getBoundingClientRect();
-  const w = el.offsetWidth;
-  const h = el.offsetHeight;
+  const scale = Number(gsap.getProperty(el, 'scaleX')) || 1;
+  const w = el.offsetWidth * scale;
+  const h = el.offsetHeight * scale;
   const rot = ((Number(gsap.getProperty(el, 'rotation')) || 0) * Math.PI) / 180;
   const flip = ((Number(gsap.getProperty(el, 'rotationY')) || 0) * Math.PI) / 180;
   const lx = (side === 0 ? -1 : 1) * (w / 2) * Math.abs(Math.cos(flip));
@@ -169,7 +170,9 @@ function buildItem(item: Item, index: number, layer: HTMLElement): gsap.core.Tim
     arrow.f = f;
     return arrow;
   });
-  const box = isCard ? null : createBox(layer); // cards rotate and flip, so no flat selection box
+  const box = createBox(layer);
+  // Cards receive a brief registration cue only after their flip is complete.
+  if (isCard) box.style.borderColor = 'transparent';
   const pointFor = (a: Crew) =>
     isCard ? cardCorner(item.el, a.f > 0.5 ? 1 : 0) : edgePoint(item.el.getBoundingClientRect(), lead, a.f);
   const headingFor = (a: Crew) =>
@@ -205,7 +208,7 @@ function buildItem(item: Item, index: number, layer: HTMLElement): gsap.core.Tim
   };
   tl.call(track, [], grab - t(0.05));
   tl.to(item.el, { opacity: 1, duration: t(0.2), ease: 'none' }, grab - t(0.04));
-  if (box) tl.set(box, { autoAlpha: 1 }, grab - t(0.04));
+  if (!isCard) tl.set(box, { autoAlpha: 1 }, grab - t(0.04));
   crew.forEach((a) => tl.fromTo(a.rot, { scale: 1 }, { scale: 0.78, duration: t(0.09), yoyo: true, repeat: 1 }, grab));
 
   // 3. Pull: element and arrows travel together into the real layout position.
@@ -223,11 +226,15 @@ function buildItem(item: Item, index: number, layer: HTMLElement): gsap.core.Tim
 
   // 4. Lock: the box fades and the element settles with a small snap (a card gets a firmer slap).
   const settle = pullAt + pullDuration;
+  if (isCard) {
+    tl.call(track, [], settle);
+    tl.set(box, { autoAlpha: 0.75 }, settle);
+  }
   if (box) tl.to(box, { autoAlpha: 0, duration: t(0.35) }, settle + t(0.1));
   tl.fromTo(
     item.el,
     { scale: isCard ? 1.06 : 1.014 },
-    { scale: 1, duration: t(isCard ? 0.4 : 0.45), ease: 'back.out(3)', immediateRender: false },
+    { scale: 1, duration: t(isCard ? 0.4 : 0.45), ease: 'back.out(2)', immediateRender: false, onUpdate: track },
     settle,
   );
 

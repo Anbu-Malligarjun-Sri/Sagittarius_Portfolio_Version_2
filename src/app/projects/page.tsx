@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import ProjectsView from '@/features/projects/ProjectsView';
+import LivingNewspaper from '@/features/newspaper/LivingNewspaper';
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -21,7 +21,7 @@ export default function ProjectsPage() {
       </Link>
 
       <main id="main-content">
-        <ProjectsView />
+        <LivingNewspaper />
       </main>
     </div>
   );

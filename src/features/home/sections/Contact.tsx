@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import ContactBrief, { CONTACT_FIELDS } from './ContactBrief';
 
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
@@ -80,8 +81,8 @@ const STYLES = `
 
 .mech-key {
   position: relative;
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 25%, #fdf5e6 0%, #d8cbb5 40%, #a39580 80%, #5c5240 100%);
   border: 2px solid #1a1510;
@@ -125,21 +126,21 @@ const STYLES = `
 }
 
 .mech-key.wide {
-  width: 70px;
-  border-radius: 22px;
+  width: 60px;
+  border-radius: 16px;
   font-size: 10px;
   letter-spacing: 1px;
 }
 
 .mech-key.spacebar {
-  width: 300px;
-  height: 40px;
+  width: 260px;
+  height: 34px;
   border-radius: 8px;
 }
 
 .mech-key.submit-key {
-  width: 182px;
-  height: 48px;
+  width: 110px;
+  height: 34px;
   border-radius: 12px;
   background: linear-gradient(180deg, #f1d68f 0%, #c89d4a 52%, #8b6225 100%);
   border: 2px solid #3a260d;
@@ -205,6 +206,32 @@ const STYLES = `
   50% { transform: rotate(0deg) rotateX(0deg) translateY(-75px); opacity: 1; filter: brightness(1.5); }
   100% { transform: rotate(var(--angle)) rotateX(60deg) translateY(0); opacity: 0; }
 }
+/* Mechanical detailing is scoped to the machine, never the surrounding desk. */
+.typewriter-os-wrapper .typewriter-chassis {
+  background:linear-gradient(160deg,#343631 0%,#222521 28%,#111512 72%,#080b09);
+  border-top-color:#62665a;
+  box-shadow:inset 0 2px 2px #c5c8ac33,inset 0 -9px 12px #000b,0 18px 3px -10px #050605,0 30px 40px #0009;
+}
+.typewriter-chassis:before { content:''; position:absolute; inset:7px; border:1px solid #b0b29d21; border-radius:39px 39px 14px 14px; pointer-events:none; }
+.typewriter-os-wrapper .mech-key { flex-shrink:0; background:radial-gradient(ellipse at 45% 30%,#f1e9d7,#ddd1b9 74%,#a19a85); border:2px solid #878979; box-shadow:inset 0 1px 2px #ffffffe0,0 3px 0 #30352e,0 5px 0 #8e907e,0 8px 7px #0009; text-shadow:0 1px #fff8; }
+.typewriter-os-wrapper .mech-key:before { inset:2px; border:1px solid #655b4330; background:none; box-shadow:inset 0 0 4px #4e45212e; }
+.typewriter-os-wrapper .mech-key.pressed { transform:translateY(5px); color:#1c2019; filter:brightness(.95); box-shadow:inset 0 1px 4px #0003,0 1px 0 #6b705e,0 2px 3px #0009; text-shadow:none; }
+.typewriter-os-wrapper .mech-key:focus-visible { outline:3px solid #e8c547; outline-offset:5px; }
+.typewriter-os-wrapper .mech-key.spacebar { background:linear-gradient(#30382e,#141c15); border-color:#79806c; color:#ddd4bd; box-shadow:inset 0 1px #c7cdb14a,0 4px 0 #080c09,0 7px 6px #0009; }
+.typewriter-os-wrapper .mech-key.submit-key { background:linear-gradient(#e1c891,#b7985b); border-color:#958157; border-radius:6px; }
+.typewriter-os-wrapper .mech-key.disabled-key { opacity:.65; }
+.ribbon-spool { position:absolute; top:15px; width:82px; height:72px; border-radius:50%; z-index:51; background:repeating-radial-gradient(ellipse,#232822 0 3px,#151a16 4px 6px); border:5px solid #444c40; box-shadow:0 3px 0 #9b9d873d,0 7px 8px #0009,inset 0 0 0 2px #999e8540; }
+.ribbon-spool-left { left:37px; }.ribbon-spool-right { right:37px; }
+.ribbon-spool:before { content:''; position:absolute; inset:13px; border-radius:50%; border:2px solid #727b63; background:conic-gradient(#58634d 0 12%,#1d251c 12% 37%,#58634d 37% 49%,#1d251c 49% 74%,#58634d 74% 86%,#1d251c 86%); }
+.ribbon-spool i { position:absolute; inset:26px 30px; background:linear-gradient(90deg,#8b8e77,#e2dcc3,#626b57); border-radius:50%; box-shadow:0 1px 3px #000; }
+.ink-ribbon { position:absolute; top:24px; left:96px; right:96px; height:8px; background:linear-gradient(#181617 0 55%,#69292b 55%); box-shadow:0 2px 3px #000b; z-index:51; pointer-events:none; }
+.platen-knob { width:44px; height:54px; border-radius:9px; background:repeating-linear-gradient(90deg,#171e18 0 3px,#58604f 3px 4px,#252e23 4px 7px); border:2px solid #7f8670; box-shadow:inset 0 3px #b7b99e44,0 4px 6px #0009; }
+.carriage-return { position:absolute; bottom:29px; left:calc(-50% - 24px); width:150px; height:40px; z-index:45; cursor:pointer; transform:rotate(-8deg); transform-origin:right bottom; border:0; background:none; }
+.carriage-return:before { content:''; position:absolute; right:0; bottom:4px; width:130px; height:8px; border-radius:3px; background:linear-gradient(#e0e1cf,#949b87 45%,#454f40); box-shadow:0 3px 3px #0009; }
+.carriage-return span { position:absolute; left:0; top:5px; width:58px; height:20px; border-radius:8px 4px 4px 8px; background:linear-gradient(#626c58,#202a1d); border:1px solid #939c7f; }
+.carriage-return:hover { transform:rotate(-12deg); }.carriage-return:focus-visible { outline:2px solid #e8c547; outline-offset:4px; }
+@media(prefers-reduced-motion:reduce) { .typewriter-os-wrapper .mech-key { transition:none; } }
+
 `;
 
 class AudioEngine {
@@ -316,7 +343,6 @@ class AudioEngine {
 }
 
 const BASE_PAPER_WIDTH = 560;
-const MAX_PAPER_WIDTH = 820;
 const PAPER_SIDE_PADDING = 50;
 const PAPER_EXTRA_VISUAL_WIDTH = 40;
 const PLATEN_EXTRA_WIDTH = 60;
@@ -330,23 +356,16 @@ const FIELD_GAP = 12;
 const LINE_HEIGHT = 28;
 const CHAR_WIDTH = 9.6;
 
-const FORM_SCHEMA = [
-  { id: 'title', type: 'static', text: "INFORMATION QUESTIONNAIRE", y: 40, center: true },
-  { id: 'name', type: 'input', label: '1. Full Name', maxLength: 60, y: 120 },
-  { id: 'email', type: 'input', label: '2. Email', maxLength: 120, y: 160 },
-  { id: 'nationality', type: 'input', label: '3. Nationality', maxLength: 40, y: 200 },
-  { id: 'contact', type: 'input', label: '4. Phone Number', maxLength: 24, y: 240 },
-  { id: 'github', type: 'input', label: '5. Github or URL (optional)', maxLength: 200, y: 280 },
-  { id: 'description', type: 'input', label: '6. Description', maxLength: 8000, y: 320 },
-];
+type InputField = { id: string; type: 'input'; label: string; maxLength: number; y: number };
+const INPUT_FIELDS: InputField[] = CONTACT_FIELDS.map((f, i) => ({ id: f.id, type: 'input', label: `${i + 1}. ${f.id === 'description' ? 'Project brief' : f.id.charAt(0).toUpperCase() + f.id.slice(1)}${f.required ? ' *' : ''}`, maxLength: f.max, y: 120 + i * 40 }));
+const FORM_SCHEMA = [{ id: 'title', type: 'static' as const, text: 'A NOTE TO SAGITTARIUZ', y: 40, center: true }, ...INPUT_FIELDS];
 
-const KEYBOARD_MATRIX = [
-  [{ l: '2', s: '"' }, { l: '3', s: '£' }, { l: '4', s: '$' }, { l: '5', s: '%' }, { l: '6', s: '^' }, { l: '7', s: '&' }, { l: '8', s: '*' }, { l: '9', s: '(' }, { l: '0', s: ')' }, { l: '-', s: '_' }],
+const KEYBOARD_MATRIX: KeyData[][] = [
+  [{ l: '1', s: '!' }, { l: '2', s: '"' }, { l: '3', s: '£' }, { l: '4', s: '$' }, { l: '5', s: '%' }, { l: '6', s: '^' }, { l: '7', s: '&' }, { l: '8', s: '*' }, { l: '9', s: '(' }, { l: '0', s: ')' }, { l: '-', s: '_' }, { l: '=', s: '+' }],
   [{ l: 'Q' }, { l: 'W' }, { l: 'E' }, { l: 'R' }, { l: 'T' }, { l: 'Y' }, { l: 'U' }, { l: 'I' }, { l: 'O' }, { l: 'P' }],
-  [{ l: 'A' }, { l: 'S' }, { l: 'D' }, { l: 'F' }, { l: 'G' }, { l: 'H' }, { l: 'J' }, { l: 'K' }, { l: 'L' }, { l: '@' }],
-  [{ l: 'SHIFT', w: true }, { l: 'Z' }, { l: 'X' }, { l: 'C' }, { l: 'V' }, { l: 'B' }, { l: 'N' }, { l: 'M' }, { l: ',', s: '<' }, { l: '.', s: '>' }, { l: 'BACK', w: true }],
-  [{ l: 'SPACE', w: true, space: true }],
-  [{ l: 'SEND', w: true, submit: true }]
+  [{ l: 'A' }, { l: 'S' }, { l: 'D' }, { l: 'F' }, { l: 'G' }, { l: 'H' }, { l: 'J' }, { l: 'K' }, { l: 'L' }, { l: ';', s: ':' }, { l: "'", s: '@' }],
+  [{ l: 'SHIFT', w: true }, { l: 'Z' }, { l: 'X' }, { l: 'C' }, { l: 'V' }, { l: 'B' }, { l: 'N' }, { l: 'M' }, { l: ',', s: '<' }, { l: '.', s: '>' }, { l: '/', s: '?' }, { l: 'BACK', w: true }],
+  [{ l: 'RETURN', w: true }, { l: 'SPACE', w: true, space: true }, { l: 'SEND', w: true, submit: true }]
 ];
 
 type KeyData = {
@@ -541,22 +560,26 @@ const MechanicalKey = React.memo(function MechanicalKey({
   if (isActive) className += "pressed ";
 
   return (
-    <div
+    <button
+      type="button"
+      disabled={disabled}
+      aria-label={data.l === 'BACK' ? 'Backspace' : data.l === 'RETURN' ? 'Next field' : data.l === 'SHIFT' ? 'Shift lock' : data.l === 'SPACE' ? 'Space' : data.l}
+      aria-pressed={data.l === 'SHIFT' ? isActive : undefined}
       className={className}
       aria-disabled={disabled}
-      onMouseDown={(e) => {
+      onClick={(e) => {
         e.preventDefault();
-        if (!disabled) onClick(data.l);
+        if (!disabled) { onClick(data.l); (e.currentTarget.closest('[data-typewriter-console]') as HTMLElement | null)?.focus({ preventScroll: true }); }
       }}
     >
-      <div className="absolute inset-0 rounded-full bg-black/10 pointer-events-none" />
-      <div className="relative flex flex-col items-center justify-center leading-none mt-[-2px]">
+      <span className="absolute inset-0 rounded-full bg-black/10 pointer-events-none" />
+      <span className="relative flex flex-col items-center justify-center leading-none mt-[-2px]">
         {data.s && <span className="text-[10px] text-[#4a3e30] opacity-80 mb-[-2px]">{data.s}</span>}
         <span className={data.submit ? 'text-[11px] tracking-[0.35em] pl-[0.35em]' : data.w ? 'text-[10px]' : 'text-sm'}>
           {data.l}
         </span>
-      </div>
-    </div>
+      </span>
+    </button>
   );
 });
 
@@ -583,7 +606,7 @@ const wrapTypedValue = (value: string, lineLength: number) => {
   return chunks;
 };
 
-const REQUIRED_FIELD_IDS = ['name', 'email', 'nationality', 'contact', 'description'] as const;
+const REQUIRED_FIELD_IDS = ['name', 'email', 'description'] as const;
 
 type SubmissionState =
   | { status: 'idle'; message: string }
@@ -597,6 +620,7 @@ export default function ArchitectTypewriter() {
   );
   const [activeFieldIndex, setActiveFieldIndex] = useState(0);
   const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [shiftLocked, setShiftLocked] = useState(false);
   const [strikeTrigger, setStrikeTrigger] = useState(0);
   const [strikeAngle, setStrikeAngle] = useState(0);
   const [submission, setSubmission] = useState<SubmissionState>({
@@ -605,21 +629,18 @@ export default function ArchitectTypewriter() {
   });
 
   const audioRef = useRef<AudioEngine | null>(null);
-  const inputs = FORM_SCHEMA.filter(f => f.type === 'input');
+  const [consent, setConsent] = useState(false);
+  const sendLock = useRef(false);
+  const requestId = useRef('');
+  const inputs = INPUT_FIELDS;
   const activeField = inputs[activeFieldIndex];
   const activeValue = formData[activeField.id];
   const platenCenterY = 180;
   const canSubmit = REQUIRED_FIELD_IDS.every((fieldId) => (formData[fieldId] || '').trim().length > 0);
 
   const layout = React.useMemo(() => {
-    const requiredPaperWidth = inputs.reduce((largest, field) => {
-      const labelWidth = (`${field.label}: `.length * CHAR_WIDTH);
-      const valueWidth = Math.max(1, (formData[field.id] || '').length) * CHAR_WIDTH;
-      const totalWidth = Math.ceil((PAPER_SIDE_PADDING * 2) + labelWidth + valueWidth + 24);
-      return Math.max(largest, totalWidth);
-    }, BASE_PAPER_WIDTH);
-
-    const paperWidth = Math.min(MAX_PAPER_WIDTH, Math.max(BASE_PAPER_WIDTH, requiredPaperWidth));
+    // Real paper and the machine keep their width; longer answers feed onto new lines.
+    const paperWidth = BASE_PAPER_WIDTH;
     const writableWidth = paperWidth - (PAPER_SIDE_PADDING * 2);
 
     const fieldState = inputs.reduce(
@@ -711,65 +732,60 @@ export default function ArchitectTypewriter() {
   }, [activeFieldIndex, inputs]);
 
   const handleSubmit = useCallback(async () => {
-    if (!audioRef.current) audioRef.current = new AudioEngine();
     const ae = audioRef.current;
 
-    if (!canSubmit) {
-      ae.playDing();
+    if (sendLock.current) return;
+    if (!canSubmit || !consent) {
+      ae?.playDing();
       setSubmission({
         status: 'error',
-        message: 'Fill in Name, Email, Nationality, Phone Number, and Description first.',
+        message: 'Open the project brief: add your name, email, message and permission to reply.',
       });
       return;
     }
 
+    sendLock.current = true;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 20000);
     setSubmission({
       status: 'sending',
-      message: 'Transmitting your questionnaire...',
+      message: 'Sending your project inquiry...',
     });
 
     try {
-      const payload = {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        phone: formData.contact.trim(),
-        nationality: formData.nationality.trim(),
-        github: formData.github.trim(),
-        message: [
-          `Nationality: ${formData.nationality.trim()}`,
-          formData.github.trim() ? `GitHub / URL: ${formData.github.trim()}` : '',
-          '',
-          formData.description.trim(),
-        ].filter(Boolean).join('\n'),
-      };
+      if (!requestId.current) requestId.current = crypto.randomUUID();
+      const { description, ...details } = formData;
+      const payload = { ...details, message: description, consent, requestId: requestId.current };
 
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
 
-      const result = (await response.json()) as { ok?: boolean; error?: string };
+      const result = (await response.json()) as { ok?: boolean; error?: string; reference?: string };
 
       if (!response.ok || !result.ok) {
         throw new Error(result.error || 'Unable to send right now.');
       }
 
-      ae.playZip();
+      ae?.playZip();
       setSubmission({
         status: 'success',
-        message: 'Message sent. Your typewriter transmission was delivered.',
+        message: `Accepted for delivery. Reference: ${result.reference ?? 'contact'}. We will reply to your email.`,
       });
     } catch (error) {
-      ae.playDing();
+      ae?.playDing();
       setSubmission({
         status: 'error',
-        message: error instanceof Error ? error.message : 'Unable to send right now.',
+        message: error instanceof Error && error.name !== 'AbortError' ? error.message : 'Delivery not confirmed. Your brief is preserved; retry unchanged or email us.',
       });
-    }
-  }, [canSubmit, formData]);
+    } finally { clearTimeout(timer); sendLock.current = false; }
+  }, [canSubmit, formData, consent]);
 
   const handleType = useCallback((char: string) => {
+    if (sendLock.current) return;
     if (!audioRef.current) audioRef.current = new AudioEngine();
     const ae = audioRef.current;
 
@@ -813,7 +829,10 @@ export default function ArchitectTypewriter() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-typewriter-console]') || target.closest('input, textarea, select, button, a, dialog')) return;
+      if (e.key === 'Tab') return; // Preserve native keyboard navigation.
       if (!audioRef.current) audioRef.current = new AudioEngine();
 
       if (e.key === 'ArrowUp') {
@@ -873,11 +892,14 @@ export default function ArchitectTypewriter() {
   }, [activeFieldIndex, handleType, inputs.length]);
 
   const handleMechanicalKeyPress = useCallback((key: string) => {
+    if (sendLock.current) return;
+    if (key === 'SHIFT') { setShiftLocked(value => !value); return; }
     const visualKey = key === 'RETURN' ? 'ENTER' : key;
     setActiveKey(visualKey);
     setTimeout(() => setActiveKey(null), 100);
-    handleType(key);
-  }, [handleType]);
+    const keycap = KEYBOARD_MATRIX.flat().find(item => item.l === key);
+    handleType(key.length === 1 ? (shiftLocked ? keycap?.s ?? key.toUpperCase() : key.toLowerCase()) : key);
+  }, [handleType, shiftLocked]);
 
   const renderTypingCaret = () => (
     <span className="inline-block align-middle ml-[4px] w-[8px] h-[20px] bg-black/60 animate-[pulse_0.8s_infinite] shadow-[0_0_4px_rgba(0,0,0,0.5)]" />
@@ -907,8 +929,9 @@ export default function ArchitectTypewriter() {
   };
 
   return (
-    <section id="contact" className="relative w-full h-screen min-h-[900px] flex flex-col items-center justify-center typewriter-os-wrapper overflow-hidden">
+    <section id="contact" data-typewriter-console="" tabIndex={0} aria-label="Contact typewriter. Use Write your project brief for the accessible form." className="relative w-full h-screen min-h-[900px] flex flex-col items-center justify-center typewriter-os-wrapper overflow-hidden">
       <style>{STYLES}</style>
+      <ContactBrief answers={formData} update={(id, value) => { setFormData(previous => ({ ...previous, [id]: value })); setActiveFieldIndex(Math.max(0, inputs.findIndex(f => f.id === id))); }} consent={consent} setConsent={setConsent} send={() => void handleSubmit()} busy={submission.status === 'sending'} message={submission.message} />
 
       {/* Hidden SVG for physical ink-bleed displacement */}
       <svg width="0" height="0" className="absolute pointer-events-none">
@@ -986,7 +1009,7 @@ export default function ArchitectTypewriter() {
       </div>
 
       {/* Core Scaled Container: Ensures the unified machine stays perfectly visible on any screen */}
-      <div className="relative flex flex-col items-center transform scale-[0.55] sm:scale-[0.65] md:scale-[0.80] lg:scale-[0.85] origin-center transition-transform duration-500 ease-in-out mt-12 z-10 w-full">
+      <div className="relative flex flex-col items-center transform scale-[0.43] min-[375px]:scale-[0.51] sm:scale-[0.65] md:scale-[0.80] lg:scale-[0.85] origin-center transition-transform duration-500 ease-in-out mt-12 z-10 w-full">
 
         {/* CARRIAGE SYSTEM (Z-10) - Physically shifts Left/Right */}
         <div
@@ -997,6 +1020,7 @@ export default function ArchitectTypewriter() {
             className="absolute top-0 left-1/2 h-full transition-transform duration-[150ms] ease-out will-change-transform"
             style={{ transform: `translateX(calc(-50% + ${layout.carriageShiftX}px))` }}
           >
+            <button type="button" className="carriage-return" style={{ left: `${-layout.platenWidth / 2 - 100}px` }} aria-label="Carriage return: next field" onClick={() => handleMechanicalKeyPress('RETURN')}><span /></button>
             {/* 1. Platen Cylinder Base (Background Rubber) */}
             <div
               className="absolute bottom-0 left-1/2 h-[46px] -translate-x-1/2 mat-platen-rubber rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.9)] z-10"
@@ -1010,6 +1034,8 @@ export default function ArchitectTypewriter() {
                 top: `${layout.paperTop}px`,
                 width: `${layout.paperVisualWidth}px`,
                 height: `${layout.paperHeight}px`,
+                // Unfed paper stays behind the platen, rather than hanging below the keyboard.
+                clipPath: `inset(0 0 ${Math.max(0, layout.paperHeight - (280 - layout.paperTop))}px 0)`,
                 backgroundImage: `
                   repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(0,0,0,0.04) 27px, rgba(0,0,0,0.04) 28px),
                   linear-gradient(to right, rgba(200,50,50,0.06) 1px, transparent 1px)
@@ -1116,8 +1142,8 @@ export default function ArchitectTypewriter() {
               className="absolute bottom-0 left-1/2 h-[46px] -translate-x-1/2 pointer-events-none z-30 flex items-center justify-between"
               style={{ width: `${layout.platenWidth}px` }}
             >
-              <div className="w-12 h-12 -ml-6 rounded-full mat-bakelite-black border border-[#555] shadow-xl pointer-events-auto" />
-              <div className="w-12 h-12 -mr-6 rounded-full mat-bakelite-black border border-[#555] shadow-xl pointer-events-auto" />
+              <div aria-hidden="true" className="platen-knob -ml-6" />
+              <div aria-hidden="true" className="platen-knob -mr-6" />
 
               {/* Metal Guide Bar */}
               <div className="absolute top-[60%] left-8 right-8 h-[4px] bg-gradient-to-b from-[#ddd] to-[#666] shadow-[0_4px_6px_rgba(0,0,0,0.6)] rounded-full" />
@@ -1130,13 +1156,16 @@ export default function ArchitectTypewriter() {
 
         {/* STATIC CHASSIS & KEYBOARD (Z-40) - Overlaps Carriage Base */}
         <div
-          className="relative -mt-[30px] mat-bakelite-black rounded-t-[70px] rounded-b-[24px] p-8 pt-[130px] pb-14 border-t-[3px] border-[#444] border-l border-r border-[#222] z-40"
+          className="relative -mt-[30px] mat-bakelite-black typewriter-chassis rounded-t-[46px] rounded-b-[20px] p-8 pt-[105px] pb-8 border-t-[3px] border-[#444] border-l border-r border-[#222] z-40"
           style={{ width: `${layout.chassisWidth}px` }}
         >
 
+          <div className="ribbon-spool ribbon-spool-left" aria-hidden="true"><i /></div>
+          <div className="ribbon-spool ribbon-spool-right" aria-hidden="true"><i /></div>
+          <div className="ink-ribbon" aria-hidden="true" />
           {/* Typebar Basket */}
           <div
-            className="absolute -top-[15px] left-1/2 h-[170px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,#1a1a1a_0%,#000_100%)] rounded-b-[190px] shadow-[inset_0_20px_40px_rgba(0,0,0,0.9),0_2px_0_rgba(255,255,255,0.05)] border-b border-[#333] overflow-hidden typebar-basket z-50"
+            className="absolute -top-[15px] left-1/2 h-[120px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_top,#1a1a1a_0%,#000_100%)] rounded-b-[190px] shadow-[inset_0_20px_40px_rgba(0,0,0,0.9),0_2px_0_rgba(255,255,255,0.05)] border-b border-[#333] overflow-hidden typebar-basket z-50"
             style={{ width: `${layout.typebarWidth}px` }}
           >
             {Array.from({ length: 31 }).map((_, i) => (
@@ -1155,24 +1184,25 @@ export default function ArchitectTypewriter() {
           </div>
 
           {/* Brand Plate */}
-          <div className="absolute top-[180px] left-1/2 -translate-x-1/2 w-48 h-8 mat-brushed-metal rounded-sm flex items-center justify-center shadow-[0_6px_15px_rgba(0,0,0,0.9),inset_0_1px_2px_rgba(255,255,255,0.7)] z-50">
-            <span className="font-['Courier_Prime'] text-[#0a0a0a] text-[11px] font-bold tracking-[0.5em] drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">ARCHITECT</span>
+          <div className="absolute top-[118px] left-1/2 -translate-x-1/2 w-48 h-8 mat-brushed-metal rounded-sm flex items-center justify-center shadow-[0_6px_15px_rgba(0,0,0,0.9),inset_0_1px_2px_rgba(255,255,255,0.7)] z-50">
+            <span className="font-['Courier_Prime'] text-[#0a0a0a] text-[11px] font-bold tracking-[0.5em] drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]">SAGITTARIUZ</span>
           </div>
 
           {/* Keyboard Sub-chassis */}
-          <div className="relative mt-[80px] bg-gradient-to-b from-[#181210] to-[#050403] p-8 rounded-3xl shadow-[inset_0_15px_30px_rgba(0,0,0,1),0_2px_1px_rgba(255,255,255,0.05)] border border-[#2a2018]">
+          <div className="relative mt-[60px] bg-gradient-to-b from-[#181210] to-[#050403] p-8 rounded-3xl shadow-[inset_0_15px_30px_rgba(0,0,0,1),0_2px_1px_rgba(255,255,255,0.05)] border border-[#2a2018]">
+            <span aria-hidden="true" className="absolute left-4 top-3 h-2 w-2 rounded-full border border-[#777] bg-[#272421] shadow-inner" /><span aria-hidden="true" className="absolute right-4 top-3 h-2 w-2 rounded-full border border-[#777] bg-[#272421] shadow-inner" />
             <div className="absolute inset-0 rounded-3xl bg-[url('data:image/svg+xml,%3Csvg viewBox=\\'0 0 200 200\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cfilter id=\\'noise\\'%3E%3CfeTurbulence type=\\'fractalNoise\\' baseFrequency=\\'0.8\\' numOctaves=\\'3\\' stitchTiles=\\'stitch\\'/%3E%3C/filter%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' filter=\\'url(%23noise)\\' opacity=\\'0.04\\'/%3E%3C/svg%3E')] pointer-events-none mix-blend-overlay" />
             
-            <div className="flex flex-col gap-4 items-center relative z-10">
+            <div className="flex flex-col gap-3 items-center relative z-10">
               {KEYBOARD_MATRIX.map((row, rIdx) => (
-                <div key={rIdx} className="flex gap-3 justify-center" style={{
-                  marginLeft: rIdx === 1 ? '24px' : rIdx === 2 ? '48px' : rIdx === 3 ? '12px' : '0'
+                <div key={rIdx} className="flex gap-2 justify-center" style={{
+                  marginLeft: rIdx === 1 ? '12px' : rIdx === 2 ? '24px' : '0'
                 }}>
                   {row.map((keyData, kIdx) => (
                     <MechanicalKey
                       key={`${rIdx}-${kIdx}`}
                       data={keyData}
-                      isActive={activeKey === keyData.l}
+                      isActive={activeKey === keyData.l || (keyData.l === 'SHIFT' && shiftLocked)}
                       disabled={keyData.l === 'SEND' && (!canSubmit || submission.status === 'sending')}
                       onClick={handleMechanicalKeyPress}
                     />
@@ -1189,7 +1219,7 @@ export default function ArchitectTypewriter() {
 
       <div className="absolute bottom-6 left-6 font-['Courier_Prime'] text-[10px] text-red-500/60 tracking-widest pointer-events-none z-[1000] drop-shadow-[0_0_2px_rgba(255,0,0,0.4)]">
         SYSTEM // KINEMATIC DRIVE ACTIVE<br />
-        INPUT // PHYSICAL KEYBOARD REQUIRED
+        INPUT // KEYBOARD OR PROJECT BRIEF
       </div>
       
       </div> {/* <-- Universal Scale Wrapper closing tag */}

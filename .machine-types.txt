@@ -1,0 +1,19 @@
+.next/types/validator.ts(53,39): error TS2307: Cannot find module '../../src/app/about/page.js' or its corresponding type declarations.
+src/app/page.integration.test.tsx(4,1): error TS2304: Cannot find name 'vi'.
+src/app/page.integration.test.tsx(5,19): error TS2304: Cannot find name 'vi'.
+src/app/page.integration.test.tsx(8,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+src/app/page.integration.test.tsx(9,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+src/app/page.integration.test.tsx(12,5): error TS2304: Cannot find name 'expect'.
+src/app/page.integration.test.tsx(15,7): error TS2304: Cannot find name 'expect'.
+src/app/page.integration.test.tsx(18,5): error TS2304: Cannot find name 'expect'.
+src/app/page.integration.test.tsx(25,5): error TS2304: Cannot find name 'expect'.
+src/features/home/sections/Later_use/GithubStats.tsx(5,33): error TS2307: Cannot find module '../gsapTypes' or its corresponding type declarations.
+src/features/home/sections/Later_use/Hero.tsx(5,31): error TS2307: Cannot find module '../hooks' or its corresponding type declarations.
+src/features/home/sections/Later_use/Hero.tsx(6,33): error TS2307: Cannot find module '../gsapTypes' or its corresponding type declarations.
+src/features/home/sections/Later_use/index.ts(11,36): error TS2307: Cannot find module './Contact' or its corresponding type declarations.
+src/features/home/sections/Later_use/index.ts(12,35): error TS2306: File 'C:/MY_FOLDER/Projects/Sagittarius_Portfolio/Sagittarius_Portfolio_Version_2/src/features/home/sections/Later_use/Footer.tsx' is not a module.
+src/features/home/sections/Later_use/Mission.tsx(4,33): error TS2307: Cannot find module '../gsapTypes' or its corresponding type declarations.
+src/features/home/sections/Later_use/Navbar.tsx(6,44): error TS2307: Cannot find module '../gsapTypes' or its corresponding type declarations.
+src/features/home/sections/Later_use/Products.tsx(5,33): error TS2307: Cannot find module '../gsapTypes' or its corresponding type declarations.
+src/features/home/sections/Later_use/Roadmap.tsx(5,33): error TS2307: Cannot find module '../gsapTypes' or its corresponding type declarations.
+src/features/home/sections/Later_use/Sagittarix.tsx(5,33): error TS2307: Cannot find module '../gsapTypes' or its corresponding type declarations.

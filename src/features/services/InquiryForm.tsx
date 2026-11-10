@@ -34,7 +34,7 @@ export default function InquiryForm({ service }: { service: ServiceBrief }) {
       const raw = localStorage.getItem(storageKey);
       if (!raw) { setNotice('No saved draft for this service on this device.'); return; }
       const draft = JSON.parse(raw);
-      if (!draft || typeof draft.expires !== 'number' || draft.expires < Date.now() || !draft.answers || typeof draft.answers !== 'object' || typeof draft.requestId !== 'string' || !/^[a-f\d-]{36}$/i.test(draft.requestId)) throw new Error();
+      if (!draft || typeof draft.expires !== 'number' || draft.expires < Date.now() || !draft.answers || typeof draft.answers !== 'object' || typeof draft.requestId !== 'string' || !/^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(draft.requestId)) throw new Error();
       const restored: Answers = {};
       for (const f of allFields) { const value = draft.answers[f.key]; if (value !== undefined && (typeof value !== 'string' || value.length > fieldLimit(f.key))) throw new Error(); restored[f.key] = value ?? ''; }
       requestId.current = draft.requestId; setAnswers(restored); setConsent(false); setErrors({}); setStep(0); setNotice('Saved draft restored. Review it before sending.');

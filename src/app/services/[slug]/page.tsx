@@ -14,14 +14,20 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const brief = SERVICE_BRIEFS.find(s => s.slug === slug);
   const stamp = STAMPS.find(s => s.id === brief?.stampId);
-  return { title: stamp ? `${stamp.name} — Start a project | Sagittariuz` : 'Service not found', description: brief?.outcome };
+  return {
+    title: stamp ? `${stamp.name} — Start a project` : 'Service not found',
+    description: brief?.outcome,
+    alternates: { canonical: `/services/${slug}` },
+    openGraph: { title: stamp?.name, description: brief?.outcome, url: `/services/${slug}`, images: ['/opengraph-image'] },
+    twitter: { card: 'summary_large_image' as const, title: stamp?.name, description: brief?.outcome, images: ['/opengraph-image'] },
+  };
 }
 export default async function ServicePage({ params }: Props) {
   const { slug } = await params;
   const service = SERVICE_BRIEFS.find(s => s.slug === slug);
   const stamp = STAMPS.find(s => s.id === service?.stampId);
   if (!service || !stamp) notFound();
-  return <main className={`${styles.page} ${stampFontVariables}`} style={{ '--accent': stamp.glow } as CSSProperties}>
+  return <main id="main-content" className={`${styles.page} ${stampFontVariables}`} style={{ '--accent': stamp.glow } as CSSProperties}>
     <header className={styles.header}><Link href="/#services">← The stamp collection</Link><Link href="/" className={styles.wordmark}>Sagittariuz<span>Thoughtful work, since 2026</span></Link><a href="#brief">Start an inquiry ↗</a></header>
     <section className={styles.hero}>
       <div className={styles.heroCopy}><p className={styles.eyebrow}>Commission notes / Nº {stamp.no}</p><h1>{stamp.name}</h1><p className={styles.tagline}>{stamp.tagline}</p><p className={styles.story}>{stamp.story}</p><a className={styles.primary} href="#brief">Reserve this stamp ↗</a><p className={styles.small}>Start a project inquiry. Scope, price and dates come next.</p></div>

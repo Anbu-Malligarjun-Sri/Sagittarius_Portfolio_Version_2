@@ -38,7 +38,6 @@ export default function TeamPage() {
       <noscript>
         <style>{'[data-assemble]{opacity:1!important}'}</style>
       </noscript>
-      <div className="pointer-events-none fixed left-3 top-0 z-30 hidden h-full w-px bg-[#ff3b3b]/50 sm:block" />
       <AssemblyChoreography />
 
       <Link

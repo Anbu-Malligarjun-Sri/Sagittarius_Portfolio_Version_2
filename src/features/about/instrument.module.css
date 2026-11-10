@@ -526,3 +526,19 @@
     transition: none;
   }
 }
+/* A quiet instrument cabinet: one surface, deliberate selection, legible controls. */
+.instrument { padding:20px 20px 14px; background:linear-gradient(135deg,#202923,#111713 68%); border:1px solid #b0a18240; border-radius:5px; box-shadow:0 24px 65px #0005,inset 0 1px #f2e6cc12; }
+.instrumentHead { display:flex; justify-content:space-between; gap:12px; margin:0 0 14px; padding-bottom:12px; border-bottom:1px solid #d3c3a528; font:9px var(--font-mono),monospace; text-transform:uppercase; letter-spacing:.12em; color:#c1b79e; }
+.instrument .panel { border-radius:2px; background:radial-gradient(ellipse at 40% 10%,color-mix(in srgb,var(--accent) 7%,#101813),#0c120f); border-color:#b8ad8a33; box-shadow:inset 0 3px 16px #0007; }
+.instrument .control { padding:14px 4px 6px; }
+.instrument .key { margin-top:1.1rem; }
+.instrument .keyTitle { flex-direction:row; align-items:center; gap:6px; letter-spacing:.12em; font-size:9px; color:#c8b58d; }
+.instrument .legend { letter-spacing:.04em; font-size:9px; }
+.instrument .rowButton { grid-template-columns:18px minmax(0,1fr) 32px auto; gap:6px; min-height:44px; padding:9px 6px; cursor:pointer; }
+.instrument .chip { grid-column:auto; font-size:8px; letter-spacing:.04em; padding:3px 6px; justify-self:end; margin:0; }
+.instrument .name { font-size:clamp(1rem,1.6vw,1.18rem); }
+.instrument .spark { opacity:.8; }
+.instrument .detail { padding:0 10px 14px 30px; }
+.instrument .caption { line-height:1.6; color:#b8b3a2; font-size:9px; letter-spacing:0; }
+.instrument .row[data-open='true'] { background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 8%,transparent),transparent); box-shadow:inset 1px 0 var(--accent); }
+@media(max-width:400px) { .instrument { padding:18px 12px; }.instrumentHead { font-size:8px; letter-spacing:.06em; } }

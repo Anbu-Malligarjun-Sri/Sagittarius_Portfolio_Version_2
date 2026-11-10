@@ -43,16 +43,16 @@ export default function Image() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '880px' }}>
           <div style={{ fontSize: '92px', lineHeight: '0.92', fontWeight: 800, letterSpacing: '-0.05em' }}>
-            Proof of work for ambitious systems.
+            Less friction. More discovery.
           </div>
           <div style={{ fontSize: '30px', lineHeight: '1.35', color: 'rgba(245, 240, 232, 0.72)' }}>
-            De-extinction AI, robotics, AR systems, and product design in one studio narrative.
+            Thoughtful software and AI for researchers, students and the work ahead.
           </div>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <div style={{ fontSize: '18px', letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(245, 240, 232, 0.48)' }}>
-            Sagittariuz Portfolio
+            Independent team / Est. 2026
           </div>
           <div style={{ fontSize: '18px', color: '#e8c547' }}>
             sagittariuz.ai

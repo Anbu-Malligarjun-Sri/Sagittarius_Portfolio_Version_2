@@ -14,7 +14,6 @@ export default function PlushSocials() {
             Soft on the outside. Say hello.
           </h3>
         </div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#f5f0e8]/40">Run your cursor through the fur</p>
       </div>
 
       <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">

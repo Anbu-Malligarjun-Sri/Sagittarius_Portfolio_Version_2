@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Epilogue, Manrope, Fira_Code, Caveat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/features/home/CustomCursor";
-import CommandPalette from "@/features/command/CommandPalette";
 
 const epilogue = Epilogue({
   variable: "--font-display",
@@ -42,16 +41,12 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL('https://sagittariuz.ai'),
   title: {
-    default: 'Sagittariuz',
+    default: 'Sagittariuz | Thoughtful AI for research and everyday work',
     template: '%s | Sagittariuz',
   },
-  description: 'Sagittariuz is a premium startup studio building software, brands, and product systems that ship with rigor.',
-  keywords: ['Sagittariuz', 'startup studio', 'product design', 'engineering', 'branding'],
-  authors: [{ name: 'Sagittariuz Studio' }],
-  themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
-    { media: '(prefers-color-scheme: light)', color: '#0a0a0a' },
-  ],
+  description: 'Founded in 2026, Sagittariuz builds software and AI tools to reduce friction for researchers, students and teams. Explore our STEM projects and services.',
+  keywords: ['Sagittariuz', 'AI for research', 'STEM software', 'AI agents', 'AI integration', 'web development'],
+  authors: [{ name: 'Sagittariuz' }],
   alternates: {
     canonical: '/',
   },
@@ -59,7 +54,7 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://sagittariuz.ai',
     title: 'Sagittariuz',
-    description: 'Premium startup systems for ambitious teams.',
+    description: 'Thoughtful software and AI tools for researchers, students and the work ahead.',
     siteName: 'Sagittariuz',
     images: [
       {
@@ -73,10 +68,12 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Sagittariuz',
-    description: 'Premium startup systems for ambitious teams.',
+    description: 'Thoughtful software and AI tools for researchers, students and the work ahead.',
     images: ['/opengraph-image'],
   },
 };
+
+export const viewport: Viewport = { themeColor: '#0a0a0a' };
 
 export default function RootLayout({
   children,
@@ -91,7 +88,6 @@ export default function RootLayout({
       <body className="h-full bg-[#0a0a0a] text-[#f5f0e8]">
         <div className="noise-overlay" />
         <CustomCursor />
-        <CommandPalette />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-500 focus:bg-[#f5f0e8] focus:text-[#0a0a0a] focus:px-3 focus:py-2 focus:rounded"
@@ -106,6 +102,8 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'Sagittariuz',
+              foundingDate: '2026',
+              description: 'Software and AI tools that reduce friction in research and everyday work.',
               url: 'https://sagittariuz.ai',
               sameAs: [
                 'https://github.com/Anbu-Malligarjun-Sri',

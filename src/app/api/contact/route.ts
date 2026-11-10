@@ -1,112 +1,46 @@
-import { NextResponse } from 'next/server';
+import { createHash } from 'node:crypto';
 import { Resend } from 'resend';
 import { checkRateLimit, clientIp } from './rateLimit';
 
-type ContactPayload = {
-  name?: unknown;
-  email?: unknown;
-  phone?: unknown;
-  nationality?: unknown;
-  github?: unknown;
-  message?: unknown;
-};
-
-// 5 messages per address per 10 minutes.
-const RATE_LIMIT = { limit: 5, windowMs: 10 * 60 * 1000 };
-const MAX_BODY_BYTES = 20_000;
-
-// Server-side caps, set a little above what the form itself allows.
-const MAX_LENGTH = { name: 100, email: 254, phone: 40, nationality: 80, github: 300, message: 9000 } as const;
-
-const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
-const escapeHtml = (value: string) =>
-  value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-
-const fail = (error: string, status: number, headers?: Record<string, string>) =>
-  NextResponse.json({ ok: false, error }, { status, headers });
-
+export const runtime = 'nodejs';
+const LIMITS: Record<string, number> = { name: 100, email: 254, project: 160, service: 100, website: 500, budget: 160, timeline: 160, message: 4000 };
+const reply = (body: object, status: number, headers = {}) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store', ...headers } });
 export async function POST(request: Request) {
-  const limited = checkRateLimit(`contact:${clientIp(request)}`, RATE_LIMIT);
-  if (!limited.allowed) {
-    return fail('You have sent a few messages already. Please try again in a little while.', 429, {
-      'Retry-After': String(limited.retryAfterSec),
-    });
-  }
-
-  if (Number(request.headers.get('content-length') ?? 0) > MAX_BODY_BYTES) {
-    return fail('That message is too large.', 413);
-  }
-
-  let body: ContactPayload;
+  if (request.headers.get('origin') && request.headers.get('origin') !== new URL(request.url).origin) return reply({ error: 'Please use the contact form on our website.' }, 403);
+  if (!request.headers.get('content-type')?.includes('application/json')) return reply({ error: 'Expected JSON.' }, 415);
+  const rate = checkRateLimit(`contact:${clientIp(request)}`, { limit: 5, windowMs: 600_000 });
+  if (!rate.allowed) return reply({ error: `Please wait ${Math.ceil(rate.retryAfterSec / 60)} minute(s) and retry. Your answers are preserved.` }, 429, { 'Retry-After': String(rate.retryAfterSec) });
+  let raw: Record<string, unknown>;
+  const reader = request.body?.getReader();
+  if (!reader) return reply({ error: 'Empty message.' }, 400);
   try {
-    const text = await request.text();
-    if (text.length > MAX_BODY_BYTES) return fail('That message is too large.', 413);
-    body = JSON.parse(text) as ContactPayload;
-  } catch {
-    return fail('Invalid request payload.', 400);
+    let bytes = 0; const chunks: Uint8Array[] = [];
+    while (true) { const { done, value } = await reader.read(); if (done) break; bytes += value.byteLength; if (bytes > 20_000) { await reader.cancel(); return reply({ error: 'Please shorten the brief.' }, 413); } chunks.push(value); }
+    raw = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error();
+  } catch { return reply({ error: 'We could not read the brief.' }, 400); }
+  finally { reader.releaseLock(); }
+  const values: Record<string, string> = {};
+  for (const [key, max] of Object.entries(LIMITS)) {
+    if (raw[key] !== undefined && typeof raw[key] !== 'string') return reply({ error: `Please check ${key}.` }, 400);
+    values[key] = ((raw[key] as string | undefined) ?? '').trim();
+    if (values[key].length > max) return reply({ error: `Please keep ${key} under ${max} characters.` }, 400);
   }
-
-  const read = (value: unknown) => (typeof value === 'string' ? value.trim() : '');
-  const name = read(body.name);
-  const email = read(body.email);
-  const phone = read(body.phone);
-  const nationality = read(body.nationality);
-  const github = read(body.github);
-  const message = read(body.message);
-
-  if (!name || !email || !phone || !nationality || !message) {
-    return fail('Please fill in all fields.', 400);
-  }
-
-  if (
-    name.length > MAX_LENGTH.name ||
-    email.length > MAX_LENGTH.email ||
-    phone.length > MAX_LENGTH.phone ||
-    nationality.length > MAX_LENGTH.nationality ||
-    github.length > MAX_LENGTH.github ||
-    message.length > MAX_LENGTH.message
-  ) {
-    return fail('One of the fields is too long.', 400);
-  }
-
-  if (!isValidEmail(email)) {
-    return fail('Please provide a valid email address.', 400);
-  }
-
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    return fail('Mail service is not configured.', 503);
-  }
-
+  if (!values.name || !values.message || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.email)) return reply({ error: 'Please include your name, a valid email address and a project brief.' }, 400);
+  if (values.website) { try { const url = new URL(values.website); if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) throw new Error(); } catch { return reply({ error: 'Use a public http:// or https:// website address without credentials.' }, 400); } }
+  if (raw.consent !== true) return reply({ error: 'Please give permission for us to reply about your inquiry.' }, 400);
+  if (typeof raw.requestId !== 'string' || !/^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(raw.requestId)) return reply({ error: 'Please refresh the page to create a request reference.' }, 400);
+  if (!process.env.RESEND_API_KEY) return reply({ error: 'Online delivery is unavailable. Your brief is preserved; please email anbumalligarjunsri@gmail.com.' }, 503);
+  const digest = createHash('sha256').update(JSON.stringify({ values, requestId: raw.requestId })).digest('hex');
+  const reference = `SZ-${digest.slice(0, 12).toUpperCase()}`;
   try {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
+    const { data, error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
       from: process.env.RESEND_FROM_EMAIL ?? 'Sagittariuz <onboarding@resend.dev>',
-      to: process.env.CONTACT_TO_EMAIL ?? 'anbumalligarjunsri@gmail.com',
-      replyTo: email,
-      subject: `New message from ${name.replace(/[\r\n]+/g, ' ')}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
-          <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-          <p><strong>Nationality:</strong> ${escapeHtml(nationality)}</p>
-          <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
-          ${github ? `<p><strong>GitHub / URL:</strong> ${escapeHtml(github)}</p>` : ''}
-          <p><strong>Message:</strong></p>
-          <p>${escapeHtml(message).replaceAll('\n', '<br />')}</p>
-        </div>
-      `,
-    });
-    if (error) throw new Error(error.message);
-  } catch (error) {
-    console.error('[contact] failed to send message:', error);
-    return fail('We could not send your message right now. Please try again shortly.', 502);
-  }
-
-  return NextResponse.json({ ok: true });
+      to: process.env.CONTACT_TO_EMAIL ?? 'anbumalligarjunsri@gmail.com', replyTo: values.email,
+      subject: `Project conversation / ${reference}`,
+      text: [`Sagittariuz / Contact inquiry / ${reference}`, ...Object.entries(values).map(([key, value]) => `${key}: ${value || 'Not provided'}`), 'Permission to discuss this inquiry: yes. Not a confirmed booking.'].join('\n\n'),
+    }, { idempotencyKey: `contact/${digest}` });
+    if (error || !data?.id) throw new Error();
+    return reply({ ok: true, reference }, 200);
+  } catch { return reply({ error: 'Delivery could not be confirmed. Retry unchanged within 24 hours, or email us with your brief.' }, 502); }
 }

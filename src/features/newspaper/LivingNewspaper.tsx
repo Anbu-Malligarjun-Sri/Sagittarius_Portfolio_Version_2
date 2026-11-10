@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { gsap } from 'gsap';
-import { ArrowDown, ArrowRight, ArrowUp, ArrowUpRight } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpRight } from 'lucide-react';
 import { PROJECTS } from '@/features/home/sections/active/data';
 import { buildArticles } from './articles';
 import { newspaperFontVariables } from './fonts';
@@ -24,7 +24,7 @@ function canScroll(el: HTMLElement, dy: number) {
  * around a photograph you can brush aside or drag, and the letters react to the cursor. Scrolling glides to the next
  * page. On phones, tablets, with reduced motion, or without JavaScript, the same stories are a plain printed page.
  */
-export default function LivingNewspaper({ onOpenCaseFile }: { onOpenCaseFile?: (id: string) => void }) {
+export default function LivingNewspaper() {
   const articles = useMemo(() => buildArticles(PROJECTS), []);
   const count = articles.length;
   const rootRef = useRef<HTMLElement>(null);
@@ -292,15 +292,6 @@ export default function LivingNewspaper({ onOpenCaseFile }: { onOpenCaseFile?: (
                       <ArrowUpRight size={15} aria-hidden="true" />
                     </a>
                   ))}
-                  {onOpenCaseFile ? (
-                    <button type="button" className={styles.linkBtn} onClick={() => onOpenCaseFile(article.id)}>
-                      <span>
-                        The case file
-                        <small>Design notes, on the Case files tab</small>
-                      </span>
-                      <ArrowRight size={15} aria-hidden="true" />
-                    </button>
-                  ) : null}
                 </div>
 
                 <div className={styles.box}>
@@ -401,15 +392,6 @@ export default function LivingNewspaper({ onOpenCaseFile }: { onOpenCaseFile?: (
                   <ArrowUpRight size={15} aria-hidden="true" />
                 </a>
               ))}
-              {onOpenCaseFile ? (
-                <button type="button" className={styles.linkBtn} onClick={() => onOpenCaseFile(article.id)}>
-                  <span>
-                    The case file
-                    <small>Design notes, on the Case files tab</small>
-                  </span>
-                  <ArrowRight size={15} aria-hidden="true" />
-                </button>
-              ) : null}
             </div>
           </article>
         ))}

@@ -13,9 +13,8 @@ import { POST } from './route';
 const valid = {
   name: 'Ada Lovelace',
   email: 'ada@example.com',
-  phone: '+44 20 7946 0000',
-  nationality: 'British',
-  github: '',
+  consent: true,
+  requestId: '12345678-1234-4123-8123-123456789abc',
   message: 'Hello there',
 };
 
@@ -39,7 +38,7 @@ describe('POST /api/contact', () => {
   it('sends a valid message', async () => {
     const res = await call(valid);
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true });
+    expect(await res.json()).toMatchObject({ ok: true, reference: expect.stringMatching(/^SZ-/) });
     expect(send).toHaveBeenCalledTimes(1);
   });
 
@@ -80,8 +79,12 @@ describe('POST /api/contact', () => {
     expect((await call(valid, '203.0.113.8')).status).toBe(200);
   });
 
-  it('strips newlines from the name used in the email subject', async () => {
+  it('keeps user input out of email headers and retries with the same key', async () => {
     await call({ ...valid, name: 'Eve\r\nBcc: evil@example.com' });
-    expect(send.mock.calls[0][0].subject).toBe('New message from Eve Bcc: evil@example.com');
+    expect(send.mock.calls[0][0].subject).not.toContain('Eve');
+    await call(valid); await call(valid);
+    expect(send.mock.calls[1][1].idempotencyKey).toBe(send.mock.calls[2][1].idempotencyKey);
+    expect((await call({ ...valid, consent: false })).status).toBe(400);
+    expect((await call({ ...valid, website: 'javascript:alert(1)' })).status).toBe(400);
   });
 });

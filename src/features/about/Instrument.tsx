@@ -45,8 +45,7 @@ export default function Instrument() {
 
   const [ease, setEase] = useState(0.06); // 0 = a lot of friction, 1 = none
   const [openId, setOpenId] = useState<string>(FIELDS[0].id); // the entry that is open in the list
-  const [peekId, setPeekId] = useState<string | null>(null); // the entry the pointer or keyboard is on
-  const shown = signalOf(peekId ?? openId);
+  const shown = signalOf(openId);
 
   // Draw the current signals onto the paths.
   const draw = (mix: Mix) => {
@@ -206,7 +205,8 @@ export default function Instrument() {
   const labelsShow = clamp((ease - 0.4) / 0.45, 0, 1);
 
   return (
-    <div data-field={shown.id} style={css({ '--accent': shown.accent })}>
+    <div className={styles.instrument} data-field={shown.id} style={css({ '--accent': shown.accent })}>
+      <div className={styles.instrumentHead}><span>Sagittariuz / Field notes</span><span>0{FIELDS.findIndex(f => f.id === shown.id) + 1} — 05</span></div>
       <div ref={panelRef} className={styles.panel} data-field={shown.id}>
         <svg
           className={styles.svg}
@@ -323,9 +323,9 @@ export default function Instrument() {
 
       {/* the friction control */}
       <div className={styles.control}>
-        <span>Raw</span>
+        <span>Noise</span>
         <label className={styles.rangeWrap}>
-          <span className={styles.rangeTitle}>Friction</span>
+          <span className={styles.rangeTitle}>Find the signal</span>
           <input
             type="range"
             className={styles.range}
@@ -343,14 +343,14 @@ export default function Instrument() {
             onKeyDown={keepKeys}
           />
         </label>
-        <span>Eased</span>
+        <span>Clarity</span>
       </div>
       <p className={`${styles.caption} postit-card`}>Illustrations of the kind of signal each field works with. Not measured data.</p>
 
       {/* the list: one entry for each kind of work */}
       <div className={styles.key}>
         <p className={styles.keyTitle}>
-          <span>What we are building for</span>
+          <span>Choose a discipline</span>
           <span className={styles.legend}>
             <i className={styles.dotLit} /> first work <i className={styles.dotDark} /> listening
           </span>
@@ -366,10 +366,6 @@ export default function Instrument() {
                   aria-expanded={open}
                   data-cursor-scale="1.4"
                   onClick={() => setOpenId(f.id)}
-                  onPointerEnter={() => setPeekId(f.id)}
-                  onPointerLeave={() => setPeekId(null)}
-                  onFocus={() => setPeekId(f.id)}
-                  onBlur={() => setPeekId(null)}
                   onKeyDown={keepKeys}
                 >
                   <span className={styles.numeral}>{f.numeral}</span>

@@ -7,7 +7,7 @@ export default function Marquee() {
     'TARS ROBOT',
     'DE-EXTINCTION AI',
     'LLM DUAL-MODULE',
-    'SMART GLASS',
+    'COMPUTATIONAL BIOLOGY',
     'SCIENTIFIC COMPUTING',
   ];
 
