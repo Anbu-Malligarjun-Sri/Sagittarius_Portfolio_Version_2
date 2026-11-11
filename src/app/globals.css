@@ -1,9 +1,37 @@
 /* Load hero fonts (safe fallback if Next font optimization not used) */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Bitter:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@400;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=DM+Serif+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Epilogue:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;700&family=IM+Fell+English:ital@0;1&family=Instrument+Sans:wght@400;500&family=Instrument+Serif:ital@1&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Pinyon+Script&family=Rajdhani:wght@300;500;700&family=Rozha+One&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&family=Syne:wght@700;800&family=UnifrakturCook:wght@700&display=swap');
 @import "tailwindcss";
 
 /* Design tokens for Sagittariuz hero */
 :root {
+  --font-display: 'Epilogue';
+  --font-body: 'Manrope';
+  --font-mono: 'Fira Code';
+  --font-handwriting: 'Caveat';
+  --font-serif: 'Playfair Display';
+  --font-paper-body: 'EB Garamond';
+  --font-paper-title: 'Cormorant Garamond';
+  --font-field-physics: 'Barlow Condensed';
+  --font-field-chemistry: 'Bitter';
+  --font-field-mathematics: 'STIX Two Text';
+  --font-field-companion: 'DM Sans';
+  --font-stamp-ui: 'DM Serif Display';
+  --font-stamp-web: 'Cormorant Garamond';
+  --font-stamp-mobile: 'Syne';
+  --font-stamp-agents: 'Cinzel';
+  --font-stamp-seo: 'Rozha One';
+  --font-name-anbu: 'Cormorant Garamond';
+  --font-name-brajin: 'Syne';
+  --font-name-arun: 'Pinyon Script';
+  --font-team-display: 'Anton';
+  --font-fell: 'IM Fell English';
+  --font-fraktur: 'UnifrakturCook';
+  --font-tech: 'Space Mono';
+  --easy-sans: 'Instrument Sans';
+  --easy-serif: 'Instrument Serif';
   --bg-primary: #050505;
   --bg-secondary: #0a0a0a;
   --bg-tertiary: #111111;

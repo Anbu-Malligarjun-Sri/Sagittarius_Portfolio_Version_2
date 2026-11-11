@@ -1,7 +1,8 @@
-import { IM_Fell_English, UnifrakturCook } from 'next/font/google';
+import { remoteFont } from '@/features/fontDescriptor';
 
 // Old-style press type: an antique body face and a blackletter masthead.
-const fell = IM_Fell_English({
+const fell = remoteFont({
+  family: 'IM Fell English',
   variable: '--font-fell',
   subsets: ['latin'],
   weight: '400',
@@ -9,7 +10,8 @@ const fell = IM_Fell_English({
   display: 'swap',
 });
 
-const fraktur = UnifrakturCook({
+const fraktur = remoteFont({
+  family: 'UnifrakturCook',
   variable: '--font-fraktur',
   subsets: ['latin'],
   weight: '700',

@@ -1,7 +1,8 @@
-import { Anton, Cormorant_Garamond, Pinyon_Script, Syne } from 'next/font/google';
+import { remoteFont } from '@/features/fontDescriptor';
 
 // One distinct typeface per founder name. Put `teamFontVariables` on an ancestor element.
-const anbuFont = Cormorant_Garamond({
+const anbuFont = remoteFont({
+  family: 'Cormorant Garamond',
   variable: '--font-name-anbu',
   subsets: ['latin'],
   weight: ['500', '600', '700'],
@@ -9,14 +10,16 @@ const anbuFont = Cormorant_Garamond({
   display: 'swap',
 });
 
-const brajinFont = Syne({
+const brajinFont = remoteFont({
+  family: 'Syne',
   variable: '--font-name-brajin',
   subsets: ['latin'],
   weight: ['700', '800'],
   display: 'swap',
 });
 
-const arunFont = Pinyon_Script({
+const arunFont = remoteFont({
+  family: 'Pinyon Script',
   variable: '--font-name-arun',
   subsets: ['latin'],
   weight: '400',
@@ -24,7 +27,8 @@ const arunFont = Pinyon_Script({
 });
 
 // Condensed display face for the giant outlined headline on /team.
-const displayFont = Anton({
+const displayFont = remoteFont({
+  family: 'Anton',
   variable: '--font-team-display',
   subsets: ['latin'],
   weight: '400',

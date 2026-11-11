@@ -1,37 +1,42 @@
 import type { Metadata, Viewport } from "next";
-import { Epilogue, Manrope, Fira_Code, Caveat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/features/home/CustomCursor";
+import { remoteFont } from "@/features/fontDescriptor";
 
-const epilogue = Epilogue({
+const epilogue = remoteFont({
+  family: "Epilogue",
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   fallback: ["sans-serif"],
 });
 
-const manrope = Manrope({
+const manrope = remoteFont({
+  family: "Manrope",
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   fallback: ["sans-serif"],
 });
 
-const firaCode = Fira_Code({
+const firaCode = remoteFont({
+  family: "Fira Code",
   variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   fallback: ["monospace"],
 });
 
-const caveat = Caveat({
+const caveat = remoteFont({
+  family: "Caveat",
   variable: "--font-handwriting",
   subsets: ["latin"],
   weight: ["400", "700"],
   fallback: ["cursive"],
 });
 
-const playfair = Playfair_Display({
+const playfair = remoteFont({
+  family: "Playfair Display",
   variable: "--font-serif",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],

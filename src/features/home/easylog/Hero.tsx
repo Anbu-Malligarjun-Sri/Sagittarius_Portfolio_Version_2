@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
-import { Instrument_Sans, Instrument_Serif } from 'next/font/google';
 import { gsap } from 'gsap';
+import { remoteFont } from '@/features/fontDescriptor';
 import LogCanvas, { type IntroMotion } from './LogCanvas';
 import Cursor from './Cursor';
 import { loadImages, LOG_URLS, type LogImages } from './loadImages';
 import styles from './hero.module.css';
 import tokens from './tokens.module.css';
 
-const sans = Instrument_Sans({ subsets: ['latin'], weight: ['400', '500'], variable: '--easy-sans', display: 'swap' });
-const serif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: 'italic', variable: '--easy-serif', display: 'swap' });
+const sans = remoteFont({ family: 'Instrument Sans', subsets: ['latin'], weight: ['400', '500'], variable: '--easy-sans', display: 'swap' });
+const serif = remoteFont({ family: 'Instrument Serif', subsets: ['latin'], weight: '400', style: 'italic', variable: '--easy-serif', display: 'swap' });
 const INITIAL_ZOOM = 2.6, INITIAL_PIXEL_LOG = 6, LOAD_TIMEOUT = 15000;
 const ZOOM_DURATION = .9, PIXEL_DURATION = 1, COUNT_DURATION = .8, CHARACTER_STAGGER = .035;
 

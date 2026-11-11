@@ -1,23 +1,26 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Cinzel, Rajdhani, Space_Mono } from 'next/font/google';
+import { remoteFont } from '@/features/fontDescriptor';
 import ZenithBoneScene from './ZenithBoneScene';
 import styles from './ZenithExperience.module.css';
 
-const cinzel = Cinzel({
+const cinzel = remoteFont({
+  family: 'Cinzel',
   variable: '--font-display',
   subsets: ['latin'],
   weight: ['400', '700'],
 });
 
-const rajdhani = Rajdhani({
+const rajdhani = remoteFont({
+  family: 'Rajdhani',
   variable: '--font-body',
   subsets: ['latin'],
   weight: ['300', '500', '700'],
 });
 
-const spaceMono = Space_Mono({
+const spaceMono = remoteFont({
+  family: 'Space Mono',
   variable: '--font-tech',
   subsets: ['latin'],
   weight: ['400', '700'],
