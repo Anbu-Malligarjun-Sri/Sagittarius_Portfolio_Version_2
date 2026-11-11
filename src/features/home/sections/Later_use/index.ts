@@ -8,5 +8,4 @@ export { default as Products } from './Products';
 export { default as TechStack } from './TechStack';
 export { default as Roadmap } from './Roadmap';
 export { default as GithubStats } from './GithubStats';
-export { default as Contact } from './Contact';
-export { default as Footer } from './Footer';
+export { default as Contact } from '../Contact';

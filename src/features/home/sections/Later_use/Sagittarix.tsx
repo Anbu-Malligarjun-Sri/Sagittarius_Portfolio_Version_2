@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from 'react';
 import { BookOpen } from 'lucide-react';
-import type { HomeWindow } from '../gsapTypes';
+import type { HomeWindow } from '../../gsapTypes';
 
 export default function Sagittarix() {
   const containerRef = useRef<HTMLElement | null>(null);

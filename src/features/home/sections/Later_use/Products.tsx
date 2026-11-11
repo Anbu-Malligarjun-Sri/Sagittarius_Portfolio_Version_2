@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, type MouseEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
-import type { HomeWindow } from '../gsapTypes';
+import type { HomeWindow } from '../../gsapTypes';
 
 export default function Products() {
   const containerRef = useRef<HTMLDivElement | null>(null);

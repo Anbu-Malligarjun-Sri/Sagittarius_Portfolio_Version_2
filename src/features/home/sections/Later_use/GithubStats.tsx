@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from 'react';
 import { BookOpen, Code2, GitBranch, Star } from 'lucide-react';
-import type { HomeWindow } from '../gsapTypes';
+import type { HomeWindow } from '../../gsapTypes';
 
 export default function GithubStats() {
   const containerRef = useRef<HTMLElement | null>(null);

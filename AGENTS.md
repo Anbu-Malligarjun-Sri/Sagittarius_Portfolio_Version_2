@@ -14,7 +14,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - The AI Agents artwork is `src/features/services/AgentsArt.tsx`: a 192 × 190 SVG automaton atelier, rendered through the existing perforated stamp frame. Keep SVG IDs instance-specific, and respect reduced motion. The SEO artwork still depends on its `rollingWave` helper.
 - The reading room is `FAQSection.tsx`, `faq.module.css`, and `Lantern.tsx`. Its lantern cursor is limited to `#faq`; leaving the section restores the normal cursor. Answers must remain accessible through keyboard focus, the show-all control, and touch layouts. Do not make pointer movement the only way to read them.
 - The previous 3D knowledge atlas is preserved in `src/features/home/drafts/knowledge-atlas/`, with restoration instructions in its README. It is not loaded by the active homepage.
-- Validate affected files with ESLint and TypeScript, and verify desktop/mobile interactions in a browser. The repository has pre-existing TypeScript failures in the older homepage test and Later_use; distinguish those from regressions rather than reporting a clean whole-project build.
+- Validate affected files with ESLint and TypeScript, and verify desktop/mobile interactions in a browser. Production builds use `next build --webpack` to avoid the Turbopack Google-font resolver failure seen on Vercel. Keep TypeScript build checking enabled. The archived Later_use import paths, homepage test globals, and nullable section-state build errors have been corrected.
 
 ## Inquiry and portfolio refinement notes - 2026-11-10
 

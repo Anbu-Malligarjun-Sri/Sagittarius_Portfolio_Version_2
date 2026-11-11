@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from 'react';
 import { CheckCircle2, Circle, CircleDashed } from 'lucide-react';
-import type { HomeWindow } from '../gsapTypes';
+import type { HomeWindow } from '../../gsapTypes';
 
 type PhaseStatus = 'complete' | 'active' | 'future';
 

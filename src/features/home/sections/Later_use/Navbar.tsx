@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import type { HomeWindow, TweenLike } from '../gsapTypes';
+import type { HomeWindow, TweenLike } from '../../gsapTypes';
 
 const NAV_ITEMS = [
   { label: 'MISSION', sectionId: 'mission' },

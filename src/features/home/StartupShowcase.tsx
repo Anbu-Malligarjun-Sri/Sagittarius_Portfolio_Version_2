@@ -138,11 +138,11 @@ export default function StartupShowcase() {
         </div>
 
         {/* ── SECTION COMPONENTS ── */}
-        <AboutSection activeSection={activeSection} />
-        <ServicesSection activeSection={activeSection} />
-        <ProcessSection activeSection={activeSection} />
-        <ProjectsSection activeSection={activeSection} />
-        <TeamSection activeSection={activeSection} teamIndex={teamIndex} setTeamIndex={setTeamIndex} />
+        <AboutSection activeSection={activeSection ?? ''} />
+        <ServicesSection activeSection={activeSection ?? ''} />
+        <ProcessSection activeSection={activeSection ?? ''} />
+        <ProjectsSection activeSection={activeSection ?? ''} />
+        <TeamSection activeSection={activeSection ?? ''} teamIndex={teamIndex} setTeamIndex={setTeamIndex} />
         <StartSection />
         <FAQSection />
 
@@ -150,7 +150,7 @@ export default function StartupShowcase() {
         <ArchitectTypewriter />
 
         {/* ── FOOTER SECTION ── */}
-        <FooterSection activeSection={activeSection} />
+        <FooterSection activeSection={activeSection ?? ''} />
       </main>
     </div>
   );

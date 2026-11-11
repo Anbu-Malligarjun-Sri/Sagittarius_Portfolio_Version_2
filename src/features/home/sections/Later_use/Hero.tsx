@@ -2,8 +2,8 @@
 
 import { useLayoutEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { useTypewriter } from '../hooks';
-import type { HomeWindow } from '../gsapTypes';
+import { useTypewriter } from '../../hooks';
+import type { HomeWindow } from '../../gsapTypes';
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement | null>(null);

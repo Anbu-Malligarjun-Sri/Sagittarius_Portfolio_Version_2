@@ -1,7 +1,7 @@
 'use client';
 
 import { useLayoutEffect, useRef } from 'react';
-import type { HomeWindow } from '../gsapTypes';
+import type { HomeWindow } from '../../gsapTypes';
 
 export default function Mission() {
   const sectionRef = useRef<HTMLElement | null>(null);
