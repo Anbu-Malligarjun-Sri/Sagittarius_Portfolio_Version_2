@@ -1,12 +1,13 @@
 "use client";
 import { useRef, useEffect } from 'react';
 import Link from 'next/link';
+import BrandMark from '@/features/brand/BrandMark';
 import { ArrowUpRight, Plus, X } from 'lucide-react';
 import { NAV_ITEMS } from './sections/active/data';
 import type { SectionId } from './sections/active/types';
 import styles from './siteNav.module.css';
 
-export default function SiteNav({ activeSection }: { activeSection: SectionId }) {
+export default function SiteNav({ activeSection }: { activeSection: SectionId | null }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const previousOverflow = useRef('');
@@ -28,7 +29,7 @@ export default function SiteNav({ activeSection }: { activeSection: SectionId })
   return <>
     <header className={styles.header} data-site-nav data-cursor-scale="1.3" onKeyDown={event => event.stopPropagation()}>
       <div className={styles.rail}>
-        <Link href="/" className={styles.brand} aria-label="Sagittariuz home"><span className={styles.seal} aria-hidden="true">↗</span><span>SAGITTARIUZ<small>Curiosity, put to work.</small></span></Link>
+        <Link href="/" className={styles.brand} aria-label="Sagittariuz home"><BrandMark /><span>SAGITTARIUZ<small>Curiosity, put to work.</small></span></Link>
         <nav className={styles.links} aria-label="Main navigation">{NAV_ITEMS.map((item, index) => <a key={item.id} href={`#${item.id}`} aria-current={activeSection === item.id ? 'location' : undefined}><small>0{index + 1}</small>{item.label}</a>)}</nav>
         <button ref={trigger} className={styles.menu} onClick={open} aria-label="Open site index" aria-haspopup="dialog">Index <Plus size={17} /></button>
       </div>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="50 -48 648 648" fill="none">
+  <title>Sagittariuz</title>
+  <style>
+    @media (prefers-color-scheme: light) {
+      .ribbon { fill: #4B385F; }
+      .accent { fill: #775687; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .ribbon { fill: #C2AED5; }
+      .accent { fill: #E2D2EB; }
+    }
+  </style>
+  <path class="ribbon" fill="#79638F" d="M64 332 270 92C295 62 333 43 370 43H570C609 43 641 62 652 88Q655 94 650 101L606 151Q594 167 578 159C500 118 433 112 374 144L217 324Q212 332 202 332Z"/>
+  <path class="accent" fill="#9277A6" d="M374 144C411 102 448 51 512 44L570 43C609 43 641 62 652 88Q655 94 650 101L606 151Q594 167 578 159C500 118 433 112 374 144Z"/>
+  <path class="ribbon" fill="#79638F" d="M683 241 494 464Q453 508 400 508H183C144 508 114 490 107 468Q104 461 109 454L155 405Q168 392 180 398C238 419 333 432 402 400L536 248Q541 241 549 241Z"/>
+  <path class="accent" fill="#9277A6" d="M402 400C364 446 310 499 251 507L183 508C144 508 114 490 107 468Q104 461 109 454L155 405Q168 392 180 398C238 419 333 432 402 400Z"/>
+  <path class="accent" fill="#9277A6" d="M375 223H484Q491 223 486 231L416 310Q411 317 404 317H300Q292 317 297 310L367 230Q372 223 375 223Z"/>
+</svg>

@@ -25,7 +25,7 @@ import type { SectionId } from './sections/active/types';
 
 export default function StartupShowcase() {
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const [activeSection, setActiveSection] = useState<SectionId>('about');
+  const [activeSection, setActiveSection] = useState<SectionId | null>(null);
   const [teamIndex, setTeamIndex] = useState(0);
   const [faqIndex, setFaqIndex] = useState<number | null>(0);
 
@@ -44,11 +44,16 @@ export default function StartupShowcase() {
     const updateActive = () => {
       frame = 0;
       const line = Math.min(window.innerHeight * .35, 220);
+      const hero = document.querySelector<HTMLElement>('[data-easylog]')?.getBoundingClientRect();
+      if (hero && hero.top <= line && hero.bottom > line) {
+        setActiveSection(null);
+        return;
+      }
       const current = sectionObserverIds.find(id => {
         const rect = document.getElementById(id)?.getBoundingClientRect();
         return rect && rect.top <= line && rect.bottom > line;
       });
-      if (current) setActiveSection(current);
+      setActiveSection(current ?? null);
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(updateActive); };
     // The document body can be the scroller; capture events from either surface.

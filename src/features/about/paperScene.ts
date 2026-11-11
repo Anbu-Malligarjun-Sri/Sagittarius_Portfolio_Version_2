@@ -16,6 +16,8 @@ const MARGIN_Y = 0.09; // and above and below it
 const TARGET_BODY_CSS_PX = 15.5; // how big the letter's text should look on screen
 const FOV = 26;
 const STEP = 1 / 60;
+const MAX_TEXTURE_PIXELS = 8 * 1024 * 1024;
+const MAX_DRAWING_PIXELS = 6 * 1024 * 1024;
 
 export type PaperScene = {
   /** The width : height the canvas should be given. */
@@ -40,7 +42,6 @@ const clamp = (value: number, low: number, high: number) => Math.min(high, Math.
 export function createPaperScene(THREE: Three, canvas: HTMLCanvasElement, { fonts, containerWidth, onActive }: Options): PaperScene {
   // Make the renderer first: if WebGL is unavailable this throws before anything else has been made.
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
 
@@ -59,9 +60,14 @@ export function createPaperScene(THREE: Three, canvas: HTMLCanvasElement, { font
   }
   const aspect = clamp(layout.height / TEX_W, 1.3, 3.2);
   const textureHeight = Math.ceil(TEX_W * aspect);
+  const textureScale = Math.min(
+    2,
+    renderer.capabilities.maxTextureSize / Math.max(TEX_W, textureHeight),
+    Math.sqrt(MAX_TEXTURE_PIXELS / (TEX_W * textureHeight)),
+  );
 
   const letterCanvas = document.createElement('canvas');
-  paintLetter(letterCanvas, layout, textureHeight);
+  paintLetter(letterCanvas, layout, textureHeight, textureScale);
 
   // ── the sheet ──
   const cols = 30;
@@ -283,10 +289,20 @@ export function createPaperScene(THREE: Three, canvas: HTMLCanvasElement, { font
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
     if (!width || !height || disposed) return;
-    renderer.setSize(width, height, false);
+    const pixelRatio = Math.min(
+      (window.devicePixelRatio || 1) * (window.visualViewport?.scale ?? 1),
+      3,
+      renderer.capabilities.maxTextureSize / Math.max(width, height),
+      Math.sqrt(MAX_DRAWING_PIXELS / (width * height)),
+    );
+    if (canvas.width !== Math.floor(width * pixelRatio) || canvas.height !== Math.floor(height * pixelRatio)) {
+      renderer.setDrawingBufferSize(width, height, pixelRatio);
+    }
     fit(width, height);
     wake();
   };
+  window.addEventListener('resize', resize);
+  window.visualViewport?.addEventListener('resize', resize);
 
   return {
     canvasAspect,
@@ -298,6 +314,8 @@ export function createPaperScene(THREE: Three, canvas: HTMLCanvasElement, { font
     },
     dispose: () => {
       disposed = true;
+      window.removeEventListener('resize', resize);
+      window.visualViewport?.removeEventListener('resize', resize);
       cancelAnimationFrame(raf);
       canvas.removeEventListener('pointerdown', onDown);
       canvas.removeEventListener('pointermove', onMove);

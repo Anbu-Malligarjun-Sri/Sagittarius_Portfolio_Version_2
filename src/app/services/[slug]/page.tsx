@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import BrandMark from '@/features/brand/BrandMark';
 import { notFound } from 'next/navigation';
 import type { CSSProperties } from 'react';
 import StampFace from '@/features/services/StampFace';
@@ -28,7 +29,7 @@ export default async function ServicePage({ params }: Props) {
   const stamp = STAMPS.find(s => s.id === service?.stampId);
   if (!service || !stamp) notFound();
   return <main id="main-content" className={`${styles.page} ${stampFontVariables}`} style={{ '--accent': stamp.glow } as CSSProperties}>
-    <header className={styles.header}><Link href="/#services">← The stamp collection</Link><Link href="/" className={styles.wordmark}>Sagittariuz<span>Thoughtful work, since 2026</span></Link><a href="#brief">Start an inquiry ↗</a></header>
+    <header className={styles.header}><Link href="/#services">← The stamp collection</Link><Link href="/" className={`${styles.wordmark} flex items-center justify-center gap-3`}><BrandMark onDark /><div>Sagittariuz<span>Thoughtful work, since 2026</span></div></Link><a href="#brief">Start an inquiry ↗</a></header>
     <section className={styles.hero}>
       <div className={styles.heroCopy}><p className={styles.eyebrow}>Commission notes / Nº {stamp.no}</p><h1>{stamp.name}</h1><p className={styles.tagline}>{stamp.tagline}</p><p className={styles.story}>{stamp.story}</p><a className={styles.primary} href="#brief">Reserve this stamp ↗</a><p className={styles.small}>Start a project inquiry. Scope, price and dates come next.</p></div>
       <div className={styles.exhibit}><div className={styles.exhibitLines} aria-hidden="true" /><div className={styles.heroStamp}><StampFace stamp={stamp} /></div><p className={styles.specimen}>SAGITTARIUZ / SERVICE COLLECTION<br /><span>One stamp. A possibility worth exploring.</span></p></div>

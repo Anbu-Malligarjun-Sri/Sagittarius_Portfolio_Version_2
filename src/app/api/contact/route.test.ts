@@ -85,6 +85,7 @@ describe('POST /api/contact', () => {
     await call(valid); await call(valid);
     expect(send.mock.calls[1][1].idempotencyKey).toBe(send.mock.calls[2][1].idempotencyKey);
     expect((await call({ ...valid, consent: false })).status).toBe(400);
-    expect((await call({ ...valid, website: 'javascript:alert(1)' })).status).toBe(400);
+    await call({ ...valid, website: 'retired', budget: 'retired', timeline: 'retired' });
+    expect(send.mock.calls.at(-1)?.[0].text).not.toContain('retired');
   });
 });

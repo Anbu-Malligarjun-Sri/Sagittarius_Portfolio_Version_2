@@ -232,6 +232,12 @@ const STYLES = `
 .carriage-return:hover { transform:rotate(-12deg); }.carriage-return:focus-visible { outline:2px solid #e8c547; outline-offset:4px; }
 @media(prefers-reduced-motion:reduce) { .typewriter-os-wrapper .mech-key { transition:none; } }
 
+.typewriter-chassis:after { content:''; position:absolute; left:34px; right:34px; bottom:-10px; height:13px; border-radius:0 0 6px 6px; background:linear-gradient(to right,#080d09 0 42px,transparent 42px calc(100% - 42px),#080d09 calc(100% - 42px)); filter:drop-shadow(0 4px 2px #0008); pointer-events:none; }
+.ribbon-spool:before { transform:rotate(var(--spool-turn,0deg)); transition:transform .14s ease-out; }
+.paper-bail-scale { position:absolute; top:1px; left:70px; right:70px; height:14px; border-bottom:2px solid #909582; background:repeating-linear-gradient(90deg,transparent 0 9px,#343e2d 9px 10px) bottom/100% 4px no-repeat,linear-gradient(#bdc3ad,#929b83); display:flex; justify-content:space-between; padding:0 4px; color:#26301f; font:7px/9px 'Courier Prime',monospace; text-shadow:0 1px #e1e7d1; }
+.typewriter-chassis .mech-key.submit-key { letter-spacing:.1em; }
+@media(prefers-reduced-motion:reduce) { .ribbon-spool:before { transition:none; } }
+
 `;
 
 class AudioEngine {
@@ -576,7 +582,7 @@ const MechanicalKey = React.memo(function MechanicalKey({
       <span className="relative flex flex-col items-center justify-center leading-none mt-[-2px]">
         {data.s && <span className="text-[10px] text-[#4a3e30] opacity-80 mb-[-2px]">{data.s}</span>}
         <span className={data.submit ? 'text-[11px] tracking-[0.35em] pl-[0.35em]' : data.w ? 'text-[10px]' : 'text-sm'}>
-          {data.l}
+          {data.space ? '' : data.l}
         </span>
       </span>
     </button>
@@ -1145,6 +1151,7 @@ export default function ArchitectTypewriter() {
               <div aria-hidden="true" className="platen-knob -ml-6" />
               <div aria-hidden="true" className="platen-knob -mr-6" />
 
+              <div className="paper-bail-scale" aria-hidden="true">{['0','10','20','30','40','50'].map(mark => <span key={mark}>{mark}</span>)}</div>
               {/* Metal Guide Bar */}
               <div className="absolute top-[60%] left-8 right-8 h-[4px] bg-gradient-to-b from-[#ddd] to-[#666] shadow-[0_4px_6px_rgba(0,0,0,0.6)] rounded-full" />
               {/* Rubber Guide Rollers */}
@@ -1160,8 +1167,8 @@ export default function ArchitectTypewriter() {
           style={{ width: `${layout.chassisWidth}px` }}
         >
 
-          <div className="ribbon-spool ribbon-spool-left" aria-hidden="true"><i /></div>
-          <div className="ribbon-spool ribbon-spool-right" aria-hidden="true"><i /></div>
+          <div className="ribbon-spool ribbon-spool-left" style={{ '--spool-turn': `${strikeTrigger * 3}deg` } as React.CSSProperties} aria-hidden="true"><i /></div>
+          <div className="ribbon-spool ribbon-spool-right" style={{ '--spool-turn': `${-strikeTrigger * 3}deg` } as React.CSSProperties} aria-hidden="true"><i /></div>
           <div className="ink-ribbon" aria-hidden="true" />
           {/* Typebar Basket */}
           <div

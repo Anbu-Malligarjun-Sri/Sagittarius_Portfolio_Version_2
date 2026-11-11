@@ -4,7 +4,7 @@
 .page a:focus-visible,.page button:focus-visible,.page input:focus-visible,.page textarea:focus-visible { outline:2px solid currentColor; outline-offset:5px; }
 .header { max-width:1440px; margin:auto; padding:28px 5vw; display:flex; justify-content:space-between; align-items:center; gap:20px; border-bottom:1px solid #f1eadb24; font-size:12px; }
 .wordmark { font-family:var(--font-serif),Georgia,serif; font-size:27px; text-align:center; }
-.wordmark span { display:block; font:9px var(--font-mono),monospace; text-transform:uppercase; letter-spacing:.14em; margin-top:5px; }
+.wordmark>div>span { display:block; font:9px var(--font-mono),monospace; text-transform:uppercase; letter-spacing:.14em; margin-top:5px; }
 .hero { max-width:1320px; margin:auto; min-height:650px; display:grid; grid-template-columns:1.15fr 1fr; align-items:center; gap:7vw; padding:80px 5vw; }
 .eyebrow { font:10px var(--font-mono),monospace; text-transform:uppercase; letter-spacing:.19em; margin:0 0 24px; }
 .heroCopy h1 { font-family:var(--font-serif),Georgia,serif; font-weight:400; font-size:clamp(55px,6.3vw,96px); line-height:1.03; letter-spacing:-.045em; margin:0 0 26px; }

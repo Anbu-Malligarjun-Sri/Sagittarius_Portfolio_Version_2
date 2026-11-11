@@ -1,6 +1,6 @@
-.launcher { position:absolute; top:100px; left:50%; transform:translateX(-50%); z-index:1001; text-align:center; width:min(94%,520px); }
-.launcher>button { border:1px solid #bba47c; background:#f1e5cc; color:#34291d; padding:13px 24px; border-radius:3px; font:14px var(--font-mono),monospace; box-shadow:0 6px 20px #0005; cursor:pointer; }
-.launcher>p { font:11px/1.5 var(--font-mono),monospace; margin-top:10px; color:#d6c2a4; }
+.launcher { position:absolute; top:100px; left:0; right:0; margin-inline:auto; z-index:auto; text-align:center; width:min(94%,520px); }
+.launcher>button { position:relative; z-index:1001; border:1px solid #bba47c; background:#f1e5cc; color:#34291d; padding:13px 24px; border-radius:3px; font:14px var(--font-mono),monospace; box-shadow:0 6px 20px #0005; cursor:pointer; }
+.launcher>p { position:relative; z-index:5; pointer-events:none; font:11px/1.5 var(--font-mono),monospace; margin-top:10px; color:#d6c2a4; }
 .dialog { position:fixed; inset:0; margin:auto; width:min(720px,calc(100vw - 28px)); max-height:calc(100dvh - 32px); overflow:auto; padding:32px; color:#302b22; background:#f5eedf; border:1px solid #c8b589; border-radius:4px; text-align:left; cursor:auto; box-shadow:0 30px 100px #0008; }
 .dialog::backdrop { background:#0e0809bb; backdrop-filter:blur(8px); }
 .dialog h2 { font:36px/1.15 var(--font-serif),Georgia,serif; margin:18px 0; }

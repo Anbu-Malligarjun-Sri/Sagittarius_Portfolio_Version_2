@@ -1,6 +1,7 @@
 'use client';
 
 import PlushSocials from '@/features/social/PlushSocials';
+import BrandMark from '@/features/brand/BrandMark';
 
 interface FooterSectionProps {
   activeSection: string;
@@ -14,7 +15,7 @@ export default function FooterSection({ activeSection }: FooterSectionProps) {
       </div>
 
       <div className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 font-mono text-[11px] text-[#f5f0e8]/30">
-        <div>© 2026 Sagittariuz. All rights reserved.</div>
+        <div className="flex items-center gap-3"><BrandMark onDark />© 2026 Sagittariuz. All rights reserved.</div>
       </div>
     </footer>
   );

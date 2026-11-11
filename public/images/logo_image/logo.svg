@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 20 660 510" fill="none">
+  <title>Sagittariuz</title>
+  <defs>
+    <linearGradient id="ink" x1="200" y1="70" x2="530" y2="490" gradientUnits="userSpaceOnUse"><stop stop-color="#171D32"/><stop offset="1" stop-color="#10182B"/></linearGradient>
+    <linearGradient id="upper" x1="520" y1="43" x2="470" y2="164" gradientUnits="userSpaceOnUse"><stop stop-color="#846B9E"/><stop offset=".55" stop-color="#A58EBD"/><stop offset="1" stop-color="#D5C7E5"/></linearGradient>
+    <linearGradient id="lower" x1="210" y1="397" x2="253" y2="508" gradientUnits="userSpaceOnUse"><stop stop-color="#D5C7E5"/><stop offset=".5" stop-color="#A58EBD"/><stop offset="1" stop-color="#846B9E"/></linearGradient>
+    <linearGradient id="centre" x1="388" y1="223" x2="396" y2="317" gradientUnits="userSpaceOnUse"><stop stop-color="#987DB3"/><stop offset="1" stop-color="#846B9E"/></linearGradient>
+  </defs>
+  <path fill="url(#ink)" d="M64 332 270 92C295 62 333 43 370 43H570C609 43 641 62 652 88Q655 94 650 101L606 151Q594 167 578 159C500 118 433 112 374 144L217 324Q212 332 202 332Z"/>
+  <path fill="url(#upper)" d="M374 144C411 102 448 51 512 44L570 43C609 43 641 62 652 88Q655 94 650 101L606 151Q594 167 578 159C500 118 433 112 374 144Z"/>
+  <path fill="url(#ink)" d="M683 241 494 464Q453 508 400 508H183C144 508 114 490 107 468Q104 461 109 454L155 405Q168 392 180 398C238 419 333 432 402 400L536 248Q541 241 549 241Z"/>
+  <path fill="url(#lower)" d="M402 400C364 446 310 499 251 507L183 508C144 508 114 490 107 468Q104 461 109 454L155 405Q168 392 180 398C238 419 333 432 402 400Z"/>
+  <path fill="url(#centre)" d="M375 223H484Q491 223 486 231L416 310Q411 317 404 317H300Q292 317 297 310L367 230Q372 223 375 223Z"/>
+</svg>

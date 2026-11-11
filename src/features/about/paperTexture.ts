@@ -15,8 +15,8 @@ type Tick = { x: number; y: number; size: number };
 type Rule = { x1: number; x2: number; y: number };
 export type Layout = { runs: Run[]; ticks: Tick[]; rules: Rule[]; height: number };
 
-const INK = '#1c2434';
-const INK_SOFT = 'rgba(28, 36, 52, 0.62)';
+const INK = '#000000';
+const RULE_INK = 'rgba(28, 36, 52, 0.62)';
 const EMBER = '#b8431f';
 
 /** The letter's families, as the browser actually knows them, with each face loaded so the canvas can use it. */
@@ -69,8 +69,8 @@ export function layoutLetter(ctx: CanvasRenderingContext2D, fonts: PaperFonts, b
 
   // letterhead
   const headSize = Math.round(TEX_W * 0.0166);
-  runs.push({ text: LETTER.letterhead[0].toUpperCase(), x: margin, y: y + headSize, font: `500 ${headSize}px ${fonts.mono}`, fill: INK_SOFT, spacing: 5 });
-  runs.push({ text: LETTER.letterhead[1].toUpperCase(), x: TEX_W - margin, y: y + headSize, font: `500 ${headSize}px ${fonts.mono}`, fill: INK_SOFT, spacing: 5, align: 'right' });
+  runs.push({ text: LETTER.letterhead[0].toUpperCase(), x: margin, y: y + headSize, font: `500 ${headSize}px ${fonts.mono}`, fill: INK, spacing: 5 });
+  runs.push({ text: LETTER.letterhead[1].toUpperCase(), x: TEX_W - margin, y: y + headSize, font: `500 ${headSize}px ${fonts.mono}`, fill: INK, spacing: 5, align: 'right' });
   y += headSize + 18;
   rules.push({ x1: margin, x2: TEX_W - margin, y });
   y += Math.round(TEX_W * 0.055);
@@ -97,7 +97,7 @@ export function layoutLetter(ctx: CanvasRenderingContext2D, fonts: PaperFonts, b
 
   // the promises, in handwriting, each with a tick
   y += bodyPx * 0.15;
-  lines(LETTER.promisesLead, bodyPx, bodyPx * 1.35, margin, `italic 400 ${bodyPx}px ${fonts.body}`, INK_SOFT, textWidth);
+  lines(LETTER.promisesLead, bodyPx, bodyPx * 1.35, margin, `italic 400 ${bodyPx}px ${fonts.body}`, INK, textWidth);
   const handSize = Math.round(bodyPx * 1.4);
   for (const promise of LETTER.promises) {
     ticks.push({ x: margin + 4, y: y + handSize * 0.62, size: handSize * 0.62 });
@@ -113,7 +113,7 @@ export function layoutLetter(ctx: CanvasRenderingContext2D, fonts: PaperFonts, b
   lines(LETTER.signature, sign, sign * 1.0, margin, `500 ${sign}px ${fonts.hand}`, INK, textWidth);
   y += Math.round(sign * 0.34); // room for the tails of the letters in the signature before the small line
   const small = Math.round(bodyPx * 0.6);
-  runs.push({ text: LETTER.signoff.toUpperCase(), x: margin, y: y + small * 0.6, font: `500 ${small}px ${fonts.mono}`, fill: INK_SOFT, spacing: 4 });
+  runs.push({ text: LETTER.signoff.toUpperCase(), x: margin, y: y + small * 0.6, font: `500 ${small}px ${fonts.mono}`, fill: INK, spacing: 4 });
   y += small + Math.round(TEX_W * 0.085);
 
   return { runs, ticks, rules, height: Math.ceil(y) };
@@ -130,12 +130,13 @@ function seeded(seed: number) {
   };
 }
 
-/** Paint the sheet: the paper, then the letter. The canvas is resized to `height`. */
-export function paintLetter(canvas: HTMLCanvasElement, layout: Layout, height: number) {
-  canvas.width = TEX_W;
-  canvas.height = height;
+/** Paint at a higher resolution without changing the letter's layout coordinates. */
+export function paintLetter(canvas: HTMLCanvasElement, layout: Layout, height: number, scale: number) {
+  canvas.width = Math.floor(TEX_W * scale);
+  canvas.height = Math.floor(height * scale);
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
+  ctx.scale(canvas.width / TEX_W, canvas.height / height);
   const rand = seeded(2026);
 
   const base = ctx.createLinearGradient(0, 0, 0, height);
@@ -176,7 +177,7 @@ export function paintLetter(canvas: HTMLCanvasElement, layout: Layout, height: n
   }
 
   // rules
-  ctx.strokeStyle = INK_SOFT;
+  ctx.strokeStyle = RULE_INK;
   ctx.lineWidth = 1.4;
   for (const rule of layout.rules) {
     ctx.beginPath();
@@ -185,15 +186,21 @@ export function paintLetter(canvas: HTMLCanvasElement, layout: Layout, height: n
     ctx.stroke();
   }
 
-  // text
+  // Reinforce fine letter strokes so they hold up when the texture is scaled down.
+  ctx.save();
   ctx.textBaseline = 'alphabetic';
+  ctx.lineWidth = 1.2;
+  ctx.lineJoin = 'round';
   for (const run of layout.runs) {
     ctx.font = run.font;
     ctx.fillStyle = run.fill;
     ctx.textAlign = run.align ?? 'left';
     ctx.letterSpacing = `${run.spacing ?? 0}px`;
+    ctx.strokeStyle = run.fill;
+    ctx.strokeText(run.text, run.x, run.y);
     ctx.fillText(run.text, run.x, run.y);
   }
+  ctx.restore();
   ctx.letterSpacing = '0px';
 
   // hand-drawn ticks beside the promises

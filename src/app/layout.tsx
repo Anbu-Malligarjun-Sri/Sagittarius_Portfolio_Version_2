@@ -105,6 +105,7 @@ export default function RootLayout({
               foundingDate: '2026',
               description: 'Software and AI tools that reduce friction in research and everyday work.',
               url: 'https://sagittariuz.ai',
+              logo: 'https://sagittariuz.ai/images/logo_image/logo.svg',
               sameAs: [
                 'https://github.com/Anbu-Malligarjun-Sri',
               ],
