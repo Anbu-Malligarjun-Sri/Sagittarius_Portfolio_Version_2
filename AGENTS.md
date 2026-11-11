@@ -42,6 +42,6 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Deployment verification - 2026-11-11
 
-- Use pnpm 10.28.0 as pinned in package.json with the committed pnpm lockfile. pnpm-workspace.yaml must contain boolean build permissions for esbuild and sharp, not placeholder strings.
+- Use npm with the committed package-lock.json. Vercel explicitly runs npm ci and npm run build through vercel.json. pnpm lock and workspace files are retired and ignored.
 - Keep production builds on Webpack and the Open Graph image on the Node.js runtime. The image prerenders to a static PNG, avoiding the Vercel Edge Function size limit.
 - The homepage bootstrap test isolates the page's safe-mode and scroll restoration behavior from WebGL. It does not replace browser checks of the full homepage.
