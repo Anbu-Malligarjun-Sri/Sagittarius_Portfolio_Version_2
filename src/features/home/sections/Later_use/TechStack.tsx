@@ -14,7 +14,7 @@ export default function TechStack() {
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16">
         <div className="flex-1">
-          <div className="font-mono text-orange-400 text-xs tracking-widest mb-4">// INFRASTRUCTURE</div>
+          <div className="font-mono text-orange-400 text-xs tracking-widest mb-4">{"// INFRASTRUCTURE"}</div>
           <h2 className="font-display font-bold text-4xl mb-12">The Technology Matrix.</h2>
 
           <div className="space-y-8 font-mono text-sm">

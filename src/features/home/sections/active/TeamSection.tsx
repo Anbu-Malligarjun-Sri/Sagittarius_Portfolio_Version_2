@@ -30,7 +30,7 @@ export default function TeamSection({ activeSection, teamIndex, setTeamIndex }: 
             <h2 className="font-display text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold tracking-[-0.04em] leading-[0.96] text-[#f5f0e8] mt-4 header-anim-item">Three people. One shared standard.</h2>
           </div>
           <div className="overflow-hidden">
-            <p className="mt-4 max-w-2xl text-[1.05rem] leading-8 text-[#f5f0e8]/72 header-anim-item">We're small by choice. Every project has a lead who can answer the hard questions on day one.</p>
+            <p className="mt-4 max-w-2xl text-[1.05rem] leading-8 text-[#f5f0e8]/72 header-anim-item">We&#39;re small by choice. Every project has a lead who can answer the hard questions on day one.</p>
           </div>
         </div>
       </div>

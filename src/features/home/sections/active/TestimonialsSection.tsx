@@ -53,7 +53,7 @@ export default function TestimonialsSection({ activeSection, testimonialIndex, s
                 {Array.from({ length: 5 }).map((_, index) => <Star key={index} className="h-4 w-4 fill-current" />)}
               </div>
             </div>
-            <p className="mt-6 text-[16px] italic leading-8">"{activeTestimonial.quote}"</p>
+            <p className="mt-6 text-[16px] italic leading-8">&quot;{activeTestimonial.quote}&quot;</p>
             <div className="mt-8 font-mono text-[11px] uppercase tracking-[0.28em] text-black/55">— {activeTestimonial.name}, {activeTestimonial.title} at {activeTestimonial.company}</div>
           </div>
         </div>

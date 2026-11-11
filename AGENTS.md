@@ -39,3 +39,9 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Homepage contact collects name/email/message, optional organisation and service, plus permission to reply. Website, budget and timeline are retired from this form and its email; do not remove those questions from service-specific inquiry forms.
 - The contact launcher must not create a stacking context: its button is above the machine, but its helper sentence is below the paper. Native dialogs continue to use the top layer. Test with a long message that feeds the paper upward.
 - Source logo: `public/images/logo_image/logo.png`. The clean muted-violet vector is `logo.svg` in that folder, rendered via `features/brand/BrandMark.tsx` beside the wordmark in navigation, service headers and footer. `app/icon.svg` supplies the matching browser icon; the old favicon was replaced. Keep the original PNG intact and avoid embedding raster data in the SVG.
+
+## Deployment verification - 2026-11-11
+
+- Use pnpm 10.28.0 as pinned in package.json with the committed pnpm lockfile. pnpm-workspace.yaml must contain boolean build permissions for esbuild and sharp, not placeholder strings.
+- Keep production builds on Webpack and the Open Graph image on the Node.js runtime. The image prerenders to a static PNG, avoiding the Vercel Edge Function size limit.
+- The homepage bootstrap test isolates the page's safe-mode and scroll restoration behavior from WebGL. It does not replace browser checks of the full homepage.

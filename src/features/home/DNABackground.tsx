@@ -53,6 +53,13 @@ type DNABackgroundProps = {
   gsapReady?: boolean;
 };
 
+function createRandom(seed: number) {
+  return () => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+}
+
 const DNABackground = ({ gsapReady = false }: DNABackgroundProps) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const cameraRef = useRef<SVGGElement | null>(null);
@@ -65,6 +72,8 @@ const DNABackground = ({ gsapReady = false }: DNABackgroundProps) => {
   const mousePos = useRef({ x: -1000, y: -1000 });
 
   const networkData = useMemo<NetworkData>(() => {
+    // Use the same varied layout on the server and client to avoid hydration mismatches.
+    const random = createRandom(2026);
     const spinePoints: SpinePoint[] = [];
     let spineD = `M ${CAMERA_WIDTH / 2} 0`;
 
@@ -82,26 +91,26 @@ const DNABackground = ({ gsapReady = false }: DNABackgroundProps) => {
     const branches: BranchData[] = [];
     const nodes: NodeData[] = [];
 
-    for (let y = 150; y < SCENE_HEIGHT - 300; y += 80 + Math.random() * 100) {
+    for (let y = 150; y < SCENE_HEIGHT - 300; y += 80 + random() * 100) {
       const spinePoint = spinePoints.find((p) => p.y >= y) ?? spinePoints[0];
       const startX = spinePoint.x;
       const startY = y;
 
-      const length = 200 + Math.random() * 500;
-      const isRight = Math.random() > 0.5;
-      const angleDeviation = (Math.random() * 70 + 10) * (Math.PI / 180);
+      const length = 200 + random() * 500;
+      const isRight = random() > 0.5;
+      const angleDeviation = (random() * 70 + 10) * (Math.PI / 180);
 
       const endX = startX + (isRight ? 1 : -1) * Math.cos(angleDeviation) * length;
-      const endY = startY + Math.sin(angleDeviation) * length + (Math.random() * 300 - 100);
+      const endY = startY + Math.sin(angleDeviation) * length + (random() * 300 - 100);
 
       const cp1X = startX + (endX - startX) * 0.4;
-      const cp1Y = startY + (Math.random() * 100 - 50);
+      const cp1Y = startY + (random() * 100 - 50);
       const cp2X = startX + (endX - startX) * 0.6;
       const cp2Y = endY - 100;
 
       const path = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
-      const color = NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)];
-      const code = `SYS.${Math.floor(Math.random() * 999)
+      const color = NEON_COLORS[Math.floor(random() * NEON_COLORS.length)];
+      const code = `SYS.${Math.floor(random() * 999)
         .toString()
         .padStart(3, '0')}`;
 
@@ -111,14 +120,14 @@ const DNABackground = ({ gsapReady = false }: DNABackgroundProps) => {
     }
 
     const particles = Array.from({ length: 200 }).map((_, i) => {
-      const z = Math.random() * 4 - 2;
+      const z = random() * 4 - 2;
       return {
         id: `part-${i}`,
-        x: Math.random() * CAMERA_WIDTH,
-        y: Math.random() * SCENE_HEIGHT,
+        x: random() * CAMERA_WIDTH,
+        y: random() * SCENE_HEIGHT,
         z,
-        size: Math.random() * 3 + 0.5,
-        color: NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)],
+        size: random() * 3 + 0.5,
+        color: NEON_COLORS[Math.floor(random() * NEON_COLORS.length)],
         opacity: z > 0 ? 0.7 : 0.2,
         isFront: z > 0,
       };

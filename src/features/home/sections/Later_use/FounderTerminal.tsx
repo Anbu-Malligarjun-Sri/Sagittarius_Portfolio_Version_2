@@ -58,10 +58,9 @@ const CipherLine = ({ text, delay, onComplete, isCommand, isError, isSystem }: C
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
     let intervalId: ReturnType<typeof setInterval>;
 
-    timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       let iteration = 0;
       intervalId = setInterval(() => {
         const newText = text
@@ -121,9 +120,6 @@ const Terminal = ({ hasStarted }: TerminalProps) => {
     { text: '[●●●] ALL SYSTEMS NOMINAL. AWAITING INPUT.', type: 'system', delay: 800 },
   ];
 
-  useEffect(() => {
-    if (hasStarted) setCurrentStep(0);
-  }, [hasStarted]);
 
   return (
     <div className="relative w-full h-full overflow-hidden p-6">
@@ -236,7 +232,7 @@ export default function FounderTerminal() {
         <div className={`transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-orange-500/30 bg-orange-500/10 backdrop-blur-sm">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <span className="font-mono text-orange-400 text-xs tracking-widest font-medium">// FOUNDER // ARCHITECT</span>
+            <span className="font-mono text-orange-400 text-xs tracking-widest font-medium">{"// FOUNDER // ARCHITECT"}</span>
           </div>
 
           <h2 className="font-sans font-bold text-5xl md:text-6xl leading-tight text-transparent bg-clip-text bg-linear-to-r from-white to-white/60 mb-6">
@@ -248,12 +244,12 @@ export default function FounderTerminal() {
 
         <div className={`text-slate-400 space-y-6 font-light text-lg md:text-xl leading-relaxed transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <p className="border-l-2 border-cyan-500/50 pl-4">
-            I'm a CS student obsessed with one question:
+            I&#39;m a CS student obsessed with one question:
             <br />
             <strong className="font-medium text-slate-200">What if AI could fix what nature lost?</strong>
           </p>
           <p>
-            Sagittariuz was born from that obsession - merging artificial intelligence, precision robotics, and bio-informatics into systems that don't just compute, but <em className="text-cyan-300 font-medium not-italic">think</em>.
+            Sagittariuz was born from that obsession - merging artificial intelligence, precision robotics, and bio-informatics into systems that don&#39;t just compute, but <em className="text-cyan-300 font-medium not-italic">think</em>.
           </p>
         </div>
 
@@ -291,7 +287,7 @@ export default function FounderTerminal() {
             </div>
           </div>
 
-          <Terminal hasStarted={isVisible} />
+          <Terminal key={String(isVisible)} hasStarted={isVisible} />
           <div className="absolute inset-0 border border-cyan-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none mix-blend-screen" />
         </div>
       </div>

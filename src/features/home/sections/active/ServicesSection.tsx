@@ -18,7 +18,7 @@ export default function ServicesSection({ activeSection }: ServicesSectionProps)
             <h2 className="font-display text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold tracking-[-0.04em] leading-[0.96] text-[#f5f0e8] mt-4 header-anim-item">Sharp work. Clear scope. No agency theatre.</h2>
           </div>
           <div className="overflow-hidden">
-            <p className="mt-4 max-w-2xl text-[1.05rem] leading-8 text-[#f5f0e8]/72 header-anim-item">Each engagement is sized to the problem, not the retainer. We move fast because we've solved these categories before.</p>
+            <p className="mt-4 max-w-2xl text-[1.05rem] leading-8 text-[#f5f0e8]/72 header-anim-item">Each engagement is sized to the problem, not the retainer. We move fast because we&#39;ve solved these categories before.</p>
           </div>
         </div>
       </div>

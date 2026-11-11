@@ -187,13 +187,13 @@ const ZenithExperience = () => {
       className={`${styles.root} ${cinzel.variable} ${rajdhani.variable} ${spaceMono.variable}`}
       style={
         {
-          ['--color-primary' as any]: '#00e5ff',
-          ['--color-secondary' as any]: '#8c00ff',
-          ['--color-accent' as any]: '#ff0055',
-          ['--color-bg' as any]: '#010102',
-          ['--color-text' as any]: '#ffffff',
-          ['--color-text-dim' as any]: 'rgba(255, 255, 255, 0.4)',
-          ['--hud-padding' as any]: '3vw',
+          '--color-primary': '#00e5ff',
+          '--color-secondary': '#8c00ff',
+          '--color-accent': '#ff0055',
+          '--color-bg': '#010102',
+          '--color-text': '#ffffff',
+          '--color-text-dim': 'rgba(255, 255, 255, 0.4)',
+          '--hud-padding': '3vw',
         } as React.CSSProperties
       }
     >

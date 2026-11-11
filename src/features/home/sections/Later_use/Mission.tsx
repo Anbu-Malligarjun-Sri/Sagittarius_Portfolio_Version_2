@@ -43,7 +43,7 @@ export default function Mission() {
 
   return (
     <section id="mission" ref={sectionRef} className="relative py-32 px-8 md:px-16 z-10 flex flex-col items-center text-center" style={{ perspective: '1200px' }}>
-      <div className="font-mono text-cyan-400 text-xs tracking-widest mb-8">// CORE MISSION</div>
+      <div className="font-mono text-cyan-400 text-xs tracking-widest mb-8">{"// CORE MISSION"}</div>
       <h2 className="font-display font-bold text-4xl md:text-6xl max-w-4xl leading-tight mb-12 transform-style-3d">
         {headline.split(' ').map((word, i) => (
           <span key={i} className="mission-word inline-block mr-[0.2em] transform-origin-bottom deep-scroll-item">{word}</span>

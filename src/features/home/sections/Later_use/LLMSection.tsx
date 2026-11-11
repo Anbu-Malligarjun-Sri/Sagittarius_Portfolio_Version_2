@@ -1,11 +1,7 @@
 import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { Code2, Database, Layers, TerminalSquare } from 'lucide-react';
 
-// Define the custom window type for GSAP directly in the file
-type HomeWindow = Window & typeof globalThis & {
-  gsap: any;
-  ScrollTrigger: any;
-};
+import type { HomeWindow } from '../../gsapTypes';
 
 type LlmTab = 'M1' | 'M2' | 'ORGANIZER';
 
@@ -19,7 +15,7 @@ function LLMSection() {
     const gsap = w.gsap;
     
     // Safety check to ensure GSAP and ScrollTrigger are available
-    if (!container || !gsap || !gsap.plugins.ScrollTrigger) return;
+    if (!container || !gsap || !w.ScrollTrigger) return;
 
     const ctx = gsap.context(() => {
       gsap.from('.llm-element', {
@@ -60,7 +56,7 @@ print(response.output)
         {/* Left Column: Text & Tabs */}
         <div className="flex-1 w-full">
           <div className="llm-element font-mono text-cyan-400 text-xs tracking-widest mb-4">
-            // CORE INTELLIGENCE
+            {'// CORE INTELLIGENCE'}
           </div>
           <h2 className="llm-element font-sans font-bold text-4xl md:text-5xl mb-8 text-white">
             Sagittariuz LLM
@@ -165,7 +161,7 @@ export default function App() {
   // Dynamically load GSAP & ScrollTrigger for the standalone preview environment
   useEffect(() => {
     const loadGSAP = async () => {
-      if ((window as any).gsap) {
+      if ((window as HomeWindow).gsap) {
         setGsapReady(true);
         return;
       }

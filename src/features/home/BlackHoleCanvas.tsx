@@ -48,7 +48,7 @@ export default function BlackHoleCanvas() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
-    renderer.toneMapping = (THREE as any).ACESFilmicToneMapping;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     renderer.shadowMap.enabled = false;
 
@@ -196,11 +196,11 @@ export default function BlackHoleCanvas() {
     const orbitGlows: THREE.Mesh[] = [];
 
     orbitsConfig.forEach((o) => {
-      const curve = new (THREE as any).EllipseCurve(0, 0, o.radius, o.radius * (0.3 + o.offset), 0, 2 * Math.PI, false, 0);
-      const pts = curve.getPoints(220).map((p: any) => new THREE.Vector3(p.x, 0, p.y));
+      const curve = new THREE.EllipseCurve(0, 0, o.radius, o.radius * (0.3 + o.offset), 0, 2 * Math.PI, false, 0);
+      const pts = curve.getPoints(220).map((p) => new THREE.Vector3(p.x, 0, p.y));
       const orbitGeo = new THREE.BufferGeometry().setFromPoints(pts);
       const orbitMat = new THREE.LineBasicMaterial({ color: 0xF5C518, transparent: true, opacity: 0.12 });
-      const orbitLine = new (THREE as any).Line(orbitGeo, orbitMat);
+      const orbitLine = new THREE.Line(orbitGeo, orbitMat);
       orbitLine.rotation.x = Math.PI / 7;
       orbitLine.rotation.z = o.offset * 0.8;
       scene.add(orbitLine);
@@ -215,7 +215,7 @@ export default function BlackHoleCanvas() {
       const glow = new THREE.Mesh(glowGeo, glowMat);
       scene.add(node);
       scene.add(glow);
-      (node as any).userData = { label: o.label };
+      node.userData = { label: o.label };
       orbitNodes.push(node);
       orbitGlows.push(glow);
       geometries.push(nodeGeo, glowGeo);
@@ -349,7 +349,7 @@ export default function BlackHoleCanvas() {
           pos.project(camera);
           const lx = (pos.x * 0.5 + 0.5) * width;
           const ly = (-pos.y * 0.5 + 0.5) * height;
-          tooltip.textContent = (hit as any).userData?.label ?? 'Info';
+          tooltip.textContent = hit.userData?.label ?? 'Info';
           tooltip.style.transform = `translate(${lx + 12}px, ${ly - 28}px)`;
           tooltip.style.opacity = '1';
         }
@@ -432,7 +432,7 @@ export default function BlackHoleCanvas() {
 
       // dispose geometries and materials
       geometriesRef.current.forEach((g) => { try { g.dispose(); } catch { } });
-      materialsRef.current.forEach((m) => { try { (m as any).dispose?.(); } catch { } });
+      materialsRef.current.forEach((m) => { try { m.dispose(); } catch { } });
 
       renderer.dispose();
       scene.clear();

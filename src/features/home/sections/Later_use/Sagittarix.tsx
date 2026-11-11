@@ -30,7 +30,7 @@ export default function Sagittarix() {
     <section ref={containerRef} className="py-32 px-8 md:px-16 max-w-7xl mx-auto z-10 relative">
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-white/10 pb-8">
         <div>
-          <div className="font-mono text-violet-400 text-xs tracking-widest mb-4 flex items-center gap-2"><BookOpen size={14} /> // SAGITTARIX INITIATIVE</div>
+          <div className="font-mono text-violet-400 text-xs tracking-widest mb-4 flex items-center gap-2"><BookOpen size={14} />{" // SAGITTARIX INITIATIVE"}</div>
           <h2 className="font-display font-bold text-4xl md:text-5xl text-white">AI for the next <br />generation of scientists.</h2>
         </div>
         <div className="max-w-md text-white/50 font-light mt-8 md:mt-0">SAGITTARIX is the STEM education arm-bringing AI, robotics, and physics to students through hands-on, problem-first learning frameworks.</div>

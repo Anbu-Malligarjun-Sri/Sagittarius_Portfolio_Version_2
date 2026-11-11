@@ -51,7 +51,7 @@ export default function Hero() {
       <div className="max-w-4xl z-10 transform-style-3d">
         <div className="hero-anim flex items-center gap-3 font-mono text-xs text-cyan-400 mb-6 deep-scroll-item">
           <div className="w-4 h-px bg-cyan-400" />
-          <span>// ADV. AI + ROBOTICS INITIATIVE</span>
+          <span>{"// ADV. AI + ROBOTICS INITIATIVE"}</span>
         </div>
 
         <h1 className="hero-anim font-display font-black text-6xl md:text-[7rem] leading-[0.9] tracking-tighter mb-6 text-white uppercase deep-scroll-item" data-text="SAGITTARIUZ">

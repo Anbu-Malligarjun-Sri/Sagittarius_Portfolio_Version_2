@@ -112,7 +112,7 @@ export default function Products() {
       <div className="mb-20 flex justify-between items-end">
         <div>
           <div className="font-mono text-cyan-400 text-xs tracking-widest mb-4">
-            // INITIATIVES
+            {"// INITIATIVES"}
           </div>
           <h2 className="font-display font-bold text-4xl md:text-6xl leading-tight">
             Hardware & Cognition
