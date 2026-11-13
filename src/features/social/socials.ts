@@ -15,11 +15,11 @@ export type Social = {
 };
 
 export const SOCIALS: Social[] = [
-  { id: 'github', label: 'GitHub', href: 'https://github.com/Anbu-Malligarjun-Sri', dye: '#1b1f23', scale: 0.6 },
+  { id: 'github', label: 'GitHub', href: 'https://github.com/Sagittariuz-tech', dye: '#1b1f23', scale: 0.6 },
   { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/', dye: '#0a66c2', scale: 0.56 },
-  { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/', dye: ['#fdc468', '#f5802a', '#e1306c', '#a22fbd', '#5851db'], scale: 0.6 },
-  { id: 'x', label: 'X', href: 'https://x.com/', dye: '#0b0b0b', scale: 0.5 },
-  { id: 'reddit', label: 'Reddit', href: 'https://www.reddit.com/', dye: '#ff4500', scale: 0.62 },
+  { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/sagittariuz.tech/', dye: ['#fdc468', '#f5802a', '#e1306c', '#a22fbd', '#5851db'], scale: 0.6 },
+  { id: 'x', label: 'X', href: 'https://x.com/SagittariuzTech', dye: '#0b0b0b', scale: 0.5 },
+  { id: 'reddit', label: 'Reddit', href: 'https://www.reddit.com/user/SagittariuzTech/', dye: '#ff4500', scale: 0.62 },
 ];
 
 export const FUR_COLOR = '#F3EDE4';
