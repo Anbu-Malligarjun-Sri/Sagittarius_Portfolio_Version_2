@@ -46,10 +46,11 @@ const playfair = remoteFont({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.sagittariuz.com'),
   title: {
-    default: 'Sagittariuz | Thoughtful AI for research and everyday work',
+    default: 'Sagittariuz | AI & Software Development Company',
     template: '%s | Sagittariuz',
   },
-  description: 'Founded in 2026, Sagittariuz builds software and AI tools to reduce friction for researchers, students and teams. Explore our STEM projects and services.',
+description:
+  'Sagittariuz is an AI and software development company building intelligent AI solutions, custom software, web applications and digital products for businesses, researchers and students.',
   keywords: ['Sagittariuz', 'AI for research', 'STEM software', 'AI agents', 'AI integration', 'web development'],
   authors: [{ name: 'Sagittariuz' }],
   robots: {
@@ -59,9 +60,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://www.sagittariuz.com',
-    title: 'Sagittariuz',
+    title: 'Sagittariuz | AI & Software Development Company',
     description: 'Thoughtful software and AI tools for researchers, students and the work ahead.',
     siteName: 'Sagittariuz',
+    applicationName: 'Sagittariuz',
     images: [
       {
         url: '/opengraph-image',
