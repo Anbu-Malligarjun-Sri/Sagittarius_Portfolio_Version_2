@@ -102,22 +102,43 @@ export default function RootLayout({
         </a>
         {children}
         <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Organization',
-              name: 'Sagittariuz',
-              foundingDate: '2026',
-              description: 'Software and AI tools that reduce friction in research and everyday work.',
-              url: 'https://www.sagittariuz.com',
-              logo: 'https://www.sagittariuz.com/images/logo_image/logo.svg',
-              sameAs: [
-                'https://github.com/Anbu-Malligarjun-Sri',
-              ],
-            }),
-          }}
-        />
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.sagittariuz.com/#organization",
+          "name": "Sagittariuz",
+          "url": "https://www.sagittariuz.com/",
+          "description":
+            "Sagittariuz is an AI and software development company building intelligent AI solutions, custom software and digital products.",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.sagittariuz.com/images/logo_image/logo.svg"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.sagittariuz.com/#website",
+          "url": "https://www.sagittariuz.com/",
+          "name": "Sagittariuz",
+          "alternateName": "Sagittariuz Official Website",
+          "publisher": {
+            "@id": "https://www.sagittariuz.com/#organization"
+          }
+        }
+      ]
+    }).replace(/</g, '\\u003c'),
+  }}
+/>
+        <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
+    }}
+  />
       </body>
     </html>
   );
