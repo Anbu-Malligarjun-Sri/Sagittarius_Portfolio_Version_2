@@ -46,12 +46,13 @@ const playfair = remoteFont({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.sagittariuz.com'),
   title: {
-    default: 'Sagittariuz | Thoughtful AI for research and everyday work',
+    default:  'Sagittariuz | AI & software development.',
     template: '%s | Sagittariuz',
   },
-  description: 'Founded in 2026, Sagittariuz builds software and AI tools to reduce friction for researchers, students and teams. Explore our STEM projects and services.',
+  description: 'Sagittariuz is an AI and software development company building intelligent AI solutions, custom software, web applications and digital products for businesses, researchers and students.',
   keywords: ['Sagittariuz', 'AI for research', 'STEM software', 'AI agents', 'AI integration', 'web development'],
   authors: [{ name: 'Sagittariuz' }],
+  applicationName: 'Sagittariuz',
   robots: {
     index: true,
     follow: true,
@@ -86,6 +87,34 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://www.sagittariuz.com/#organization',
+      name: 'Sagittariuz',
+      url: 'https://www.sagittariuz.com/',
+      description:
+        'Sagittariuz builds software and AI tools for researchers, students and teams.',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.sagittariuz.com/images/logo_image/logo.svg',
+      },
+      sameAs: ['https://github.com/Anbu-Malligarjun-Sri'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.sagittariuz.com/#website',
+      url: 'https://www.sagittariuz.com/',
+      name: 'Sagittariuz',
+      alternateName: 'Sagittariuz Official Website',
+      publisher: {
+        '@id': 'https://www.sagittariuz.com/#organization',
+      },
+    },
+  ],
+};
   return (
     <html
       lang="en"
@@ -102,22 +131,11 @@ export default function RootLayout({
         </a>
         {children}
         <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Organization',
-              name: 'Sagittariuz',
-              foundingDate: '2026',
-              description: 'Software and AI tools that reduce friction in research and everyday work.',
-              url: 'https://www.sagittariuz.com',
-              logo: 'https://www.sagittariuz.com/images/logo_image/logo.svg',
-              sameAs: [
-                'https://github.com/Anbu-Malligarjun-Sri',
-              ],
-            }),
-          }}
-        />
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
+  }}
+/>
       </body>
     </html>
   );
