@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { SERVICE_BRIEFS } from '@/features/services/inquirySchema';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://sagittariuz.ai';
+  const base = 'https://www.sagittariuz.com';
 
   return [
     ...SERVICE_BRIEFS.map(service => ({ url: `${base}/services/${service.slug}`, changeFrequency: 'monthly' as const, priority: 0.7 })),
@@ -19,11 +19,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${base}/projects`,
       changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${base}/species-de-extinction`,
-      changeFrequency: 'weekly',
       priority: 0.8,
     },
   ];

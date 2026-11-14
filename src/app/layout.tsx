@@ -44,7 +44,7 @@ const playfair = remoteFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sagittariuz.ai'),
+  metadataBase: new URL('https://www.sagittariuz.com'),
   title: {
     default: 'Sagittariuz | Thoughtful AI for research and everyday work',
     template: '%s | Sagittariuz',
@@ -52,12 +52,13 @@ export const metadata: Metadata = {
   description: 'Founded in 2026, Sagittariuz builds software and AI tools to reduce friction for researchers, students and teams. Explore our STEM projects and services.',
   keywords: ['Sagittariuz', 'AI for research', 'STEM software', 'AI agents', 'AI integration', 'web development'],
   authors: [{ name: 'Sagittariuz' }],
-  alternates: {
-    canonical: '/',
+  robots: {
+    index: true,
+    follow: true,
   },
   openGraph: {
     type: 'website',
-    url: 'https://sagittariuz.ai',
+    url: 'https://www.sagittariuz.com',
     title: 'Sagittariuz',
     description: 'Thoughtful software and AI tools for researchers, students and the work ahead.',
     siteName: 'Sagittariuz',
@@ -109,8 +110,8 @@ export default function RootLayout({
               name: 'Sagittariuz',
               foundingDate: '2026',
               description: 'Software and AI tools that reduce friction in research and everyday work.',
-              url: 'https://sagittariuz.ai',
-              logo: 'https://sagittariuz.ai/images/logo_image/logo.svg',
+              url: 'https://www.sagittariuz.com',
+              logo: 'https://www.sagittariuz.com/images/logo_image/logo.svg',
               sameAs: [
                 'https://github.com/Anbu-Malligarjun-Sri',
               ],

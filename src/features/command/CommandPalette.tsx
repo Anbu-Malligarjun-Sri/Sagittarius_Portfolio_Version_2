@@ -19,7 +19,6 @@ const COMMANDS: Command[] = [
   { id: 'contact', group: 'Go to', label: 'Contact', hint: 'Home', kind: 'section', target: 'contact', keywords: 'hire message email start a project typewriter' },
   { id: 'projects', group: 'Pages', label: 'All projects', hint: 'Case files', kind: 'page', target: '/projects', keywords: 'work portfolio edna tars techazura oceanography symposium' },
   { id: 'team', group: 'Pages', label: 'The team', kind: 'page', target: '/team', keywords: 'founders anbu brajin arun about people' },
-  { id: 'lab', group: 'Pages', label: 'The lab', hint: 'Zenith', kind: 'page', target: '/species-de-extinction', keywords: 'zenith de-extinction webgl experiment' },
   ...SOCIALS.map(
     (s): Command => ({ id: `social-${s.id}`, group: 'Find us', label: s.label, kind: 'external', target: s.href, keywords: `social ${s.id}` }),
   ),
@@ -167,12 +166,9 @@ function Palette({ onClose }: { onClose: () => void }) {
 
 /** Ctrl/Cmd + K opens a quick-jump palette anywhere on the site; a small hint button does the same for mouse and touch. */
 export default function CommandPalette() {
-  const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const immersive = pathname.startsWith('/species-de-extinction'); // the lab has its own full-screen UI
 
   useEffect(() => {
-    if (immersive) return;
     const onKey = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
@@ -182,9 +178,7 @@ export default function CommandPalette() {
     };
     window.addEventListener('keydown', onKey, true);
     return () => window.removeEventListener('keydown', onKey, true);
-  }, [immersive]);
-
-  if (immersive) return null;
+  }, []);
 
   return (
     <>

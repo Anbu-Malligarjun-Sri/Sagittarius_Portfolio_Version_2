@@ -148,13 +148,6 @@ export default function Navbar() {
             <span className="text-white/60">SYSTEM ONLINE</span>
           </div>
 
-          <Link
-            href="/species-de-extinction"
-            className="hidden md:inline-flex items-center border border-cyan-400/40 px-5 py-3 rounded text-xs font-mono tracking-widest text-cyan-100 hover:border-cyan-300 hover:text-cyan-300 transition-colors"
-          >
-            DE-EXTINCTION
-          </Link>
-
           <a
             href="#contact"
             className="hidden md:inline-block relative border border-white/20 px-6 py-3 rounded overflow-hidden group"
@@ -191,13 +184,6 @@ export default function Navbar() {
                 {item.label}
               </a>
             ))}
-            <Link
-              href="/species-de-extinction"
-              className="text-cyan-300 hover:text-cyan-200 transition-colors"
-              onClick={() => setMenuOpen(false)}
-            >
-              DE-EXTINCTION
-            </Link>
             <a
               href="#contact"
               className="mt-4 inline-block border border-white/20 py-3 px-6 rounded text-white/90 hover:text-orange-400 hover:border-orange-400/60 transition-colors"

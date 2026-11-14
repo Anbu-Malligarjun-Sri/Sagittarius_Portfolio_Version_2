@@ -55,7 +55,7 @@ export default function Image() {
             Independent team / Est. 2026
           </div>
           <div style={{ fontSize: '18px', color: '#e8c547' }}>
-            sagittariuz.ai
+            www.sagittariuz.com
           </div>
         </div>
       </div>

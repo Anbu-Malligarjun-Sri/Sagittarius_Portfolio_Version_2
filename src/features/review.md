@@ -9,7 +9,6 @@ Read-only audit. No code was changed. Based on reading the source and file sizes
 **Routes:**
 - `/` is one long page.
 - `/about` has the founders.
-- `/species-de-extinction` is the "Zenith" Three.js experience.
 - `/api/contact` sends the contact form through Resend.
 - Also present: `robots.ts`, `sitemap.ts`, and a generated `opengraph-image.tsx`.
 
@@ -26,7 +25,6 @@ Read-only audit. No code was changed. Based on reading the source and file sizes
 | Contact | A working typewriter OS with sound and ink-bleed effects |
 | Footer | A city map with "You are here" |
 | Hero | A black hole plus gold-on-black editorial typography |
-| `/species-de-extinction` | A WebGL bone and fluid-swarm lab |
 
 Shared pieces are the gold `#e8c547` accent, a noise overlay, a custom cursor, and five Google fonts.
 
@@ -74,7 +72,7 @@ Shared pieces are the gold `#e8c547` accent, a noise overlay, a custom cursor, a
 - `layout.tsx` hardcodes `https://sagittariuz.ai`. If you don't own that domain, canonical URLs, the sitemap and Open Graph are all pointing at someone else's site.
 - `themeColor` should be in `viewport`, and the `Organization` JSON-LD is minimal.
 - The OG image text says "Proof of work for ambitious systems", which is different from the hero copy.
-- The `/about` page, `/species-de-extinction` and the sitemap have no per-page metadata.
+- The `/about` page and the sitemap have no per-page metadata.
 - The copyright is "© 2025".
 
 ## 3. What a professional startup site needs that's missing
@@ -101,7 +99,7 @@ Ordered by impact for effort:
 4. **Add an interactive "proof" moment on the home page.** Embed a small live version of the Zenith scene or the black hole, behind a lazy import and a reduced-motion fallback. That is more memorable than the 2D hero image.
 5. **Performance and mobile pass.** Compress the images (WebP/AVIF, under about 200 KB each), delete unused fonts, lazy-load the three.js code, and test on a mid-range phone. The WebGL pages are the likeliest to fail there.
 6. **Social proof you can verify:** GitHub activity, hackathon wins or certificates, press mentions, talks, and the Sagittarix STEM impact numbers (students taught, workshops run). Real numbers beat "200+".
-7. **Small polish that signals craft:** a keyboard shortcut or command palette (Ctrl+K), dark/light or "calm mode" toggle, a smooth page transition between `/` and `/species-de-extinction`, an easter egg (the black hole reacting to the cursor), and a `/uses` or `/lab` page.
+7. **Small polish that signals craft:** a keyboard shortcut or command palette (Ctrl+K), dark/light or "calm mode" toggle, smooth page transitions, an easter egg (the black hole reacting to the cursor), and a `/uses` or `/lab` page.
 8. **Resume or press kit download** and a one-click "Email us" button next to the form.
 
 ## 5. Where to start
